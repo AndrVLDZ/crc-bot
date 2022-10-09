@@ -1,0 +1,4 @@
+**/__pycache__
+# ignore secret config
+qiwi_token.txt
+tg_token.txt
