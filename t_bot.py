@@ -1,4 +1,6 @@
 from os import remove
+
+import traceback
 from turtle import back
 import telebot
 from telebot import types
@@ -105,7 +107,5 @@ def bot_message(message):
 while True:
     try:
       bot.polling(none_stop=True)
-    except: 
-      print('error')
-      logging.error('error: {}'.format(sys.exc_info()[0]))
-      time.sleep(5)
+    except Exception as e:
+        print('Ошибка:\n', traceback.format_exc())
