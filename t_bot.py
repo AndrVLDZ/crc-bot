@@ -1,61 +1,23 @@
-from os import remove
-
 import traceback
-from turtle import back
 import telebot
 from telebot import types
 from dataclasses import dataclass
-import requests
-import qiwi_tkn
-import tg_tkn
+import get_tkn
+import get_tkn
+import qiwi_tools
 
-@dataclass(frozen=True)
-class data:
-    # currency codes
-    RUB: str = '643' 
-    USD: str = '840' 
-    EUR: str = '978' 
-    KZT: str = '398'
-    ОКВ: str = '156'
-
-# currency pair exchange rate
-def exchange(currency_to: str, currency_from: str): 
-    s = requests.Session()
-    s.headers = {'content-type': 'application/json'}
-    s.headers['authorization'] = 'Bearer ' + qiwi_tkn.api_access_token
-    s.headers['User-Agent'] = 'Android v3.2.0 MKT'
-    s.headers['Accept'] = 'application/json'
-    res = s.get('https://edge.qiwi.com/sinap/crossRates')
-
-    # all exchange rates
-    rates = res.json()['result']
-    
-    # requested exchange rate
-    rate = [x for x in rates if x['from'] == currency_from and x['to'] == currency_to]
-    if (len(rate) == 0):
-        print('No rate for this currencies!')
-        return
-    else:
-        return str(rate[0]['rate'])
-        
-
-def converter(currency_from: str,  currency_to: str, value: float, round_res: bool = True) -> list:
-    exch: float = float(exchange(currency_from, currency_to))
-    if round_res:
-        res = [exch, round(value*exch, 2)]
-    else:
-        res = [exch, value*exch, 2]
-    return res
+# default currency
+currency_to = qiwi_tools.data.RUB
 
 # bot instance
-bot = telebot.TeleBot(tg_tkn.bot_access_token)
+token = get_tkn.get('tg_token.txt')
+bot = telebot.TeleBot(token)
 
 # /start command function
 @bot.message_handler(commands=['start'])
 def start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     add_token = types.KeyboardButton('Добавить токен')
-    remove_token = types.KeyboardButton('Удалить токен')
     converter = types.KeyboardButton('Конвертация')
     exchange = types.KeyboardButton('Курсы валют')
     
@@ -68,9 +30,9 @@ def start(message):
 def bot_message(message):
     if message.chat.type == 'private':
         if message.text == 'Добавить токен':
-            qiwi_tkn.get()
+            get_tkn.get()
         
-        if message.text == 'Курсы валют':
+        elif message.text == 'Курсы валют':
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
             usd = types.KeyboardButton('Доллар')
             eur = types.KeyboardButton('Евро')
@@ -80,29 +42,34 @@ def bot_message(message):
             markup.add(usd, eur, kzt, okb, back)
             bot.send_message(message.chat.id, 'Выбери валюту', reply_markup=markup)
 
-        if message.text == 'Доллар':
-                currency_from: str = data.USD
-                currency_to: str = data.RUB
-                answ: float = exchange(currency_from, currency_to)
-                bot.send_message(message.chat.id, f'Текущий курс: {answ}')
+        # elif message.text == 'Назад':
+        #     markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+        #     remove_token = types.KeyboardButton('Удалить токен')
+        #     converter = types.KeyboardButton('Конвертация')
+        #     exchange = types.KeyboardButton('Курсы валют')
+            
+        #     markup.add(remove_token, exchange)
+        #     bot.send_message(message.chat.id, 'Главное меню')
+
+        elif message.text == 'Доллар':
+                currency_from: str = qiwi_tools.data.USD
+                answ: float = qiwi_tools.exchange(currency_from, currency_to)
+                bot.send_message(message.chat.id, answ)
         
         elif message.text == 'Евро':
-                currency_from: str = data.EUR
-                currency_to: str = data.RUB
-                answ: float = exchange(currency_from, currency_to)
-                bot.send_message(message.chat.id, f'Текущий курс: {answ}')
+                currency_from: str = qiwi_tools.data.EUR
+                answ: float = qiwi_tools.exchange(currency_from, currency_to)
+                bot.send_message(message.chat.id, answ)
         
         elif message.text == 'Тенге':
-                currency_from: str = data.KZT
-                currency_to: str = data.RUB
-                answ: float = exchange(currency_from, currency_to)
-                bot.send_message(message.chat.id, f'Текущий курс: {answ}')
+                currency_from: str = qiwi_tools.data.KZT
+                answ: float = qiwi_tools.exchange(currency_from, currency_to)
+                bot.send_message(message.chat.id, answ)
         
         elif message.text == 'Юань':
-                currency_from: str = data.ОКВ
-                currency_to: str = data.RUB
-                answ: float = exchange(currency_from, currency_to)
-                bot.send_message(message.chat.id, f'Текущий курс: {answ}')
+                currency_from: str = qiwi_tools.data.ОКВ
+                answ: float = qiwi_tools.exchange(currency_from, currency_to)
+                bot.send_message(message.chat.id, answ)
 
 while True:
     try:
