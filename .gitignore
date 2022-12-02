@@ -1,5 +1,6 @@
 **/__pycache__
+.vscode
 # ignore
 qiwi_token.txt
-tg_token.txt
+bot_token.txt
 bot.db
