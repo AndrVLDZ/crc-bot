@@ -11,93 +11,46 @@ router = Router()
 CURRENCIES = ["USD", "EUR", "RUB", "KZT", "CNY"]
 
 
-class CurrencyCB(CallbackData, prefix="curr_pair"):
-    user_id: int
-    # #TODO
-    # conv_pref: str
-    # currency: str
-    curr_str: str  # e.g. "to_RUB" or "from_USD"
+class CurrencyCB(CallbackData, prefix="currency_callback"):
+    user_id: int  # user id from [Telegram API](https://core.telegram.org/constructor/user)
+    conv_prefix: str  # e.g. "TO" or "FROM"
+    currency: str  # e.g. "USD", "RUB", ...
 
 
 @router.message(F.text == "Set currencies")
-async def choose_currency_pair(message: types.Message):
-    def add_buttons(builder: InlineKeyboardBuilder, data_prefix):
+async def currency_pair_chooser(message: types.Message):
+    def add_buttons(builder: InlineKeyboardBuilder, pref):
         for curr in CURRENCIES:
-            data = CurrencyCB(
-                user_id=message.from_user.id, curr_str=f"{data_prefix}_{curr}"
+            cb_data = CurrencyCB(
+                user_id=message.from_user.id, conv_prefix=pref, currency=curr
             )
 
             builder.add(
-                types.InlineKeyboardButton(text=curr, callback_data=data.pack())
+                types.InlineKeyboardButton(text=curr, callback_data=cb_data.pack())
             )
 
     curr_from = InlineKeyboardBuilder()
-    add_buttons(curr_from, data_prefix="from")
+    add_buttons(curr_from, pref="from")
     await message.answer("I have", reply_markup=curr_from.as_markup())
 
     curr_to = InlineKeyboardBuilder()
-    add_buttons(curr_to, data_prefix="to")
+    add_buttons(curr_to, pref="to")
     await message.answer("I want to buy", reply_markup=curr_to.as_markup())
 
 
-async def save_currency(
-    callback: types.CallbackQuery, user_id: int, conv_prefix: str, curr_name: str
-):
-    curr_code = qiwi.CODES[curr_name]
-    if conv_prefix == "from":
-        db.set_from(user_id, curr_code)
+async def save_currency(callback: types.CallbackQuery, data: CurrencyCB):
+    curr_code = qiwi.CODES[data.currency]
+    if data.conv_prefix == "from":
+        db.set_from(data.user_id, curr_code)
     else:
-        db.set_to(user_id, curr_code)
+        db.set_to(data.user_id, curr_code)
 
-    await callback.message.answer(f"Currency {conv_prefix} has been set to {curr_name}")
+    await callback.message.answer(
+        f"Currency {data.conv_prefix} has been set to {data.currency}"
+    )
     await callback.answer()
 
 
-@router.callback_query(CurrencyCB.filter(F.curr_str == "from_USD"))
+@router.callback_query(CurrencyCB.filter())
 async def from_usd(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "from", "USD")
-
-
-@router.callback_query(CurrencyCB.filter(F.curr_str == "to_USD"))
-async def to_usd(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "to", "USD")
-
-
-@router.callback_query(CurrencyCB.filter(F.curr_str == "from_EUR"))
-async def from_eur(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "from", "EUR")
-
-
-@router.callback_query(CurrencyCB.filter(F.curr_str == "to_EUR"))
-async def to_eur(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "to", "EUR")
-
-
-@router.callback_query(CurrencyCB.filter(F.curr_str == "from_RUB"))
-async def from_rub(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "from", "RUB")
-
-
-@router.callback_query(CurrencyCB.filter(F.curr_str == "to_RUB"))
-async def to_rub(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "to", "RUB")
-
-
-@router.callback_query(CurrencyCB.filter(F.curr_str == "from_KZT"))
-async def from_kzt(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "from", "KZT")
-
-
-@router.callback_query(CurrencyCB.filter(F.curr_str == "to_KZT"))
-async def to_kzt(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "to", "KZT")
-
-
-@router.callback_query(CurrencyCB.filter(F.curr_str == "from_CNY"))
-async def from_cny(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "from", "CNY")
-
-
-@router.callback_query(CurrencyCB.filter(F.curr_str == "to_CNY"))
-async def to_cny(callback: types.CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data.user_id, "to", "CNY")
+    await save_currency(callback, callback_data)
