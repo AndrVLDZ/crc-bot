@@ -1,14 +1,8 @@
 import db
 import qiwi
 from aiogram import types, F, Router
-from aiogram.filters.text import Text
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from dataclasses import dataclass, field
-
-
-@dataclass
-class Data:
-    user_id: int = field(default=0)
+from aiogram.filters.callback_data import CallbackData
 
 
 router = Router()
@@ -17,15 +11,24 @@ router = Router()
 CURRENCIES = ["USD", "EUR", "RUB", "KZT", "CNY"]
 
 
-@router.message(F.text == "Set currencies")
-async def set_currency_from(message: types.Message):
-    Data.user_id = message.from_user.id
+class CurrencyCB(CallbackData, prefix="curr_pair"):
+    user_id: int
+    curr_str: str # e.g. "to_RUB" or "from_USD" 
 
+
+@router.message(F.text == "Set currencies")
+async def set_currency_pair(message: types.Message):
     def add_buttons(builder: InlineKeyboardBuilder, data_prefix):
         for curr in CURRENCIES:
+            data = CurrencyCB(
+                user_id=message.from_user.id,
+                curr_str=f"{data_prefix}_{curr}"
+            )
+            
             builder.add(
                 types.InlineKeyboardButton(
-                    text=curr, callback_data=f"{data_prefix}_{curr}"
+                    text=curr,
+                    callback_data=data.pack()
                 )
             )
 
@@ -37,72 +40,72 @@ async def set_currency_from(message: types.Message):
     add_buttons(curr_to, data_prefix="to")
     await message.answer("I want to buy", reply_markup=curr_to.as_markup())
 
-@router.callback_query(Text(text = 'from_USD'))
-async def from_usd(callback: types.CallbackQuery):
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'from_USD'))
+async def from_usd(callback: types.CallbackQuery, callback_data: CurrencyCB):
     code = qiwi.codes['USD']
-    db.set_from(Data.user_id, code)
+    db.set_from(callback_data.user_id, code)
     await callback.message.answer(f'Currency from has been set to {qiwi.get_key(qiwi.codes, code)}')
-    await callback.answer()
+    await callback.answer()  
 
-@router.callback_query(Text(text = 'from_EUR'))
-async def from_eur(callback: types.CallbackQuery):
-    code = qiwi.codes['EUR']
-    db.set_from(Data.user_id, code)
-    await callback.message.answer(f'Currency from has been set to {qiwi.get_key(qiwi.codes, code)}')
-    await callback.answer()
-
-@router.callback_query(Text(text = 'from_RUB'))
-async def from_rub(callback: types.CallbackQuery):
-    code = qiwi.codes['RUB']
-    db.set_from(Data.user_id, code)
-    await callback.message.answer(f'Currency from has been set to {qiwi.get_key(qiwi.codes, code)}')
-    await callback.answer()
-
-@router.callback_query(Text(text = 'from_KZT'))
-async def from_kzt(callback: types.CallbackQuery):
-    code = qiwi.codes['KZT']
-    db.set_from(Data.user_id, code)
-    await callback.message.answer(f'Currency from has been set to {qiwi.get_key(qiwi.codes, code)}')
-    await callback.answer()
-
-@router.callback_query(Text(text = 'from_CNY'))
-async def from_cny(callback: types.CallbackQuery):
-    code = qiwi.codes['CNY']
-    db.set_from(Data.user_id, code)
-    await callback.message.answer(f'Currency from has been set to {qiwi.get_key(qiwi.codes, code)}')
-    await callback.answer()
-
-@router.callback_query(Text(text = 'to_USD'))
-async def to_usd(callback: types.CallbackQuery):
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'to_USD'))
+async def to_usd(callback: types.CallbackQuery, callback_data: CurrencyCB):
     code = qiwi.codes['USD']
-    db.set_to(Data.user_id, code)
+    db.set_to(callback_data.user_id, code)
     await callback.message.answer(f'Currency to has been set to {qiwi.get_key(qiwi.codes, code)}')
     await callback.answer()
 
-@router.callback_query(Text(text = 'to_EUR'))
-async def to_eur(callback: types.CallbackQuery):
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'from_EUR'))
+async def from_eur(callback: types.CallbackQuery, callback_data: CurrencyCB):
     code = qiwi.codes['EUR']
-    db.set_to(Data.user_id, code)
+    db.set_from(callback_data.user_id, code)
+    await callback.message.answer(f'Currency from has been set to {qiwi.get_key(qiwi.codes, code)}')
+    await callback.answer()
+
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'to_EUR'))
+async def to_eur(callback: types.CallbackQuery, callback_data: CurrencyCB):
+    code = qiwi.codes['EUR']
+    db.set_to(callback_data.user_id, code)
     await callback.message.answer(f'Currency to has been set to {qiwi.get_key(qiwi.codes, code)}')
     await callback.answer()
 
-@router.callback_query(Text(text = 'to_RUB'))
-async def to_rub(callback: types.CallbackQuery):
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'from_RUB'))
+async def from_rub(callback: types.CallbackQuery, callback_data: CurrencyCB):
     code = qiwi.codes['RUB']
-    db.set_to(Data.user_id, code)
+    db.set_from(callback_data.user_id, code)
+    await callback.message.answer(f'Currency from has been set to {qiwi.get_key(qiwi.codes, code)}')
+    await callback.answer()
+
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'to_RUB'))
+async def to_rub(callback: types.CallbackQuery, callback_data: CurrencyCB):
+    code = qiwi.codes['RUB']
+    db.set_to(callback_data.user_id, code)
     await callback.message.answer(f'Currency to has been set to {qiwi.get_key(qiwi.codes, code)}')
     await callback.answer()
 
-@router.callback_query(Text(text = 'to_KZT'))
-async def to_kzt(callback: types.CallbackQuery):
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'from_KZT'))
+async def from_kzt(callback: types.CallbackQuery, callback_data: CurrencyCB):
     code = qiwi.codes['KZT']
-    db.set_to(Data.user_id, code)
+    db.set_from(callback_data.user_id, code)
+    await callback.message.answer(f'Currency from has been set to {qiwi.get_key(qiwi.codes, code)}')
+    await callback.answer()
+
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'to_KZT'))
+async def to_kzt(callback: types.CallbackQuery, callback_data: CurrencyCB):
+    code = qiwi.codes['KZT']
+    db.set_to(callback_data.user_id, code)
     await callback.message.answer(f'Currency to has been set to {qiwi.get_key(qiwi.codes, code)}')
     await callback.answer()
 
-@router.callback_query(Text(text = 'to_CNY'))
-async def to_cny(callback: types.CallbackQuery):
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'from_CNY'))
+async def from_cny(callback: types.CallbackQuery, callback_data: CurrencyCB):
     code = qiwi.codes['CNY']
-    db.set_to(Data.user_id, code)
+    db.set_from(callback_data.user_id, code)
+    await callback.message.answer(f'Currency from has been set to {qiwi.get_key(qiwi.codes, code)}')
+    await callback.answer()
+
+@router.callback_query(CurrencyCB.filter(F.curr_str == 'to_CNY'))
+async def to_cny(callback: types.CallbackQuery, callback_data: CurrencyCB):
+    code = qiwi.codes['CNY']
+    db.set_to(callback_data.user_id, code)
     await callback.message.answer(f'Currency to has been set to {qiwi.get_key(qiwi.codes, code)}')
     await callback.answer()
