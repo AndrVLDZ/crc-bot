@@ -5,68 +5,37 @@ from aiogram.filters.text import Text
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from dataclasses import dataclass, field
 
-router = Router() 
 
 @dataclass
 class Data:
     user_id: int = field(default=0)
 
 
-@router.message(F.text == 'Set currencies')
+router = Router()
+
+# All currencies supported by QIWI
+CURRENCIES = ["USD", "EUR", "RUB", "KZT", "CNY"]
+
+
+@router.message(F.text == "Set currencies")
 async def set_currency_from(message: types.Message):
     Data.user_id = message.from_user.id
-    builder1 = InlineKeyboardBuilder()
-    builder1.add(types.InlineKeyboardButton(
-        text='USD',
-        callback_data='from_USD',
-        user_id = message.from_user.id)
-    )
-    builder1.add(types.InlineKeyboardButton(
-        text="EUR",
-        callback_data='from_EUR')
-    )
-    builder1.add(types.InlineKeyboardButton(
-        text="RUB",
-        callback_data='from_RUB')
-    )
-    builder1.add(types.InlineKeyboardButton(
-        text="KZT",
-        callback_data='from_KZT')
-    )
-    builder1.add(types.InlineKeyboardButton(
-        text="CNY",
-        callback_data='from_CNY')
-    )
-    await message.answer(
-        "I have",
-        reply_markup=builder1.as_markup()
-    )
 
-    builder2 = InlineKeyboardBuilder()
-    builder2.add(types.InlineKeyboardButton(
-        text="USD",
-        callback_data="to_USD")
-    )
-    builder2.add(types.InlineKeyboardButton(
-        text="EUR",
-        callback_data="to_EUR")
-    )
-    builder2.add(types.InlineKeyboardButton(
-        text="RUB",
-        callback_data="to_RUB")
-    )
-    builder2.add(types.InlineKeyboardButton(
-        text="KZT",
-        callback_data="to_KZT")
-    )
-    builder2.add(types.InlineKeyboardButton(
-        text="CNY",
-        callback_data="to_CNY")
-    )
-    await message.answer(
-        "I want to buy",
-        reply_markup=builder2.as_markup()
-    )
+    def add_buttons(builder: InlineKeyboardBuilder, data_prefix):
+        for curr in CURRENCIES:
+            builder.add(
+                types.InlineKeyboardButton(
+                    text=curr, callback_data=f"{data_prefix}_{curr}"
+                )
+            )
+
+    curr_from = InlineKeyboardBuilder()
+    add_buttons(curr_from, data_prefix="from")
+    await message.answer("I have", reply_markup=curr_from.as_markup())
+
+    curr_to = InlineKeyboardBuilder()
+    add_buttons(curr_to, data_prefix="to")
+    await message.answer("I want to buy", reply_markup=curr_to.as_markup())
 
 @router.callback_query(Text(text = 'from_USD'))
 async def from_usd(callback: types.CallbackQuery):
