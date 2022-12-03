@@ -9,7 +9,7 @@ class Data:
     rate: float = field(default=0)
 
 # dict for storing currency codes
-codes: dict = {
+CODES: dict = {
     'RUB': '643',
     'USD': '840',
     'EUR': '978',
