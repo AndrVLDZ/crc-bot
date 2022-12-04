@@ -60,11 +60,7 @@ async def round_off(message: Message, state: FSMContext):
 @router.message(F.text == "Back")
 async def back(message: Message, state: FSMContext):
     await message.answer("Back to menu", reply_markup=menu.main_menu)
-    # st = state.get_state(Converting)
-    # print(st)
     await state.clear()
-    # st = state.get_state(Converting)
-    # print(st)
 
 
 @router.message(Converting.converter_launched)
