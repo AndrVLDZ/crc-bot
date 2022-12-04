@@ -1,8 +1,9 @@
 import db
 import qiwi
-from aiogram import types, F, Router
+from aiogram import F, Router
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.filters.callback_data import CallbackData
+from aiogram.types import Message, InlineKeyboardButton, CallbackQuery
 
 
 router = Router()
@@ -18,27 +19,31 @@ class CurrencyCB(CallbackData, prefix="currency_callback"):
 
 
 @router.message(F.text == "Set currencies")
-async def currency_pair_chooser(message: types.Message):
-    def add_buttons(builder: InlineKeyboardBuilder, pref):
+async def currency_pair_chooser(message: Message):
+    def generate_buttons(pref) -> InlineKeyboardBuilder:
+        builder = InlineKeyboardBuilder()
         for curr in CURRENCIES:
             cb_data = CurrencyCB(
-                user_id=message.from_user.id, conv_prefix=pref, currency=curr
+                user_id=message.from_user.id, 
+                conv_prefix=pref, 
+                currency=curr
             )
 
             builder.add(
-                types.InlineKeyboardButton(text=curr, callback_data=cb_data.pack())
+                InlineKeyboardButton(
+                    text=curr, 
+                    callback_data=cb_data.pack())
             )
+        return builder
 
-    curr_from = InlineKeyboardBuilder()
-    add_buttons(curr_from, pref="from")
+    curr_from = generate_buttons("from")
     await message.answer("I have", reply_markup=curr_from.as_markup())
 
-    curr_to = InlineKeyboardBuilder()
-    add_buttons(curr_to, pref="to")
+    curr_to = generate_buttons("to")
     await message.answer("I want to buy", reply_markup=curr_to.as_markup())
 
 
-async def save_currency(callback: types.CallbackQuery, data: CurrencyCB):
+async def save_currency(callback: CallbackQuery, data: CurrencyCB):
     curr_code = qiwi.CODES[data.currency]
     if data.conv_prefix == "from":
         db.set_from(data.user_id, curr_code)
@@ -52,5 +57,5 @@ async def save_currency(callback: types.CallbackQuery, data: CurrencyCB):
 
 
 @router.callback_query(CurrencyCB.filter())
-async def from_usd(callback: types.CallbackQuery, callback_data: CurrencyCB):
+async def from_usd(callback: CallbackQuery, callback_data: CurrencyCB):
     await save_currency(callback, callback_data)
