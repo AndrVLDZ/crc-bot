@@ -24,7 +24,7 @@ def print_table() -> None:
             for row in records:
                   print(row)
 
-def add_user(id: int, name: str, surname: str, username: str):
+def add_user(id: int, name: str, surname: str, username: str) -> None:
         with sqlite3.connect("bot.db") as db:
             c = db.cursor()
             c.execute('''
@@ -32,7 +32,7 @@ def add_user(id: int, name: str, surname: str, username: str):
                   VALUES (?, ?, ?, ?)''', (id, name, surname, username))
             db.commit()
 
-def check_user(user_id) -> bool:
+def check_user(user_id: int) -> bool:
       with sqlite3.connect("bot.db") as db:
             c = db.cursor()
             c.execute(f'''
@@ -42,7 +42,7 @@ def check_user(user_id) -> bool:
                   ''')
             return bool(c.fetchone())
 
-def set_from(user_id, currency_from):
+def set_from(user_id: int, currency_from: str) -> None:
       with sqlite3.connect("bot.db") as db:
             c = db.cursor()
             c.execute(f'''
@@ -52,7 +52,7 @@ def set_from(user_id, currency_from):
                   ''')
             db.commit
 
-def set_to(user_id, currency_to):
+def set_to(user_id: int, currency_to: str) -> None:
       with sqlite3.connect("bot.db") as db:
             c = db.cursor()
             c.execute(f'''
@@ -63,7 +63,7 @@ def set_to(user_id, currency_to):
             db.commit
 
 
-def get_from(user_id):
+def get_from(user_id: int) -> str:
       with sqlite3.connect("bot.db") as db:
             c = db.cursor()
             c.execute(f'''
@@ -73,7 +73,7 @@ def get_from(user_id):
                   ''')
             return c.fetchall()[0][0]
 
-def get_to(user_id):
+def get_to(user_id: int) -> str:
       with sqlite3.connect("bot.db") as db:
             c = db.cursor()
             c.execute(f'''
