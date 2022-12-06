@@ -71,8 +71,6 @@ async def converter(message: Message, state: FSMContext):
     except:
         await message.answer("Enter a number, lke 10 or 10.5")
     user_id = message.from_user.id
-    # apply user settings
-
     user_data = await state.get_data()
     round = user_data["round"]
     # conversion

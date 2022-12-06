@@ -40,6 +40,7 @@ async def scheduler():
 async def main() -> None:
     #  create table if not exists
     db.create_table()
+    await h_converter.clear_state()
     # getting exchange rates
     await qiwi.get_rates(qiwi_token)
     # event loop for periodic tasks

@@ -8,7 +8,6 @@ router = Router()
 @router.message(F.text == "Rate")
 async def rate(message: types.Message):
     user_id = message.from_user.id
-    qiwi.Data.user_id = user_id
     if db.check_user(user_id):
         rate = await qiwi.get_rate(user_id)
         if bool(rate):
