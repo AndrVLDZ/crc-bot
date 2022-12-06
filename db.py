@@ -62,9 +62,9 @@ def set_from(user_id: int, currency_from: str) -> None:
         c.execute(
             f"""
                   UPDATE users 
-                  SET currency_from = {currency_from}
-                  WHERE id = {user_id}
-                  """
+                  SET currency_from = ?
+                  WHERE id = ?
+                  """, (currency_from, user_id)
         )
         db.commit
 
@@ -75,9 +75,9 @@ def set_to(user_id: int, currency_to: str) -> None:
         c.execute(
             f"""
                   UPDATE users 
-                  SET currency_to = {currency_to}
-                  WHERE id = {user_id}
-                  """
+                  SET currency_to = ?
+                  WHERE id = ?
+                  """, (currency_to, user_id)
         )
         db.commit
 

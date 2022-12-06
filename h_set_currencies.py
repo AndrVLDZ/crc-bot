@@ -1,5 +1,4 @@
 import db
-from qiwi import CODES
 from aiogram import F, Router
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.filters.callback_data import CallbackData
@@ -44,11 +43,10 @@ async def currency_pair_chooser(message: Message):
 
 
 async def save_currency(callback: CallbackQuery, data: CurrencyCB):
-    curr_code = CODES[data.currency]
     if data.conv_prefix == "From":
-        db.set_from(data.user_id, curr_code)
+        db.set_from(data.user_id, data.currency)
     else:
-        db.set_to(data.user_id, curr_code)
+        db.set_to(data.user_id, data.currency)
 
     await callback.message.answer(
         f"{data.conv_prefix}: {data.currency}"

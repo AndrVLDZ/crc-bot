@@ -19,8 +19,8 @@ async def converter_pressed(message: Message, state: FSMContext):
     await state.update_data(round=True)
     if db.check_user(user_id):
         if await qiwi.get_rate(user_id):
-            currency_from = qiwi.get_key(qiwi.CODES, db.get_from(user_id))
-            currency_to = qiwi.get_key(qiwi.CODES, db.get_to(user_id))
+            currency_from = db.get_from(user_id)
+            currency_to = db.get_to(user_id)
             if currency_from != currency_to:
                 await message.answer(
                     f"""
@@ -72,13 +72,13 @@ async def converter(message: Message, state: FSMContext):
         await message.answer("Enter a number, lke 10 or 10.5")
     user_id = message.from_user.id
     # apply user settings
-    currency_from = qiwi.get_key(qiwi.CODES, db.get_from(user_id))
-    currency_to = qiwi.get_key(qiwi.CODES, db.get_to(user_id))
+
     user_data = await state.get_data()
     round = user_data["round"]
     # conversion
     res = await qiwi.converter(user_id, value, round)
-    # answer
+    currency_from = db.get_from(user_id)
+    currency_to = db.get_to(user_id)
     await message.answer(
         f"""
         For {value} {currency_to} you will pay `{res}` {currency_from}""",

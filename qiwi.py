@@ -6,10 +6,7 @@ import db
 
 @dataclass
 class Data:
-    rates: List[dict] = field(
-        default_factory=list, compare=False, hash=False, repr=False
-    )
-    rate: float = field(default=0)
+    rates: List[dict] = field(default_factory=list)
 
 
 # dict for storing currency codes
@@ -20,13 +17,6 @@ CODES: dict = {
     "KZT": "398", 
     "CNY": "156"
     }
-
-
-# getting key by value from dictionary
-def get_key(d, value):
-    for k, v in d.items():
-        if v == value:
-            return k
 
 
 # function to get all exchange rates through QIWI API
@@ -40,25 +30,23 @@ async def get_rates(token):
     Data.rates = res.json()["result"]
 
 
-# currency pair exchange rate
 async def get_rate(user_id: int) -> str:
     # requested exchange rate
     rate = [
         x
         for x in Data.rates
-        if x["from"] == db.get_from(user_id) and x["to"] == db.get_to(user_id)
+        if x["from"] == CODES[db.get_from(user_id)] and x["to"] == CODES[db.get_to(user_id)]
     ]
     if len(rate) == 0:
         return False
     else:
-        Data.rate = rate[0]["rate"]
-        return True
+        return rate[0]["rate"]
 
 
 async def converter(user_id: int, value: float, round_res: bool = True) -> str:
-    await get_rate(user_id)
+    rate = await get_rate(user_id)
     if round_res:
-        res = round(value * Data.rate, 2)
+        res = round(value * rate, 2)
     else:
-        res = value * Data.rate
+        res = value * rate
     return res
