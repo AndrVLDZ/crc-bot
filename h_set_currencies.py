@@ -1,5 +1,5 @@
 import db
-import qiwi
+from qiwi import CODES
 from aiogram import F, Router
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.filters.callback_data import CallbackData
@@ -14,7 +14,7 @@ CURRENCIES = ["USD", "EUR", "RUB", "KZT", "CNY"]
 
 class CurrencyCB(CallbackData, prefix="currency_callback"):
     user_id: int  # user id from [Telegram API](https://core.telegram.org/constructor/user)
-    conv_prefix: str  # e.g. "TO" or "FROM"
+    conv_prefix: str  # e.g. "To" or "From"
     currency: str  # e.g. "USD", "RUB", ...
 
 
@@ -36,22 +36,22 @@ async def currency_pair_chooser(message: Message):
             )
         return builder
 
-    curr_from = generate_buttons("from")
+    curr_from = generate_buttons("From")
     await message.answer("I have", reply_markup=curr_from.as_markup())
 
-    curr_to = generate_buttons("to")
+    curr_to = generate_buttons("To")
     await message.answer("I want to buy", reply_markup=curr_to.as_markup())
 
 
 async def save_currency(callback: CallbackQuery, data: CurrencyCB):
-    curr_code = qiwi.CODES[data.currency]
-    if data.conv_prefix == "from":
+    curr_code = CODES[data.currency]
+    if data.conv_prefix == "From":
         db.set_from(data.user_id, curr_code)
     else:
         db.set_to(data.user_id, curr_code)
 
     await callback.message.answer(
-        f"Currency {data.conv_prefix} has been set to {data.currency}"
+        f"{data.conv_prefix}: {data.currency}"
     )
     await callback.answer()
 
