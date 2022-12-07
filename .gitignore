@@ -248,4 +248,4 @@ $RECYCLE.BIN/
 # Ignore secret files
 qiwi_token.txt
 bot_token.txt
-bot.db
+bot.sqlite
