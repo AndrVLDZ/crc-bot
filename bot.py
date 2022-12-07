@@ -40,15 +40,14 @@ async def scheduler():
 async def main() -> None:
     #  create table if not exists
     db.create_table()
-    await h_converter.clear_state()
     # getting exchange rates
     await qiwi.get_rates(qiwi_token)
     # event loop for periodic tasks
     loop = asyncio.get_event_loop()
     loop.create_task(scheduler())
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, loop=loop)
-
-
+    await dp.start_polling(bot, loop=loop) 
+    
+    
 if __name__ == "__main__":
     asyncio.run(main())
