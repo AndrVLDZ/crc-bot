@@ -26,7 +26,7 @@ async def converter_pressed(message: Message, state: FSMContext):
                     f"""
                 How much {currency_to} do you want to by for {currency_from}?""",
                     parse_mode="Markdown",
-                    reply_markup=menu.converter_round_on,
+                    reply_markup=menu.converter(user_id),
                 )
                 await state.set_state(Converting.converter_launched)
             else:
@@ -43,23 +43,24 @@ async def converter_pressed(message: Message, state: FSMContext):
             Send `/start` command and set currencies!""",
             parse_mode="Markdown",
         )
-
-
+        
 @router.message(F.text == "Round: on")
-async def round_on(message: Message, state: FSMContext):
-    await state.update_data(round=False)
-    await message.answer("Round off", reply_markup=menu.converter_round_off)
+async def round_on(message: Message):
+    user_id = message.from_user.id
+    db.set_round(user_id, False)
+    await message.answer("Round off", reply_markup=menu.converter(user_id))
 
 
 @router.message(F.text == "Round: off")
-async def round_off(message: Message, state: FSMContext):
-    await state.update_data(round=True)
-    await message.answer("Round on", reply_markup=menu.converter_round_on)
+async def round_off(message: Message):
+    user_id = message.from_user.id
+    db.set_round(user_id, True)
+    await message.answer("Round on", reply_markup=menu.converter(user_id))
 
 
 @router.message(F.text == "Back")
 async def back(message: Message, state: FSMContext):
-    await message.answer("Back to menu", reply_markup=menu.main_menu)
+    await message.answer("Back to menu", reply_markup=menu.main_menu())
     await state.clear()
 
 
@@ -71,8 +72,8 @@ async def converter(message: Message, state: FSMContext):
     except:
         await message.answer("Enter a number, lke 10 or 10.5")
     user_id = message.from_user.id
-    user_data = await state.get_data()
-    round = user_data["round"]
+    round = db.get_round(user_id)
+    print(round)
     # conversion
     res = await qiwi.converter(user_id, value, round)
     currency_from = db.get_from(user_id)
@@ -83,11 +84,7 @@ async def converter(message: Message, state: FSMContext):
         parse_mode="Markdown",
     )
     # call menu buttons depending on rounding state
-    if round:
-        await message.answer(
-            "Enter another value", reply_markup=menu.converter_round_on
-        )
-    else:
-        await message.answer(
-            "Enter another value", reply_markup=menu.converter_round_off
+    await message.answer(
+        "Enter another value", 
+        reply_markup = menu.converter(user_id)
         )
