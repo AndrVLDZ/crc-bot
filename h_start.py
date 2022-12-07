@@ -20,7 +20,7 @@ async def cmd_start(message: Message) -> None:
         await message.answer(
             f"""
                 Welcome back, {user_name}!\nYour last currencies settings applied""",
-            reply_markup=menu.main_menu,
+            reply_markup=menu.main_menu(),
         )
     else:
         db.add_user(user_id, user_name, user_surname, username)
@@ -29,5 +29,5 @@ async def cmd_start(message: Message) -> None:
         await message.answer(
             """
                 This is a bot for monitoring exchange rates and converting at the QIWI internal rate""",
-            reply_markup=menu.main_menu,
+            reply_markup=menu.main_menu(),
         )
