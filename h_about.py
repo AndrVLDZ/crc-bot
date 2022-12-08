@@ -20,7 +20,7 @@ async def about(message: types.Message):
     builder = InlineKeyboardBuilder()
     builder.row(types.InlineKeyboardButton(
         text="Telegram", 
-        url="https://t.me/Cepesh")
+        url="https://t.me/andrvldz")
     )
     builder.row(types.InlineKeyboardButton(
         text="GitHub", 
