@@ -42,18 +42,15 @@ async def currency_pair_chooser(message: Message):
     await message.answer("I want to buy", reply_markup=curr_to.as_markup())
 
 
-async def save_currency(callback: CallbackQuery, data: CurrencyCB):
-    if data.conv_prefix == "From":
-        db.set_from(data.user_id, data.currency)
+@router.callback_query(CurrencyCB.filter())
+async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB):
+    if callback_data.conv_prefix == "From":
+        db.set_from(callback_data.user_id, callback_data.currency)
     else:
-        db.set_to(data.user_id, data.currency)
+        db.set_to(callback_data.user_id, callback_data.currency)
 
     await callback.message.answer(
-        f"{data.conv_prefix}: {data.currency}"
+        f"{callback_data.conv_prefix}: **{callback_data.currency}**",
+        parse_mode="Markdown"
     )
     await callback.answer()
-
-
-@router.callback_query(CurrencyCB.filter())
-async def from_usd(callback: CallbackQuery, callback_data: CurrencyCB):
-    await save_currency(callback, callback_data)
