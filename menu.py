@@ -24,6 +24,7 @@ def converter(user_id):
     converter_buttons = ReplyKeyboardBuilder().row(
         KeyboardButton(text=f"Round: {state}"),
         KeyboardButton(text="Set currencies"),
+        KeyboardButton(text="↔️"),
         KeyboardButton(text="Back"),
         width=2).export() 
         
