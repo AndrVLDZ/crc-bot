@@ -2,6 +2,7 @@ import db
 import qiwi
 import menu
 from aiogram import F, Router
+from aiogram.methods.delete_message import DeleteMessage
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
@@ -36,6 +37,11 @@ async def converter_pressed(message: Message, state: FSMContext):
                     parse_mode="Markdown",
                 )
         else:
+            await message.answer(
+                    """
+                    Currency *from* is equal to currency *to*, set different values!""",
+                    parse_mode="Markdown",
+                )
             await message.answer("Set currencies!")
     else:
         await message.answer(
@@ -56,6 +62,24 @@ async def round_off(message: Message):
     user_id = message.from_user.id
     db.set_round(user_id, True)
     await message.answer("Round on", reply_markup=menu.converter(user_id))
+
+@router.message(F.text == "↔️")
+async def round_off(message: Message):
+    user_id = message.from_user.id
+    curr_from = db.get_from(user_id)
+    curr_to = db.get_to(user_id)
+    db.set_from(user_id, curr_to)
+    db.set_to(user_id, curr_from)
+    currency_from = curr_to
+    currency_to = curr_from
+    await message.answer(f"""
+                From: **{currency_from}**\nTo: **{currency_to}**""",
+                parse_mode="Markdown",
+                reply_markup=menu.converter(user_id),
+                )
+    return DeleteMessage(
+        chat_id=message.chat.id,
+        message_id=message.message_id)
 
 
 @router.message(F.text == "Back")
