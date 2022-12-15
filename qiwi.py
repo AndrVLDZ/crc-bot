@@ -9,7 +9,7 @@ class Data:
     rates: List[dict] = field(default_factory=list)
 
 
-# dict for storing currency codes
+# dict of all currency codes supported by QIWI
 CODES: dict = {
     "RUB": "643", 
     "USD": "840", 
@@ -33,9 +33,11 @@ async def get_rates(token):
 async def get_rate(user_id: int) -> str:
     # requested exchange rate
     rate = [
-        x
+        x 
         for x in Data.rates
-        if x["from"] == CODES[db.get_from(user_id)] and x["to"] == CODES[db.get_to(user_id)]
+        if x["from"] == CODES[db.get_from(user_id)] 
+        and 
+        x["to"] == CODES[db.get_to(user_id)]
     ]
     if len(rate) == 0:
         return False
@@ -43,10 +45,10 @@ async def get_rate(user_id: int) -> str:
         return rate[0]["rate"]
 
 
-async def converter(user_id: int, value: float, round_res: bool = True) -> str:
+async def converter(user_id: int, value: float, round_res: bool = False) -> str:
     rate = await get_rate(user_id)
     if round_res:
-        res = round(value * rate, 2)
+        res = round(value*rate, 2)
     else:
-        res = value * rate
+        res = value*rate
     return res

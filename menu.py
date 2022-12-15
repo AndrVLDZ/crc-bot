@@ -4,12 +4,19 @@ import db
 
 
 def main_menu():
-    main_menu_buttons = ReplyKeyboardBuilder().row(
-    KeyboardButton(text="Rate"),
-    KeyboardButton(text="Converter"),
-    KeyboardButton(text="Set currencies"),
-    KeyboardButton(text="About"),
-    width=2).export() 
+    builder = ReplyKeyboardBuilder()
+    
+    builder.row(
+        KeyboardButton(text="Rate"),
+        KeyboardButton(text="Converter"),
+        width=2) 
+    
+    builder.row(
+        KeyboardButton(text="Set currencies"),
+        KeyboardButton(text="About"),
+        width=1)
+    
+    main_menu_buttons = builder.export()
     
     main_menu = ReplyKeyboardMarkup(
         keyboard=main_menu_buttons,
@@ -20,13 +27,20 @@ def main_menu():
 
 
 def converter(user_id):
-    state = "on" if db.get_round(user_id) else "off"
-    converter_buttons = ReplyKeyboardBuilder().row(
+    
+    builder = ReplyKeyboardBuilder()
+    
+    state = "on" if db.get_round_state(user_id) else "off"
+    builder.row(
         KeyboardButton(text=f"Round: {state}"),
         KeyboardButton(text="Set currencies"),
-        KeyboardButton(text="↔️"),
+        width=2)
+    
+    builder.row(
         KeyboardButton(text="Back"),
-        width=2).export() 
+        width=1)
+    
+    converter_buttons = builder.export()
         
     converter = ReplyKeyboardMarkup(
         keyboard=converter_buttons,
