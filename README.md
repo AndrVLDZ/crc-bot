@@ -2,7 +2,7 @@
 
 ## About
 
-Telegram bot with a currency converter and monitoring of exchange rates for the QIWI payment system.  
+Telegram bot with a currency converter and monitoring of exchange rates for the QIWI Wallet.  
 Exchange rates are updated every minute through a request to the QIWI API.
 
 ## What can?
@@ -15,7 +15,7 @@ Exchange rates are updated every minute through a request to the QIWI API.
 ## Technology stack  & libraries
 
 * Python 3.10.8
-* Aiogram 3.0.0b5
+* Aiogram 3.0.0b6
 * QWI API
 * asyncio
 * sqlite3  
