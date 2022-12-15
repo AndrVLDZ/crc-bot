@@ -1,6 +1,8 @@
 # QIWI Exchange Bot
 
-## About
+![info picture](/description.png)
+
+## About  
 
 Telegram bot with a currency converter and monitoring of exchange rates for the QIWI Wallet.  
 Exchange rates are updated every minute through a request to the QIWI API.
