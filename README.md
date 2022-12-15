@@ -1,4 +1,4 @@
-# QIWI Exchange Bot
+# QIWI CRC Bot
 
 ![info picture](/description.png)
 
