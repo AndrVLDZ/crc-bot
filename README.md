@@ -1,6 +1,6 @@
 # QIWI CRC Bot
 
-![info picture](/description.png)
+![info picture](/CRC_Description_git.png)
 
 ## About  
 
