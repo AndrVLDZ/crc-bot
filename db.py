@@ -84,7 +84,7 @@ def set_to(user_id: int, currency_to: str) -> None:
         )
         db.commit
 
-def set_round(user_id: int, round: bool) -> None:
+def set_round_state(user_id: int, round: bool) -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -122,7 +122,7 @@ def get_to(user_id: int) -> str:
         )
         return c.fetchall()[0][0]
 
-def get_round(user_id: int) -> bool:
+def get_round_state(user_id: int) -> bool:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
