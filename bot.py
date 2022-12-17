@@ -26,6 +26,7 @@ dp.include_router(h_rate.router)
 dp.include_router(h_converter.router)
 dp.include_router(h_about.router)
 
+
 #  exchange rates update
 async def get_rates():
     await qiwi.get_rates(qiwi_token)
@@ -35,7 +36,7 @@ async def get_rates():
 async def scheduler():
     p = Periodic(60, get_rates)
     await p.start()
-
+    
 
 async def main() -> None:
     #  create table if not exists
