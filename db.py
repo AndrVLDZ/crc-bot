@@ -15,7 +15,7 @@ def create_table() -> None:
                   username  TEXT, 
                   curr_from TEXT  NULL, 
                   curr_to   TEXT  NULL,
-                  round     BOOL  TRUE);
+                  round     BOOL  FALSE);
                   """
         )
 
@@ -121,6 +121,20 @@ def get_to(user_id: int) -> str:
                   """
         )
         return c.fetchall()[0][0]
+
+def get_currency_pair(user_id: int) -> tuple[str, str]:
+    with sqlite3.connect(db_name) as db:
+        c = db.cursor()
+        c.execute(
+            f"""
+                  SELECT curr_from, curr_to
+                  FROM users 
+                  WHERE id = {user_id}
+                  """
+        )
+        x, y = c.fetchall()[0]
+        return x, y
+
 
 def get_round_state(user_id: int) -> bool:
     with sqlite3.connect(db_name) as db:
