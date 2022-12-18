@@ -12,7 +12,7 @@ router = Router()
 CURRENCIES = ["USD", "EUR", "RUB", "KZT", "CNY"]
 
 
-# data for interactive info message with currency swap button
+# data for interactive info message with a currency swap button
 @dataclass
 class Data:
     info_msg: Message = None
