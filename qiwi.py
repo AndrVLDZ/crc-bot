@@ -15,12 +15,12 @@ CODES: dict = {
     "USD": "840", 
     "EUR": "978", 
     "KZT": "398", 
-    "CNY": "156"
-    }
+    "CNY": "156",
+}
 
 
 # function to get all exchange rates through QIWI API
-async def get_rates(token):
+async def get_rates(token: str):
     s = requests.Session()
     s.headers = {"content-type": "application/json"}
     s.headers["authorization"] = "Bearer " + token
@@ -31,13 +31,13 @@ async def get_rates(token):
 
 
 async def get_rate(user_id: int) -> str:
+    # getting currency codes
+    curr_from, curr_to = db.get_currency_pair(user_id)
+    curr_from, curr_to = CODES[curr_from], CODES[curr_to]
     # requested exchange rate
-    rate = [
-        x 
-        for x in Data.rates
-        if x["from"] == CODES[db.get_from(user_id)] 
-        and 
-        x["to"] == CODES[db.get_to(user_id)]
+    rate = [x for x in Data.rates
+            if x["from"] == curr_from and 
+            x["to"] == curr_to
     ]
     if len(rate) == 0:
         return False
@@ -45,10 +45,10 @@ async def get_rate(user_id: int) -> str:
         return rate[0]["rate"]
 
 
-async def converter(user_id: int, value: float, round_res: bool = False) -> str:
+async def converter(user_id: int, value: float, round_res: bool) -> str:
     rate = await get_rate(user_id)
+    if not rate:
+        return False 
     if round_res:
-        res = round(value*rate, 2)
-    else:
-        res = value*rate
-    return res
+        return round(value*rate, 2)
+    return value*rate
