@@ -36,7 +36,7 @@ async def get_rates():
 async def scheduler():
     p = Periodic(60, get_rates)
     await p.start()
-    
+
 
 async def main() -> None:
     #  create table if not exists
@@ -47,8 +47,8 @@ async def main() -> None:
     loop = asyncio.get_event_loop()
     loop.create_task(scheduler())
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, loop=loop) 
-    
-    
+    await dp.start_polling(bot, loop=loop)
+
+
 if __name__ == "__main__":
     asyncio.run(main())
