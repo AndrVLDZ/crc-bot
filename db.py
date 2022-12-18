@@ -84,6 +84,19 @@ def set_to(user_id: int, currency_to: str) -> None:
         )
         db.commit
 
+def set_currency_pair(user_id: int, curr_from, curr_to: str) -> None:
+    with sqlite3.connect(db_name) as db:
+        c = db.cursor()
+        c.execute(
+            f"""
+                  UPDATE users 
+                  SET curr_from = ?,
+                      curr_to = ?
+                  WHERE id = ?
+                  """, (curr_from, curr_to, user_id)
+        )
+        db.commit
+
 def set_round_state(user_id: int, round: bool) -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
@@ -121,6 +134,7 @@ def get_to(user_id: int) -> str:
                   """
         )
         return c.fetchall()[0][0]
+
 
 def get_currency_pair(user_id: int) -> tuple[str, str]:
     with sqlite3.connect(db_name) as db:
