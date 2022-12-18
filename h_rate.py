@@ -7,11 +7,21 @@ router = Router()
 
 
 @router.message(F.text == "Rate")
-async def rate(message: types.Message) :
+async def rate(message: types.Message) -> DeleteMessage:
     user_id = message.from_user.id
-    if db.check_user(user_id):
+    if not db.check_user(user_id):
+        await message.answer(
+            "Send `/start` command first!",
+            parse_mode="Markdown"
+        )
+    else:
         rate = await qiwi.get_rate(user_id)
-        if bool(rate):
+        if not rate: 
+            await message.answer(
+                "There is no exchange rate for the set currency pair!\
+                    \nTry to set other currencies1"
+            )
+        else:
             currency_from = db.get_from(user_id)
             currency_to = db.get_to(user_id)
             if currency_from != currency_to:
@@ -19,26 +29,7 @@ async def rate(message: types.Message) :
                     f"**1 {currency_to}  ==  `{rate}` {currency_from} ",
                     parse_mode="Markdown",
                 )
-                return DeleteMessage(
-                    chat_id=message.chat.id,
-                    message_id=message.message_id)
-            elif currency_from == currency_to:
-                await message.answer(
-                    "Currency *from* is equal to currency *to*, set different values!",
-                    parse_mode="Markdown",
-                )
-                return DeleteMessage(
-                    chat_id=message.chat.id,
-                    message_id=message.message_id)
-        else:
-            await message.answer("Set currencies!")
-            return DeleteMessage(
-                chat_id=message.chat.id,
-                message_id=message.message_id)
-    else:
-        await message.answer(
-            "Send `/start` command and set currencies!", parse_mode="Markdown"
-        )
-        return DeleteMessage(
-            chat_id=message.chat.id,
-            message_id=message.message_id)
+    return DeleteMessage(
+        chat_id=message.chat.id,
+        message_id=message.message_id
+    )
