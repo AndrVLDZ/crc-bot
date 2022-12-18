@@ -1,28 +1,27 @@
-import aiogram
-from aiogram import types, F, Router
+from aiogram import F, Router, __version__
 from aiogram.filters.text import Text
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-
+from aiogram.types import InlineKeyboardButton, CallbackQuery, Message
 
 router = Router()
 
 msg_about: str = f""" 
-**QIWI Exchange Bot**
+**QIWI CRC: Converter Rate Calculator**
 Version: 1.0
 Author: Vladislav Andronov
 Email: andr.vldz@gmail.com
-Powered by aiogram {aiogram.__version__}
+Powered by aiogram {__version__}
 """
 
 
 @router.message(F.text == "About")
-async def about(message: types.Message):
+async def about(message: Message):
     builder = InlineKeyboardBuilder()
-    builder.row(types.InlineKeyboardButton(
+    builder.row(InlineKeyboardButton(
         text="Telegram", 
         url="https://t.me/andrvldz")
     )
-    builder.row(types.InlineKeyboardButton(
+    builder.row(InlineKeyboardButton(
         text="GitHub", 
         url="https://github.com/AndrVLDZ")
     )
@@ -34,6 +33,6 @@ async def about(message: types.Message):
 
 
 @router.callback_query(Text(text="guide"))
-async def guide(callback: types.CallbackQuery):
+async def guide(callback: CallbackQuery):
     await callback.message.answer("Guide for user [in develop]")
     await callback.answer()
