@@ -9,12 +9,14 @@ def main_menu():
     builder.row(
         KeyboardButton(text="Rate"),
         KeyboardButton(text="Converter"),
-        width=2) 
+        width=2
+    ) 
     
     builder.row(
         KeyboardButton(text="Set currencies"),
         KeyboardButton(text="About"),
-        width=1)
+        width=1
+    )
     
     main_menu_buttons = builder.export()
     
@@ -34,11 +36,13 @@ def converter(user_id):
     builder.row(
         KeyboardButton(text=f"Round: {state}"),
         KeyboardButton(text="Set currencies"),
-        width=2)
+        width=2
+    )
     
     builder.row(
         KeyboardButton(text="Back"),
-        width=1)
+        width=1
+    )
     
     converter_buttons = builder.export()
         
