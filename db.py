@@ -13,9 +13,9 @@ async def create_table() -> None:
                   name      TEXT, 
                   surname   TEXT, 
                   username  TEXT, 
-                  curr_from TEXT  NULL, 
-                  curr_to   TEXT  NULL,
-                  round     BOOL  FALSE);
+                  curr_from TEXT, 
+                  curr_to   TEXT,
+                  round     BOOL);
                   """
         )
 
@@ -35,13 +35,19 @@ async def print_table() -> None:
 
 
 async def add_user(id: int, name: str, surname: str, username: str) -> None:
+    # default user configuration
+    curr_from: str = "USD"
+    curr_to: str = "EUR"
+    round: bool = True
+    # rows to be added to the database
+    rows = ("id", "name", "surname", "username", "curr_from", "curr_to", "round")
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
-            """
-                  INSERT OR REPLACE INTO users (id, name, surname, username) 
-                  VALUES (?, ?, ?, ?)""",
-            (id, name, surname, username),
+            f"""
+                  INSERT OR REPLACE INTO users {rows} 
+                  VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            (id, name, surname, username, curr_from, curr_to, round),
         )
         db.commit()
 
