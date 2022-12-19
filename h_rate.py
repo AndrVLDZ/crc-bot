@@ -18,8 +18,7 @@ async def rate(message: types.Message) -> DeleteMessage:
         rate = await qiwi.get_rate(user_id)
         if not rate: 
             await message.answer(
-                "There is no exchange rate for the set currency pair!\
-                    \nTry to set other currencies1"
+                "Set different currencies!",
             )
         else:
             currency_from = db.get_from(user_id)
