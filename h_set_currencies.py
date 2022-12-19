@@ -1,22 +1,15 @@
 import db
-from dataclasses import dataclass
 from aiogram import F, Router
 from aiogram.filters.callback_data import CallbackData
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.methods.edit_message_text import EditMessageText
 from aiogram.types import Message, InlineKeyboardButton, CallbackQuery
+from aiogram.fsm.context import FSMContext
 
 router = Router()
 
 # all currencies supported by QIWI
 CURRENCIES = ["USD", "EUR", "RUB", "KZT", "CNY"]
-
-
-# data for interactive info message with a currency swap button
-@dataclass
-class Data:
-    info_msg: Message = None
-    swap_button: InlineKeyboardButton = None
 
 
 class CurrencyCB(CallbackData, prefix="currency_callback"):
@@ -26,18 +19,16 @@ class CurrencyCB(CallbackData, prefix="currency_callback"):
 
 
 @router.message(F.text == "Set currencies")
-async def currency_pair_chooser(message: Message):
+async def currency_pair_chooser(message: Message, state: FSMContext):
     user_id=message.from_user.id
-    
     def generate_buttons(pref) -> InlineKeyboardBuilder:
         builder = InlineKeyboardBuilder()
         for curr in CURRENCIES:
             cb_data = CurrencyCB(
-                user_id=user_id, 
-                conv_prefix=pref, 
-                currency=curr
+                user_id=user_id,
+                conv_prefix=pref,
+                currency=curr,
             )
-
             builder.add(
                 InlineKeyboardButton(
                     text=curr, 
@@ -52,25 +43,31 @@ async def currency_pair_chooser(message: Message):
     curr_to = generate_buttons("To")
     await message.answer("I want to buy", reply_markup=curr_to.as_markup())
     
-    Data.swap_button = InlineKeyboardBuilder().add(
+    swap_button = InlineKeyboardBuilder().add(
         InlineKeyboardButton(
             text="↔️",
             callback_data=CurrencyCB(
-                user_id=user_id, conv_prefix="Swap", currency=""
+                user_id=user_id,
+                conv_prefix="Swap",
+                currency="",
             ).pack(),
         )
     )
-    
     curr_from, curr_to = db.get_currency_pair(user_id)
-    
-    Data.info_msg = await message.answer(
+    info_msg = await message.answer(
         text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
         parse_mode="Markdown",
-        reply_markup=Data.swap_button.as_markup())
+        reply_markup=swap_button.as_markup())
+    
+    user_data = {
+        "message_id": info_msg.message_id,
+        "swap_button": swap_button,
+    }
+    await state.set_data(user_data)
 
 
 @router.callback_query(CurrencyCB.filter())
-async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB):
+async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, state: FSMContext):
     # getting data from callback_data
     user_id = callback_data.user_id
     prefix = callback_data.conv_prefix
@@ -85,12 +82,12 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB):
         
     await callback.answer()
     
+    user_data = await state.get_data()
     curr_from, curr_to = db.get_currency_pair(user_id)
-    
     return EditMessageText(
         chat_id=callback.message.chat.id,
-        message_id=Data.info_msg.message_id,
+        message_id=user_data["message_id"],
         text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
         parse_mode="Markdown",
-        reply_markup=Data.swap_button.as_markup()
-        )
+        reply_markup=user_data["swap_button"].as_markup(),
+    )
