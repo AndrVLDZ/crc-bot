@@ -17,18 +17,19 @@ class Converting(StatesGroup):
 @router.message(F.text == "Converter")
 async def converter_entry_validation(message: Message, state: FSMContext):
     user_id = message.from_user.id
-    if not db.check_user(user_id):
+    if not await db.check_user(user_id):
         await message.answer(
             "Send `/start` command first!",
             parse_mode="Markdown"
             )
     else:
-        curr_from, curr_to = db.get_currency_pair(user_id)
+        curr_from, curr_to = await db.get_currency_pair(user_id)
+        converter_menu = await menu.converter(user_id)
         await message.answer(
             f"Enter how much currency you want to buy \
                 \nBuy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
             parse_mode="Markdown",
-            reply_markup=menu.converter(user_id)
+            reply_markup=converter_menu
         )
         await state.set_state(Converting.converter_launched)
 
@@ -36,10 +37,11 @@ async def converter_entry_validation(message: Message, state: FSMContext):
 @router.message(F.text == "Round: on")
 async def round_on(message: Message) -> DeleteMessage:
     user_id = message.from_user.id
-    db.set_round_state(user_id, False)
+    await db.set_round_state(user_id, False)
+    converter_menu = await menu.converter(user_id)
     await message.answer(
         "Round off",
-        reply_markup=menu.converter(user_id)
+        reply_markup=converter_menu
         )
     return DeleteMessage(
         chat_id=message.chat.id,
@@ -50,10 +52,11 @@ async def round_on(message: Message) -> DeleteMessage:
 @router.message(F.text == "Round: off")
 async def round_off(message: Message) -> DeleteMessage:
     user_id = message.from_user.id
-    db.set_round_state(user_id, True)
+    await db.set_round_state(user_id, True)
+    converter_menu = await menu.converter(user_id)
     await message.answer(
         "Round on",
-        reply_markup=menu.converter(user_id)
+        reply_markup=converter_menu
         )
     return DeleteMessage(
         chat_id=message.chat.id,
@@ -63,7 +66,8 @@ async def round_off(message: Message) -> DeleteMessage:
 
 @router.message(F.text == "Back")
 async def back(message: Message, state: FSMContext):
-    await message.answer("Menu", reply_markup=menu.main_menu())
+    main_menu = await menu.main_menu()
+    await message.answer("Menu", reply_markup=main_menu)
     await state.clear()
 
 
@@ -77,7 +81,7 @@ async def converter(message: Message) -> DeleteMessage:
         
     # getting user settings
     user_id = message.from_user.id
-    round = db.get_round_state(user_id)
+    round = await db.get_round_state(user_id)
     
     # calling and validating the converter function
     res = await qiwi.converter(user_id, value, round)
@@ -87,7 +91,7 @@ async def converter(message: Message) -> DeleteMessage:
             parse_mode="Markdown"
         )
     else:
-        curr_from, curr_to = db.get_currency_pair(user_id)
+        curr_from, curr_to = await db.get_currency_pair(user_id)
         if curr_from != curr_to and curr_from in qiwi.CODES and curr_to in qiwi.CODES: 
             await message.answer(
                 f"**{value} {curr_to}  ==  `{res}` {curr_from}**",

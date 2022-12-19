@@ -9,7 +9,7 @@ router = Router()
 @router.message(F.text == "Rate")
 async def rate(message: types.Message) -> DeleteMessage:
     user_id = message.from_user.id
-    if not db.check_user(user_id):
+    if not await db.check_user(user_id):
         await message.answer(
             "Send `/start` command first!",
             parse_mode="Markdown"
@@ -21,8 +21,8 @@ async def rate(message: types.Message) -> DeleteMessage:
                 "Set different currencies!",
             )
         else:
-            currency_from = db.get_from(user_id)
-            currency_to = db.get_to(user_id)
+            currency_from = await db.get_from(user_id)
+            currency_to = await db.get_to(user_id)
             if currency_from != currency_to:
                 await message.answer(
                     f"**1 {currency_to}  ==  `{rate}` {currency_from} ",

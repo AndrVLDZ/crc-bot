@@ -32,7 +32,7 @@ async def get_rates(token: str):
 
 async def get_rate(user_id: int) -> str:
     # getting currency codes
-    curr_from, curr_to = db.get_currency_pair(user_id)
+    curr_from, curr_to = await db.get_currency_pair(user_id)
     curr_from, curr_to = CODES[curr_from], CODES[curr_to]
     # requested exchange rate
     rate = [x for x in Data.rates

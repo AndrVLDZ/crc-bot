@@ -3,7 +3,7 @@ import sqlite3
 db_name: str = "bot.sqlite"
 
 
-def create_table() -> None:
+async def create_table() -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -20,7 +20,7 @@ def create_table() -> None:
         )
 
 
-def print_table() -> None:
+async def print_table() -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -34,7 +34,7 @@ def print_table() -> None:
             print(row)
 
 
-def add_user(id: int, name: str, surname: str, username: str) -> None:
+async def add_user(id: int, name: str, surname: str, username: str) -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -46,7 +46,7 @@ def add_user(id: int, name: str, surname: str, username: str) -> None:
         db.commit()
 
 
-def check_user(user_id: int) -> bool:
+async def check_user(user_id: int) -> bool:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -59,7 +59,7 @@ def check_user(user_id: int) -> bool:
         return bool(c.fetchone())
 
 
-def set_from(user_id: int, currency_from: str) -> None:
+async def set_from(user_id: int, currency_from: str) -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -72,7 +72,7 @@ def set_from(user_id: int, currency_from: str) -> None:
         db.commit
 
 
-def set_to(user_id: int, currency_to: str) -> None:
+async def set_to(user_id: int, currency_to: str) -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -84,7 +84,7 @@ def set_to(user_id: int, currency_to: str) -> None:
         )
         db.commit
 
-def set_currency_pair(user_id: int, curr_from, curr_to: str) -> None:
+async def set_currency_pair(user_id: int, curr_from, curr_to: str) -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -97,7 +97,7 @@ def set_currency_pair(user_id: int, curr_from, curr_to: str) -> None:
         )
         db.commit
 
-def set_round_state(user_id: int, round: bool) -> None:
+async def set_round_state(user_id: int, round: bool) -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -110,7 +110,7 @@ def set_round_state(user_id: int, round: bool) -> None:
         db.commit
 
 
-def get_from(user_id: int) -> str:
+async def get_from(user_id: int) -> str:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -123,7 +123,7 @@ def get_from(user_id: int) -> str:
         return c.fetchall()[0][0]
 
 
-def get_to(user_id: int) -> str:
+async def get_to(user_id: int) -> str:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -136,7 +136,7 @@ def get_to(user_id: int) -> str:
         return c.fetchall()[0][0]
 
 
-def get_currency_pair(user_id: int) -> tuple[str, str]:
+async def get_currency_pair(user_id: int) -> tuple[str, str]:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -150,7 +150,7 @@ def get_currency_pair(user_id: int) -> tuple[str, str]:
         return x, y
 
 
-def get_round_state(user_id: int) -> bool:
+async def get_round_state(user_id: int) -> bool:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(

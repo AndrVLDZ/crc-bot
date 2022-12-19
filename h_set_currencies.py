@@ -53,7 +53,7 @@ async def currency_pair_chooser(message: Message, state: FSMContext):
             ).pack(),
         )
     )
-    curr_from, curr_to = db.get_currency_pair(user_id)
+    curr_from, curr_to = await db.get_currency_pair(user_id)
     info_msg = await message.answer(
         text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
         parse_mode="Markdown",
@@ -73,17 +73,17 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, stat
     prefix = callback_data.conv_prefix
     currency = callback_data.currency
     if prefix == "From":
-        db.set_from(user_id, currency)
+        await db.set_from(user_id, currency)
     if prefix == "To":
-        db.set_to(user_id, currency)
+        await db.set_to(user_id, currency)
     if prefix == 'Swap':
-        curr_from, curr_to = db.get_currency_pair(user_id)
-        db.set_currency_pair(user_id, curr_to, curr_from)
+        curr_from, curr_to = await db.get_currency_pair(user_id)
+        await db.set_currency_pair(user_id, curr_to, curr_from)
         
     await callback.answer()
     
     user_data = await state.get_data()
-    curr_from, curr_to = db.get_currency_pair(user_id)
+    curr_from, curr_to = await db.get_currency_pair(user_id)
     return EditMessageText(
         chat_id=callback.message.chat.id,
         message_id=user_data["message_id"],

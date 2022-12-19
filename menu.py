@@ -3,7 +3,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 import db
 
 
-def main_menu():
+async def main_menu():
     builder = ReplyKeyboardBuilder()
     
     builder.row(
@@ -28,11 +28,11 @@ def main_menu():
     return main_menu
 
 
-def converter(user_id):
+async def converter(user_id):
     
     builder = ReplyKeyboardBuilder()
     
-    state = "on" if db.get_round_state(user_id) else "off"
+    state = "on" if await db.get_round_state(user_id) else "off"
     builder.row(
         KeyboardButton(text=f"Round: {state}"),
         KeyboardButton(text="Set currencies"),
