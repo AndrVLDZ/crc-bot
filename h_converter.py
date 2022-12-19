@@ -95,27 +95,27 @@ async def converter(message: Message) -> DeleteMessage:
     # user input validation
     try:
         value = float(message.text)
-    except:
-        await message.answer("Enter a number, like 10 or 10.5")
         
-    # getting user settings
-    user_id = message.from_user.id
-    round = await db.get_round_state(user_id)
-    
-    # calling and validating the converter function
-    res = await qiwi.converter(user_id, value, round)
-    if not res:
-        await message.answer(
-            "Set different currencies!",
-            parse_mode="Markdown"
-        )
-    else:
-        curr_from, curr_to = await db.get_currency_pair(user_id)
-        if curr_from != curr_to and curr_from in qiwi.CODES and curr_to in qiwi.CODES: 
+        # getting user settings
+        user_id = message.from_user.id
+        round = await db.get_round_state(user_id)
+        
+        # calling and validating the converter function
+        res = await qiwi.converter(user_id, value, round)
+        if not res:
             await message.answer(
-                f"**{value} {curr_to}  ==  `{res}` {curr_from}**",
+                "Set different currencies!",
                 parse_mode="Markdown"
             )
+        else:
+            curr_from, curr_to = await db.get_currency_pair(user_id)
+            if curr_from != curr_to and curr_from in qiwi.CODES and curr_to in qiwi.CODES: 
+                await message.answer(
+                    f"**{value} {curr_to}  ==  `{res}` {curr_from}**",
+                    parse_mode="Markdown"
+                )
+    except:
+        await message.answer("Enter a number, like 10 or 10.5")
 
     # removing user input for better readability of converter responses
     return DeleteMessage(
