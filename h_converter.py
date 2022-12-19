@@ -83,7 +83,7 @@ async def converter(message: Message) -> DeleteMessage:
     res = await qiwi.converter(user_id, value, round)
     if not res:
         await message.answer(
-            "Set different currencies!!",
+            "Set different currencies!",
             parse_mode="Markdown"
         )
     else:
