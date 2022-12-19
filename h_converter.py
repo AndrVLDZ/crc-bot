@@ -37,12 +37,18 @@ async def converter_entry_validation(message: Message, state: FSMContext):
 @router.message(F.text == "Round: on")
 async def round_on(message: Message) -> DeleteMessage:
     user_id = message.from_user.id
-    await db.set_round_state(user_id, False)
-    converter_menu = await menu.converter(user_id)
-    await message.answer(
-        "Round off",
-        reply_markup=converter_menu
+    if not await db.check_user(user_id):
+        await message.answer(
+            "Send `/start` command first!",
+            parse_mode="Markdown"
         )
+    else: 
+        await db.set_round_state(user_id, False)
+        converter_menu = await menu.converter(user_id)
+        await message.answer(
+            "Round off",
+            reply_markup=converter_menu
+            )
     return DeleteMessage(
         chat_id=message.chat.id,
         message_id=message.message_id
@@ -52,12 +58,18 @@ async def round_on(message: Message) -> DeleteMessage:
 @router.message(F.text == "Round: off")
 async def round_off(message: Message) -> DeleteMessage:
     user_id = message.from_user.id
-    await db.set_round_state(user_id, True)
-    converter_menu = await menu.converter(user_id)
-    await message.answer(
-        "Round on",
-        reply_markup=converter_menu
+    if not await db.check_user(user_id):
+        await message.answer(
+            "Send `/start` command first!",
+            parse_mode="Markdown"
         )
+    else:
+        await db.set_round_state(user_id, True)
+        converter_menu = await menu.converter(user_id)
+        await message.answer(
+            "Round on",
+            reply_markup=converter_menu
+            )
     return DeleteMessage(
         chat_id=message.chat.id,
         message_id=message.message_id
@@ -66,9 +78,16 @@ async def round_off(message: Message) -> DeleteMessage:
 
 @router.message(F.text == "Back")
 async def back(message: Message, state: FSMContext):
-    main_menu = await menu.main_menu()
-    await message.answer("Menu", reply_markup=main_menu)
-    await state.clear()
+    user_id = message.from_user.id
+    if not await db.check_user(user_id):
+        await message.answer(
+            "Send `/start` command first!",
+            parse_mode="Markdown"
+        )
+    else:
+        main_menu = await menu.main_menu()
+        await message.answer("Menu", reply_markup=main_menu)
+        await state.clear()
 
 
 @router.message(Converting.converter_launched)
