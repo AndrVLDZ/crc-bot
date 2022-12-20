@@ -34,6 +34,7 @@ async def get_rates():
 
 # periodic tasks for event loop
 async def scheduler():
+    # exchange rates update every minute
     p = Periodic(60, get_rates)
     await p.start()
 
