@@ -10,11 +10,16 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from periodic import Periodic
 import logging
+import os
+from os import environ
 
 logging.basicConfig(level=logging.INFO)
-
-qiwi_token = tkn.get("qiwi_token.txt")
-bot_token = tkn.get("bot_token.txt")
+if ["BOT_TOKEN", "QIWI_TOKEN"] in os.environ:
+    bot_token = environ.get("BOT_TOKEN")
+    qiwi_token = environ.get("QIWI_TOKEN")
+else:
+    bot_token = tkn.get("bot_token.txt")
+    qiwi_token = tkn.get("qiwi_token.txt")
 
 bot = Bot(token=bot_token)
 dp = Dispatcher()
@@ -30,6 +35,7 @@ dp.include_router(h_about.router)
 # exchange rates update
 async def get_rates():
     await qiwi.get_rates(qiwi_token)
+    print("_____RATES_UPDATED_____")
 
 
 # periodic tasks for event loop
