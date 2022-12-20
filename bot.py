@@ -14,7 +14,8 @@ import os
 from os import environ
 
 logging.basicConfig(level=logging.INFO)
-if ["BOT_TOKEN", "QIWI_TOKEN"] in os.environ:
+# TODO: if all(x in os.environ for x in["BOT_TOKEN", "QIWI_TOKEN"])
+if "BOT_TOKEN" in os.environ and "QIWI_TOKEN" in os.environ:
     bot_token = environ.get("BOT_TOKEN")
     qiwi_token = environ.get("QIWI_TOKEN")
 else:
