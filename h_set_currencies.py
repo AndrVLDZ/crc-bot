@@ -13,7 +13,7 @@ CURRENCIES = ["USD", "EUR", "RUB", "KZT", "CNY"]
 
 
 class CurrencyCB(CallbackData, prefix="currency_callback"):
-    user_id: int  # user id from [Telegram API](https://core.telegram.org/constructor/user)
+    user_id: int  
     conv_prefix: str  # e.g. "To" or "From"
     currency: str  # e.g. "USD", "RUB", ...
 

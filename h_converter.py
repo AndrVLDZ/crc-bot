@@ -3,35 +3,9 @@ import qiwi
 import menu
 from aiogram import F, Router
 from aiogram.types import Message
-from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import StatesGroup, State
 from aiogram.methods.delete_message import DeleteMessage
 
 router = Router()
-
-
-class Converting(StatesGroup):
-    converter_launched = State()
-
-
-# @router.message(F.text == "Converter")
-# async def converter_entry_validation(message: Message, state: FSMContext):
-#     user_id = message.from_user.id
-#     if not await db.check_user(user_id):
-#         await message.answer(
-#             "Send `/start` command first!",
-#             parse_mode="Markdown"
-#             )
-#     else:
-#         curr_from, curr_to = await db.get_currency_pair(user_id)
-#         converter_menu = await menu.converter(user_id)
-#         await message.answer(
-#             f"Enter how much currency you want to buy \
-#                 \nBuy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
-#             parse_mode="Markdown",
-#             reply_markup=converter_menu
-#         )
-#         await state.set_state(Converting.converter_launched)
 
 
 @router.message(F.text == "Round: on")
@@ -74,24 +48,6 @@ async def round_off(message: Message) -> DeleteMessage:
         chat_id=message.chat.id,
         message_id=message.message_id
     )
-
-
-# @router.message(F.text == "Back")
-# async def back(message: Message, state: FSMContext):
-#     user_id = message.from_user.id
-#     if not await db.check_user(user_id):
-#         await message.answer(
-#             "Send `/start` command first!",
-#             parse_mode="Markdown"
-#         )
-#     else:
-#         main_menu = await menu.main_menu()
-#         await message.answer("Menu", reply_markup=main_menu)
-#         # await state.clear()
-
-
-# def comma_replacement(expression: str):
-#     return expression.replace(',','.')
 
 
 @router.message()
