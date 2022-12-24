@@ -66,6 +66,7 @@ async def currency_pair_chooser(message: Message, state: FSMContext):
             reply_markup=swap_button.as_markup())
         
         user_data = {
+            "chat_id": info_msg.chat.id,
             "message_id": info_msg.message_id,
             "swap_button": swap_button,
         }
@@ -91,7 +92,7 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, stat
     user_data = await state.get_data()
     curr_from, curr_to = await db.get_currency_pair(user_id)
     return EditMessageText(
-        chat_id=callback.message.chat.id,
+        chat_id=user_data["chat_id"],
         message_id=user_data["message_id"],
         text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
         parse_mode="Markdown",

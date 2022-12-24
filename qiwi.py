@@ -2,6 +2,7 @@ from typing import List
 from dataclasses import dataclass, field
 import requests
 import db
+from cexprtk import evaluate_expression
 
 
 @dataclass
@@ -30,7 +31,7 @@ async def get_rates(token: str):
     Data.rates = res.json()["result"]
 
 
-async def get_rate(user_id: int) -> str:
+async def get_rate(user_id: int, round_res: bool) -> str:
     # getting currency codes
     curr_from, curr_to = await db.get_currency_pair(user_id)
     curr_from, curr_to = CODES[curr_from], CODES[curr_to]
@@ -41,14 +42,16 @@ async def get_rate(user_id: int) -> str:
     ]
     if len(rate) == 0:
         return False
-    else:
-        return rate[0]["rate"]
+    if round_res:
+        return round(rate[0]["rate"], 4)
+    return rate[0]["rate"]
 
 
 async def converter(user_id: int, value: float, round_res: bool) -> str:
-    rate = await get_rate(user_id)
+    rate = await get_rate(user_id, False)
     if not rate:
         return False 
     if round_res:
-        return round(value*rate, 2)
-    return value*rate
+        res = evaluate_expression(value, {})
+        return round(res*rate, 4)
+    return evaluate_expression(value, {})*rate

@@ -19,8 +19,8 @@ if "BOT_TOKEN" in os.environ and "QIWI_TOKEN" in os.environ:
     bot_token = environ.get("BOT_TOKEN")
     qiwi_token = environ.get("QIWI_TOKEN")
 else:
-    bot_token = tkn.get("bot_token.txt")
-    qiwi_token = tkn.get("qiwi_token.txt")
+    bot_token = tkn.get_from_txt("bot_token.txt")
+    qiwi_token = tkn.get_from_txt("qiwi_token.txt")
 
 bot = Bot(token=bot_token)
 dp = Dispatcher()
@@ -29,8 +29,8 @@ dp = Dispatcher()
 dp.include_router(h_start.router)
 dp.include_router(h_set_currencies.router)
 dp.include_router(h_rate.router)
-dp.include_router(h_converter.router)
 dp.include_router(h_about.router)
+dp.include_router(h_converter.router)
 
 
 # exchange rates update

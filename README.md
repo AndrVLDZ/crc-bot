@@ -2,6 +2,8 @@
 
 ![info picture](/CRC_Description_git.png)
 
+https://t.me/QIWI_CRC_bot
+
 ## About  
 
 Telegram bot with a currency converter and monitoring of exchange rates for the QIWI Wallet.  
@@ -18,10 +20,12 @@ Exchange rates are updated every minute through a request to the QIWI API.
 
 * Python 3.10.8
 * Aiogram 3.0.0b6
-* QWI API
 * asyncio
-* sqlite3  
-* requests
+* asyncio-periodic 2019.2
+* QWI API
+* requests 2.28.1
+* sqlite3
+* cexprtk 0.4.0
 
 ## Local run  
 

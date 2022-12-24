@@ -6,8 +6,8 @@ from aiogram.types import InlineKeyboardButton, CallbackQuery, Message
 router = Router()
 
 msg_about: str = f""" 
-**QIWI CRC: Converter Rate Calculator**
-Version: 1.0
+**QIWI Converter Rate Calculator**
+Version: 1.1
 Author: Vladislav Andronov
 Email: andr.vldz@gmail.com
 Powered by aiogram {__version__}

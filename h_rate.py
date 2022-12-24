@@ -15,7 +15,9 @@ async def rate(message: types.Message) -> DeleteMessage:
             parse_mode="Markdown"
         )
     else:
-        rate = await qiwi.get_rate(user_id)
+        round = await db.get_round_state(user_id)
+        rate = await qiwi.get_rate(user_id, round)
+        print(rate)
         if not rate: 
             await message.answer(
                 "Set different currencies!",
