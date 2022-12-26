@@ -10,12 +10,11 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from periodic import Periodic
 import logging
-import os
 from os import environ
 
 logging.basicConfig(level=logging.INFO)
 # TODO: if all(x in os.environ for x in["BOT_TOKEN", "QIWI_TOKEN"])
-if "BOT_TOKEN" in os.environ and "QIWI_TOKEN" in os.environ:
+if "BOT_TOKEN" in environ and "QIWI_TOKEN" in environ:
     bot_token = environ.get("BOT_TOKEN")
     qiwi_token = environ.get("QIWI_TOKEN")
 else:
