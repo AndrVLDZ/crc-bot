@@ -13,7 +13,7 @@ import logging
 from os import environ
 
 logging.basicConfig(level=logging.INFO)
-# TODO: if all(x in os.environ for x in["BOT_TOKEN", "QIWI_TOKEN"])
+
 if "BOT_TOKEN" in environ and "QIWI_TOKEN" in environ:
     bot_token = environ.get("BOT_TOKEN")
     qiwi_token = environ.get("QIWI_TOKEN")
@@ -50,11 +50,12 @@ async def main() -> None:
     await db.create_table()
     # getting exchange rates
     await qiwi.get_rates(qiwi_token)
+    print(qiwi.Data.rates[0] )
     # event loop for periodic tasks
     loop = asyncio.get_event_loop()
     loop.create_task(scheduler())
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, loop=loop)
+    await dp.start_polling(bot, loop=loop) 
 
 
 if __name__ == "__main__":
