@@ -21,7 +21,7 @@ class CurrencyCB(CallbackData, prefix="currency_callback"):
 @router.message(F.text == "Set currencies")
 async def currency_pair_chooser(message: Message, state: FSMContext):
     user_id=message.from_user.id
-    if not await db.check_user(user_id):
+    if not await db.check_user_id(user_id):
         await message.answer(
             "Send `/start` command first!",
             parse_mode="Markdown"
