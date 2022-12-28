@@ -15,7 +15,7 @@ async def cmd_start(message: Message) -> None:
     username = message.from_user.username
     
     
-    if await db.check_user(user_id):
+    if await db.check_user_id(user_id):
         main_menu = await menu.main_menu(user_id)
         curr_from, curr_to = await db.get_currency_pair(user_id)
         # start message for old user
