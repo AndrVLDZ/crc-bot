@@ -11,7 +11,7 @@ router = Router()
 @router.message(F.text == "Round: on")
 async def round_on(message: Message) -> DeleteMessage:
     user_id = message.from_user.id
-    if not await db.check_user(user_id):
+    if not await db.check_user_id(user_id):
         await message.answer(
             "Send `/start` command first!",
             parse_mode="Markdown"
@@ -32,7 +32,7 @@ async def round_on(message: Message) -> DeleteMessage:
 @router.message(F.text == "Round: off")
 async def round_off(message: Message) -> DeleteMessage:
     user_id = message.from_user.id
-    if not await db.check_user(user_id):
+    if not await db.check_user_id(user_id):
         await message.answer(
             "Send `/start` command first!",
             parse_mode="Markdown"
@@ -53,7 +53,7 @@ async def round_off(message: Message) -> DeleteMessage:
 @router.message()
 async def converter(message: Message) -> DeleteMessage:
     user_id = message.from_user.id
-    if not await db.check_user(user_id):
+    if not await db.check_user_id(user_id):
         await message.answer(
             "Send `/start` command first!",
             parse_mode="Markdown"
