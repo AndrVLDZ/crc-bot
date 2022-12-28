@@ -52,7 +52,7 @@ async def add_user(id: int, name: str, surname: str, username: str) -> None:
         db.commit()
 
 
-async def check_user(user_id: int) -> bool:
+async def check_user_id(user_id: int) -> bool:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -62,7 +62,10 @@ async def check_user(user_id: int) -> bool:
                   WHERE id = {user_id}
                   """
         )
-        return bool(c.fetchone())
+        # fetchone() returns a tuple of values from the table if row exists
+        # else - returns None
+        user_row = c.fetchone() 
+        return bool(user_row) # None = False, tuple = True
 
 
 async def set_from(user_id: int, currency_from: str) -> None:
@@ -75,7 +78,10 @@ async def set_from(user_id: int, currency_from: str) -> None:
                   WHERE id = ?
                   """, (currency_from, user_id)
         )
-        db.commit
+        try:
+            db.commit
+        except: 
+            raise IndexError("User does not exist")
 
 
 async def set_to(user_id: int, currency_to: str) -> None:
@@ -88,7 +94,10 @@ async def set_to(user_id: int, currency_to: str) -> None:
                   WHERE id = ?
                   """, (currency_to, user_id)
         )
-        db.commit
+        try:
+            db.commit
+        except: 
+            raise IndexError("User does not exist")
 
 async def set_currency_pair(user_id: int, curr_from, curr_to: str) -> None:
     with sqlite3.connect(db_name) as db:
@@ -101,7 +110,10 @@ async def set_currency_pair(user_id: int, curr_from, curr_to: str) -> None:
                   WHERE id = ?
                   """, (curr_from, curr_to, user_id)
         )
-        db.commit
+        try:
+            db.commit
+        except: 
+            raise IndexError("User does not exist")
 
 async def set_round_state(user_id: int, round: bool) -> None:
     with sqlite3.connect(db_name) as db:
@@ -113,8 +125,10 @@ async def set_round_state(user_id: int, round: bool) -> None:
                   WHERE id = ?
                   """, (round, user_id)
         )
-        db.commit
-
+        try:
+            db.commit
+        except: 
+            raise IndexError("User does not exist")
 
 async def get_from(user_id: int) -> str:
     with sqlite3.connect(db_name) as db:
@@ -126,8 +140,10 @@ async def get_from(user_id: int) -> str:
                   WHERE id = {user_id}
                   """
         )
-        return c.fetchall()[0][0]
-
+        try:
+            return c.fetchall()[0][0]
+        except: 
+            raise IndexError("User does not exist")
 
 async def get_to(user_id: int) -> str:
     with sqlite3.connect(db_name) as db:
@@ -139,7 +155,11 @@ async def get_to(user_id: int) -> str:
                   WHERE id = {user_id}
                   """
         )
-        return c.fetchall()[0][0]
+        
+        try: 
+            return c.fetchall()[0][0]
+        except:
+            raise IndexError("User does not exist")
 
 
 async def get_currency_pair(user_id: int) -> tuple[str, str]:
@@ -152,8 +172,12 @@ async def get_currency_pair(user_id: int) -> tuple[str, str]:
                   WHERE id = {user_id}
                   """
         )
-        x, y = c.fetchall()[0]
-        return x, y
+
+        try: 
+            x, y = c.fetchall()[0]
+            return x, y
+        except:
+            raise IndexError("User does not exist")
 
 
 async def get_round_state(user_id: int) -> bool:
@@ -166,4 +190,8 @@ async def get_round_state(user_id: int) -> bool:
                   WHERE id = {user_id}
                   """
         )
-        return bool(c.fetchall()[0][0])
+        try: 
+            res = bool(c.fetchall()[0][0])
+            return res
+        except:
+            raise IndexError("User does not exist")
