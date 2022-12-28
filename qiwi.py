@@ -20,7 +20,7 @@ CODES: dict = {
 }
 
 
-# function to get all exchange rates through QIWI API
+# getting all exchange rates via QIWI API
 async def get_rates(token: str):
     s = requests.Session()
     s.headers = {"content-type": "application/json"}
@@ -31,18 +31,20 @@ async def get_rates(token: str):
     Data.rates = res.json()["result"]
 
 
-async def get_rate(user_id: int, round_res: bool) -> str:
+async def get_rate(user_id: int) -> str:
     # getting currency codes
     curr_from, curr_to = await db.get_currency_pair(user_id)
     curr_from, curr_to = CODES[curr_from], CODES[curr_to]
     # requested exchange rate
-    rate = [x for x in Data.rates
+    rate = [
+        x for x in Data.rates
             if x["from"] == curr_from and 
             x["to"] == curr_to
     ]
     if len(rate) == 0:
         return False
-    if round_res:
+    round = await db.get_round_state(user_id)
+    if round:
         return round(rate[0]["rate"], 4)
     return rate[0]["rate"]
 
