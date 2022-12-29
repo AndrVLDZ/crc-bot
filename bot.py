@@ -12,7 +12,11 @@ from periodic import Periodic
 import logging
 from os import environ
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s - %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+    level=logging.INFO,
+)
 
 if "BOT_TOKEN" in environ and "QIWI_TOKEN" in environ:
     bot_token = environ.get("BOT_TOKEN")
@@ -35,7 +39,7 @@ dp.include_router(h_converter.router)
 # exchange rates update
 async def get_rates():
     await qiwi.get_rates(qiwi_token)
-    print("_____RATES_UPDATED_____")
+    logging.info(f"RATES UPDATED")
 
 
 # periodic tasks for event loop
@@ -50,7 +54,6 @@ async def main() -> None:
     await db.create_table()
     # getting exchange rates
     await qiwi.get_rates(qiwi_token)
-    print(qiwi.Data.rates[0] )
     # event loop for periodic tasks
     loop = asyncio.get_event_loop()
     loop.create_task(scheduler())
