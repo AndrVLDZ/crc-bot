@@ -9,15 +9,13 @@ router = Router()
 @router.message(F.text == "Rate")
 async def rate(message: types.Message) -> DeleteMessage:
     user_id = message.from_user.id
-    if not await db.check_user(user_id):
+    if not await db.check_user_id(user_id):
         await message.answer(
             "Send `/start` command first!",
             parse_mode="Markdown"
         )
-    else:
-        round = await db.get_round_state(user_id)
-        rate = await qiwi.get_rate(user_id, round)
-        print(rate)
+    else: 
+        rate = await qiwi.get_rate(user_id)
         if not rate: 
             await message.answer(
                 "Set different currencies!",
