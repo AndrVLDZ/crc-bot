@@ -1,10 +1,10 @@
 import db
 from aiogram import F, Router
+from aiogram.fsm.context import FSMContext
 from aiogram.filters.callback_data import CallbackData
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.methods.edit_message_text import EditMessageText
 from aiogram.types import Message, InlineKeyboardButton, CallbackQuery
-from aiogram.fsm.context import FSMContext
 
 router = Router()
 
