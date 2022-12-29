@@ -52,6 +52,7 @@ async def get_rate(user_id: int, converter: bool = False) -> str:
     round_state = await db.get_round_state(user_id)
     if round_state:
         return round(rate[0]["rate"], 4)
+    
     return rate[0]["rate"]
 
 
