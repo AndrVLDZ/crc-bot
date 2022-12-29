@@ -1,6 +1,6 @@
+import db
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-import db
 
 
 async def main_menu(user_id, new_user: bool = False):
