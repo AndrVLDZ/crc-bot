@@ -32,28 +32,3 @@ async def main_menu(user_id, new_user: bool = False):
         input_field_placeholder="Enter value to convert",
     )
     return main_menu
-
-async def main_menu_new_user(user_id):
-    builder = ReplyKeyboardBuilder()
-    
-    state = "on" if await db.get_round_state(user_id) else "off"
-    builder.row(
-        KeyboardButton(text="Rate"),
-        KeyboardButton(text=f"Round: {state}"),
-        width=2
-    ) 
-    
-    builder.row(
-        KeyboardButton(text="Set currencies"),
-        KeyboardButton(text="About"),
-        width=1
-    )
-    
-    main_menu_buttons = builder.export()
-    
-    main_menu = ReplyKeyboardMarkup(
-        keyboard=main_menu_buttons,
-        resize_keyboard=True,
-        input_field_placeholder="Enter value to convert",
-    )
-    return main_menu
