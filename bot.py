@@ -4,8 +4,9 @@ import get_token as tkn
 import h_start
 import h_set_currencies
 import h_rate
-import h_converter
+import h_round
 import h_about
+import h_converter
 import asyncio
 from aiogram import Bot, Dispatcher
 from periodic import Periodic
@@ -32,6 +33,7 @@ dp = Dispatcher()
 dp.include_router(h_start.router)
 dp.include_router(h_set_currencies.router)
 dp.include_router(h_rate.router)
+dp.include_router(h_round.router)
 dp.include_router(h_about.router)
 dp.include_router(h_converter.router)
 
