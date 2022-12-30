@@ -98,12 +98,14 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, stat
     user_data = await state.get_data()
     curr_from, curr_to = await db.get_currency_pair(user_id)
     
-    edit_message = EditMessageText(
-        chat_id=user_data["chat_id"],
-        message_id=user_data["message_id"],
-        text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
-        parse_mode="Markdown",
-        reply_markup=user_data["swap_button"].as_markup(),
-    )
-    logging.info(f"{edit_message} message content and reply markup have not changed")
+    try:
+        edit_message = EditMessageText(
+            chat_id=user_data["chat_id"],
+            message_id=user_data["message_id"],
+            text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
+            parse_mode="Markdown",
+            reply_markup=user_data["swap_button"].as_markup(),
+        )
+    except Exception as e:
+        logging.info(f"Message content and reply markup have not changed")
     return edit_message
