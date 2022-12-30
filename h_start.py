@@ -1,8 +1,8 @@
+import db
 import menu
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-import db
 
 router = Router()
 
