@@ -1,5 +1,6 @@
 import db
 import qiwi
+from tools import check_user
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.methods.delete_message import DeleteMessage
@@ -9,18 +10,12 @@ router = Router()
 
 @router.message()
 async def converter(message: Message) -> DeleteMessage:
-    user_id = message.from_user.id
-    if not await db.check_user_id(user_id):
-        await message.answer(
-            "Send `/start` command first!",
-            parse_mode="Markdown"
-            )
-    else:
+    if await check_user(message):
         # user input
         value: str = message.text.replace(",",".")
         # getting user settings
+        user_id = message.from_user.id
         round = await db.get_round_state(user_id)
-        
         # calling and validating the converter function
         res = await qiwi.converter(user_id, value, round)
         if not res:

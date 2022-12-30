@@ -1,5 +1,6 @@
 import db
 import qiwi
+from tools import check_user
 from aiogram import types, F, Router
 from aiogram.methods.delete_message import DeleteMessage
 
@@ -8,13 +9,8 @@ router = Router()
 
 @router.message(F.text == "Rate")
 async def rate(message: types.Message) -> DeleteMessage:
-    user_id = message.from_user.id
-    if not await db.check_user_id(user_id):
-        await message.answer(
-            "Send `/start` command first!",
-            parse_mode="Markdown"
-        )
-    else: 
+    if await check_user(message):
+        user_id = message.from_user.id
         rate = await qiwi.get_rate(user_id)
         if not rate: 
             await message.answer(

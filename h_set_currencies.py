@@ -1,4 +1,5 @@
 import db
+from tools import check_user
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.filters.callback_data import CallbackData
@@ -65,13 +66,8 @@ async def generate_info_msg(user_id: int, message: Message, state: FSMContext):
 
 @router.message(F.text == "Set currencies")
 async def currency_pair_chooser(message: Message, state: FSMContext):
-    user_id=message.from_user.id
-    if not await db.check_user_id(user_id):
-        await message.answer(
-            "Send `/start` command first!",
-            parse_mode="Markdown"
-        )
-    else:
+    if await check_user(message):
+        user_id = message.from_user.id
         curr_from = generate_buttons(user_id, "From")
         await message.answer("I have", reply_markup=curr_from.as_markup())
 
