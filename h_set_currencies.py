@@ -78,7 +78,7 @@ async def currency_pair_chooser(message: Message, state: FSMContext):
         curr_to = generate_buttons(user_id, "To")
         await message.answer("I want to buy", reply_markup=curr_to.as_markup())
         
-        generate_info_msg(user_id, message, state)
+        await generate_info_msg(user_id, message, state)
         
 
 @router.callback_query(CurrencyCB.filter())
