@@ -28,6 +28,7 @@ async def rate(message: types.Message) -> DeleteMessage:
                     f"**1 {currency_to}  ==  `{rate}` {currency_from} ",
                     parse_mode="Markdown",
                 )
+    # removing user input for better readability of rate responses
     return DeleteMessage(
         chat_id=message.chat.id,
         message_id=message.message_id
