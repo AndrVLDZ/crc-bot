@@ -16,8 +16,7 @@ Powered by aiogram {__version__}
 
 @router.message(F.text == "About")
 async def about(message: Message):
-    user_id = message.from_user.id
-    if await check_user(user_id):
+    if await check_user(message):
         builder = InlineKeyboardBuilder()
         builder.row(InlineKeyboardButton(
             text="Telegram", 
