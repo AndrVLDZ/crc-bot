@@ -31,4 +31,5 @@ async def main_menu(user_id, new_user: bool = False):
         resize_keyboard=True,
         input_field_placeholder="Enter value to convert",
     )
+    
     return main_menu
