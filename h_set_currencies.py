@@ -1,4 +1,5 @@
 import db
+import logging
 from tools import check_user
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
@@ -78,7 +79,7 @@ async def currency_pair_chooser(message: Message, state: FSMContext):
         
 
 @router.callback_query(CurrencyCB.filter())
-async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, state: FSMContext):
+async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, state: FSMContext) -> EditMessageText:
     # getting data from callback_data
     user_id = callback_data.user_id
     prefix = callback_data.conv_prefix
@@ -97,10 +98,12 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, stat
     user_data = await state.get_data()
     curr_from, curr_to = await db.get_currency_pair(user_id)
     
-    return EditMessageText(
+    edit_message = EditMessageText(
         chat_id=user_data["chat_id"],
         message_id=user_data["message_id"],
         text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
         parse_mode="Markdown",
         reply_markup=user_data["swap_button"].as_markup(),
     )
+    logging.info(f"{edit_message} message content and reply markup have not changed")
+    return edit_message
