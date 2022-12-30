@@ -1,6 +1,6 @@
 import db
 import qiwi
-from aiogram import F, Router
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.methods.delete_message import DeleteMessage
 
@@ -17,7 +17,7 @@ async def converter(message: Message) -> DeleteMessage:
             )
     else:
         # user input
-        value: str = message.text.replace(',','.')
+        value: str = message.text.replace(",",".")
         # getting user settings
         round = await db.get_round_state(user_id)
         
@@ -35,8 +35,6 @@ async def converter(message: Message) -> DeleteMessage:
                     f"**`{value}` {curr_to}  ==  `{res}` {curr_from}**",
                     parse_mode="Markdown"
                 )
-
-
     # removing user input for better readability of converter responses
     return DeleteMessage(
         chat_id=message.chat.id,
