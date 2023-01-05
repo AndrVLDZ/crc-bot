@@ -10,14 +10,15 @@ router = Router()
 
 new_user_msg: str = f""" 
 I have currency converter, calculator and monitoring of QIWI Wallet exchange rates.
-The converter is always active after the start, just send a number or a mathematical expression.
+The converter is always active after the start, just send a number or a mathematical expression. The result of the expression will be automatically converted to the final currency.
+> in decimal fractions you can put a comma instead of a point, the bot will understand everything.
+> And in addition, rates are updated every minute.
 \nMenu buttons & commands:
-[Rate] — returns the exchange rate of the currency pair selected by [set currencies]
-[Set currencies] — here you can specify your currency and the currency you want to buy
-[Round] — allows you to enable or disable rounding for the [Rate] and converter
+`Rate` — returns the exchange rate of the currency pair
+`Set currencies` — here you can specify your currency pair
+`Round` — allows you to enable or disable rounding 
 /about — information about the program and the author, links and ways to contact the developer
 /help — how to use the bot
-\nIn addition, rates are updated every minute and in decimal fractions you can put a comma instead of a point, the bot will understand everything.
 """
 
 @router.message(Command(commands=["start"]))
@@ -42,6 +43,7 @@ async def cmd_start(message: Message) -> None:
         # start message for new user
         await message.answer(
             f"Welcome, {user_name}!\n{new_user_msg}",
+            parse_mode="Markdown",
             reply_markup=main_menu,
         )
 
