@@ -1,5 +1,6 @@
 import db
 import qiwi
+import menu
 from tools import check_user
 from aiogram import Router
 from aiogram.types import Message
@@ -13,6 +14,12 @@ async def converter(message: Message) -> DeleteMessage:
     if await check_user(message):
         # user input
         value: str = message.text.replace(",",".")
+        # user input validation
+        if value == 0:
+            await message.answer(
+                "Enter a non-zero value!",
+                reply_markup=menu.main_menu(user_id),
+            )
         # getting user settings
         user_id = message.from_user.id
         round = await db.get_round_state(user_id)
@@ -21,14 +28,15 @@ async def converter(message: Message) -> DeleteMessage:
         if not res:
             await message.answer(
                 "Set different currencies!",
-                parse_mode="Markdown"
+                reply_markup=menu.main_menu(user_id),
             )
         else: 
             curr_from, curr_to = await db.get_currency_pair(user_id)
             if curr_from != curr_to: 
                 await message.answer(
                     f"**`{value}` {curr_to}  ==  `{res}` {curr_from}**",
-                    parse_mode="Markdown"
+                    parse_mode="Markdown",
+                    reply_markup=menu.main_menu(user_id),
                 )
     # removing user input for better readability of converter responses
     return DeleteMessage(
