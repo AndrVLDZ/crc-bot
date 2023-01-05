@@ -20,7 +20,6 @@ async def main_menu(user_id, new_user: bool = False):
     
     builder.row(
         KeyboardButton(text="Set currencies"),
-        KeyboardButton(text="About"),
         width=1
     )
     
