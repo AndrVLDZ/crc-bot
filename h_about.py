@@ -1,5 +1,6 @@
 from tools import check_user
-from aiogram import F, Router, __version__
+from aiogram.filters import Command
+from aiogram import Router, __version__
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import InlineKeyboardButton, Message
 
@@ -14,7 +15,7 @@ Powered by aiogram {__version__}
 """
 
 
-@router.message(F.text == "About")
+@router.message(Command(commands=["about"]))
 async def about(message: Message):
     if await check_user(message):
         builder = InlineKeyboardBuilder()
