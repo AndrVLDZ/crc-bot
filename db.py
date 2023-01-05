@@ -10,9 +10,6 @@ async def create_table() -> None:
             """
                   CREATE TABLE IF NOT EXISTS users 
                   (id       INT   PRIMARY KEY, 
-                  name      TEXT, 
-                  surname   TEXT, 
-                  username  TEXT, 
                   curr_from TEXT, 
                   curr_to   TEXT,
                   round     BOOL);
@@ -34,20 +31,20 @@ async def print_table() -> None:
             print(row)
 
 
-async def add_user(id: int, name: str, surname: str, username: str) -> None:
+async def add_user(id: int) -> None:
     # default user configuration
     curr_from: str = "USD"
     curr_to: str = "EUR"
     round: bool = True
     # rows to be added to the database
-    rows = ("id", "name", "surname", "username", "curr_from", "curr_to", "round")
+    rows = ("id", "curr_from", "curr_to", "round")
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
             f"""
                   INSERT OR REPLACE INTO users {rows} 
-                  VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (id, name, surname, username, curr_from, curr_to, round),
+                  VALUES (?, ?, ?, ?)""",
+            (id, curr_from, curr_to, round),
         )
         db.commit()
 
