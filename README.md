@@ -66,14 +66,14 @@ tg_token = os.environ.get('BOT_TOKEN')
 
 ## Modules  
 
-1. bot.py —  
-2. get_tkn.py —  
-3. db.py —  
-4. qiwi.py —  
-5. menu.py —  
-6. h_start.py —  
-7. h_round.py —
-8. h_set_currencies.py —  
-9. h_rate.py —  
-10. h_converter.py —
-11. h_about.py —  
+1. bot.py  
+2. get_tkn.py  
+3. db.py  
+4. qiwi.py  
+5. menu.py  
+6. h_start.py  
+7. h_round.py
+8. h_set_currencies.py  
+9. h_rate.py
+10. h_converter.py
+11. h_about.py
