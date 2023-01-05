@@ -1,5 +1,4 @@
 import db
-import logging
 from tools import check_user
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
@@ -97,7 +96,6 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, stat
     
     user_data = await state.get_data()
     curr_from, curr_to = await db.get_currency_pair(user_id)
-    
     try:
         edit_message = EditMessageText(
             chat_id=user_data["chat_id"],
@@ -106,6 +104,7 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, stat
             parse_mode="Markdown",
             reply_markup=user_data["swap_button"].as_markup(),
         )
-    except Exception as e:
-        logging.info(f"Message content and reply markup have not changed")
+    except:
+        raise IndexError("The currency is not changed because the selected value is the same")
     return edit_message
+
