@@ -96,15 +96,12 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, stat
     
     user_data = await state.get_data()
     curr_from, curr_to = await db.get_currency_pair(user_id)
-    try:
-        edit_message = EditMessageText(
-            chat_id=user_data["chat_id"],
-            message_id=user_data["message_id"],
-            text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
-            parse_mode="Markdown",
-            reply_markup=user_data["swap_button"].as_markup(),
-        )
-    except:
-        raise IndexError("The currency is not changed because the selected value is the same")
+    edit_message = EditMessageText(
+        chat_id=user_data["chat_id"],
+        message_id=user_data["message_id"],
+        text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
+        parse_mode="Markdown",
+        reply_markup=user_data["swap_button"].as_markup(),
+    )
     return edit_message
 
