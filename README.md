@@ -1,20 +1,20 @@
 # QIWI CRC Bot
 
-![info picture](/CRC_Description_git.png)
-
-https://t.me/QIWI_CRC_bot
+![info picture](/CRC_Description_git.png)  
 
 ## About  
 
-Telegram bot with a currency converter and monitoring of exchange rates for the QIWI Wallet.  
-Exchange rates are updated every minute through a request to the QIWI API.
+Telegram bot with a converter, calculator and monitoring of QIWI Wallet exchange rates that are updated every minute.
+
+See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate Calculator")
 
 ## What can?
 
-* Currency selection
-* Saving the selected currencies to apply the next time the user write
+* Set currency pair and rounding mode
+* Solve math expressions before converting
+* Convert a sent via message value or result of a sent math expression
 * Send the exchange rate of selected currencies
-* Convert given amount with selected currencies  
+* Save user settings (currency pair and rounding mode)
 
 ## Technology stack  & libraries
 
@@ -26,6 +26,8 @@ Exchange rates are updated every minute through a request to the QIWI API.
 * requests 2.28.1
 * sqlite3
 * cexprtk 0.4.0
+
+*P.S. The list of libraries that must be installed to run the bot is in requirements.txt.*
 
 ## Local run  
 
@@ -45,6 +47,13 @@ tg_token.txt
 
 ## Deploy
 
+The list of libraries that must be installed to run the bot is in requirements.txt.
+To specify the entry point, you must specify the main script(bot.py) in the proc file
+
+``` Procfile
+web: python bot.py
+```
+
 For deployment in the bot.py module, you need to implement the receipt of tokens. I do not recommend using get_tkn.py and .txt files.  
 This can be done in many different ways, but personally I use environment variables and the standard os library.  
 Something like that:  
@@ -57,13 +66,14 @@ tg_token = os.environ.get('BOT_TOKEN')
 
 ## Modules  
 
-1. bot.py  
-2. get_tkn.py  
-3. db.py  
-4. qiwi.py  
-5. menu.py  
-6. h_start.py  
-7. h_set_currencies.py  
-8. h_rate.py  
-9. h_converter.py
-10. h_about.py  
+1. bot.py —  
+2. get_tkn.py —  
+3. db.py —  
+4. qiwi.py —  
+5. menu.py —  
+6. h_start.py —  
+7. h_round.py —
+8. h_set_currencies.py —  
+9. h_rate.py —  
+10. h_converter.py —
+11. h_about.py —  
