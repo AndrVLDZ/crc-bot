@@ -4,39 +4,46 @@ import get_token as tkn
 import h_start
 import h_set_currencies
 import h_rate
-import h_converter
+import h_round
 import h_about
+import h_help
+import h_converter
 import asyncio
 from aiogram import Bot, Dispatcher
 from periodic import Periodic
 import logging
-import os
 from os import environ
 
-logging.basicConfig(level=logging.INFO)
-# TODO: if all(x in os.environ for x in["BOT_TOKEN", "QIWI_TOKEN"])
-if "BOT_TOKEN" in os.environ and "QIWI_TOKEN" in os.environ:
+logging.basicConfig(
+    format="%(asctime)s - %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+    level=logging.INFO,
+)
+
+if "BOT_TOKEN" in environ and "QIWI_TOKEN" in environ:
     bot_token = environ.get("BOT_TOKEN")
     qiwi_token = environ.get("QIWI_TOKEN")
 else:
-    bot_token = tkn.get("bot_token.txt")
-    qiwi_token = tkn.get("qiwi_token.txt")
+    bot_token = tkn.get_from_txt("bot_token.txt")
+    qiwi_token = tkn.get_from_txt("qiwi_token.txt")
 
 bot = Bot(token=bot_token)
 dp = Dispatcher()
 
 # connecting handlers
 dp.include_router(h_start.router)
+dp.include_router(h_help.router)
+dp.include_router(h_about.router)
 dp.include_router(h_set_currencies.router)
 dp.include_router(h_rate.router)
+dp.include_router(h_round.router)
 dp.include_router(h_converter.router)
-dp.include_router(h_about.router)
 
 
 # exchange rates update
 async def get_rates():
     await qiwi.get_rates(qiwi_token)
-    print("_____RATES_UPDATED_____")
+    logging.info(f"RATES UPDATED")
 
 
 # periodic tasks for event loop
@@ -55,7 +62,7 @@ async def main() -> None:
     loop = asyncio.get_event_loop()
     loop.create_task(scheduler())
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, loop=loop)
+    await dp.start_polling(bot, loop=loop) 
 
 
 if __name__ == "__main__":
