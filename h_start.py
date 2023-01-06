@@ -8,16 +8,18 @@ router = Router()
 
 new_user_msg: str = f""" 
 I have currency converter with calculator and monitoring of QIWI Wallet exchange rates.
-The converter is always active, just send a number or a mathematical expression. \
-    The result of the expression will be automatically calculated and converted to the final currency.
-And in addition, QIWI rates are updated every minute.
+\nThe converter is always active, just send a number or a mathematical expression. \
+The result of the expression will be automatically calculated and converted to the final currency.
 \nMenu buttons:
-[Rate] — returns the exchange rate of the currency pair
-[Set currencies] — here you can specify your currency pair
-[Round] — allows you to enable or disable rounding
+*Rate* — returns the exchange rate of the currency pair
+*Set currencies* — here you can specify your currency pair
+*Round* — allows you to enable or disable rounding
 \nCommands: 
-/about — information about the project and the author, links and ways to contact the developer
+/start — run the bot
 /help — how to use the bot
+/about — information about the project, author and contacts
+\n*If Set currencies doesn't work* — call it again by pressing the corresponding menu button or restart the bot. \
+This issue can happen if the bot has been restarted on the server or or the message cannot be edited because it's too old.
 """
 
 
@@ -32,8 +34,8 @@ async def cmd_start(message: Message) -> None:
         # start message for old user
         await message.answer(
             f"Welcome back, {user_name}! \
-                \nYour last currencies settings: \
-                    \nBuy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
+            \nYour last currencies settings: \
+            \nBuy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
             parse_mode="Markdown",
             reply_markup=main_menu,
         )
