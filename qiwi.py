@@ -59,8 +59,11 @@ async def get_rate(user_id: int, converter: bool = False) -> str:
 async def converter(user_id: int, value: float, round_res: bool) -> str:
     rate = await get_rate(user_id, converter=True)
     if not rate:
-        return False 
-    if round_res:
+        return "Set different currencies!" 
+    try:
         res = evaluate_expression(value, {})
+    except:
+        return "Send a number or math expression"
+    if round_res:
         return round(res*rate, 4)
-    return evaluate_expression(value, {})*rate
+    return float(res*rate)
