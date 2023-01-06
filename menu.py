@@ -28,7 +28,7 @@ async def main_menu(user_id, new_user: bool = False):
     main_menu = ReplyKeyboardMarkup(
         keyboard=main_menu_buttons,
         resize_keyboard=True,
-        input_field_placeholder="Enter value to convert",
+        input_field_placeholder="Enter value",
     )
     
     return main_menu
