@@ -7,7 +7,7 @@ from aiogram.filters import Command
 router = Router()
 
 new_user_msg: str = f""" 
-I have currency converter with calculator and monitoring of QIWI Wallet exchange rates.
+I have currency converter with a built-in calculator and monitoring of QIWI Wallet exchange rates that are updated every minute.
 \nThe converter is always active, just send a number or a mathematical expression. \
 The result of the expression will be automatically calculated and converted to the final currency.
 \nMenu buttons:
