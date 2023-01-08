@@ -4,7 +4,7 @@
 
 ## About  
 
-Telegram bot with a currency converter with a built-in calculator and monitoring of exchange rates for the QIWI Wallet.  
+[Telegram bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate Calculator") with a currency converter with a built-in calculator and monitoring of exchange rates for the QIWI Wallet.  
 Exchange rates are updated every minute.
 
 See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate Calculator")
@@ -67,16 +67,16 @@ tg_token = os.environ.get('BOT_TOKEN')
 
 ## Modules  
 
-1. `bot.py` — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
-2. `get_tkn.py` — getting the necessary tokens from different sources  
-3. `db.py` — creating a database and working with it  
-4. `qiwi.py` — work with QIWI API, getting rate from QIWI API answer, conversion and calculation functionality  
-5. `menu.py` — menu markup generation  
-6. `tools.py` — user validation  
-7. `h_start.py` — `/start` command handler  
-8. `h_help.py` — `/help` command handler  
-9. `h_about.py` — `/about` command handler and inline link-buttons  
-10. `h_round.py` — **Round** menu button handler  
-11. `h_set_currencies.py` — **Set currencies** menu button handler and inline buttons generation
-12. `h_rate.py` — **Rate** menu button handler  
-13. `h_converter.py` — **converter** handler
+1. bot.py — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
+2. get_tkn.py — getting the necessary tokens from different sources  
+3. db.py — creating a database and working with it  
+4. qiwi.py — work with QIWI API, getting rate from QIWI API answer, conversion and calculation functionality  
+5. menu.py — menu markup generation  
+6. tools.py — user validation  
+7. h_start.py — start command handler  
+8. h_help.py — help command handler  
+9. h_about.py — about command handler and inline link-buttons  
+10. h_round.py — **Round** menu button handler  
+11. h_set_currencies.py` — **Set currencies** menu button handler and inline buttons generation
+12. h_rate.py — **Rate** menu button handler  
+13. h_converter.py — **converter** handler
