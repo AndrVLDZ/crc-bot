@@ -28,7 +28,7 @@ See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate 
 * sqlite3
 * cexprtk 0.4.0
 
-*P.S. The list of libraries that must be installed to run the bot is in requirements.txt.*
+P.S. The list of libraries that must be installed to run the bot is in requirements.txt
 
 ## How to run?
 
@@ -45,7 +45,7 @@ The get_tokens.py script allows you to get tokens from .txt files or environment
 2. Create tg_token.txt and add to file your telegram bot API token
 3. Run bot.py
 
-P.S. All tokens and database are hidden in gitignore.
+P.S. All tokens and database are hidden in gitignore
 
 ``` gitignore
 # ignore secret config
