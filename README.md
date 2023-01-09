@@ -56,8 +56,7 @@ bot.sqlite
 
 ### Deploy via  [Railway](https://railway.app/ "Deploy to the cloud")
 
-1. List all libraries in requirements.txt  
-2. Specify the entry point(bot.py) in the proc file
+List all libraries in requirements.txt  
 
 ``` requirements.txt
 aiogram==3.0.0b6
@@ -66,6 +65,8 @@ periodic==2.1.1
 requests==2.28.1
 cexprtk==0.4.0
 ```
+
+Specify the entry point(bot.py) in the proc file
 
 ``` Procfile
 web: python bot.py
@@ -83,6 +84,6 @@ web: python bot.py
 8. h_help.py — help command handler  
 9. h_about.py — about command handler and inline link-buttons  
 10. h_round.py — **Round** menu button handler  
-11. h_set_currencies.py` — **Set currencies** menu button handler and inline buttons generation
+11. h_set_currencies.py — **Set currencies** menu button handler and inline buttons generation
 12. h_rate.py — **Rate** menu button handler  
 13. h_converter.py — **converter** handler
