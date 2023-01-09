@@ -68,7 +68,7 @@ tg_token = os.environ.get('BOT_TOKEN')
 ## Modules  
 
 1. bot.py — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
-2. get_tkn.py — getting the necessary tokens from different sources  
+2. get_tokens.py — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)  
 3. db.py — creating a database and working with it  
 4. qiwi.py — work with QIWI API, getting rate from QIWI API answer, conversion and calculation functionality  
 5. menu.py — menu markup generation  
