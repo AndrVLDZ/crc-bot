@@ -1,6 +1,5 @@
 import db
 import qiwi
-import get_token as tkn
 import h_start
 import h_set_currencies
 import h_rate
@@ -9,6 +8,7 @@ import h_about
 import h_help
 import h_converter
 import asyncio
+from get_tokens import get_secrets
 from aiogram import Bot, Dispatcher
 from periodic import Periodic
 import logging
@@ -20,12 +20,7 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-if "BOT_TOKEN" in environ and "QIWI_TOKEN" in environ:
-    bot_token = environ.get("BOT_TOKEN")
-    qiwi_token = environ.get("QIWI_TOKEN")
-else:
-    bot_token = tkn.get_from_txt("bot_token.txt")
-    qiwi_token = tkn.get_from_txt("qiwi_token.txt")
+bot_token, qiwi_token = get_secrets()
 
 bot = Bot(token=bot_token)
 dp = Dispatcher()
