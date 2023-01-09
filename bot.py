@@ -12,7 +12,6 @@ from get_tokens import get_secrets
 from aiogram import Bot, Dispatcher
 from periodic import Periodic
 import logging
-from os import environ
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s",
