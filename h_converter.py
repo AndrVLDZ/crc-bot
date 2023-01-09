@@ -14,7 +14,7 @@ async def converter(message: Message) -> DeleteMessage:
     if await check_user(message):
         user_id = message.from_user.id
         # user input
-        value: str = message.text.replace(",",".")
+        value: str = message.text.replace(",",".").replace(" ", "")
         # getting user settings
         round = await db.get_round_state(user_id)
         # calling and validating the converter function
