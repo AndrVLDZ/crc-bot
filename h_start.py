@@ -7,7 +7,7 @@ from aiogram.filters import Command
 router = Router()
 
 new_user_msg: str = f""" 
-I have currency converter with calculator and monitoring of QIWI Wallet exchange rates.
+I have currency converter with a built-in calculator and monitoring of QIWI Wallet exchange rates that are updated every minute.
 \nThe converter is always active, just send a number or a mathematical expression. \
 The result of the expression will be automatically calculated and converted to the final currency.
 \nMenu buttons:
@@ -19,7 +19,7 @@ The result of the expression will be automatically calculated and converted to t
 /help — how to use the bot
 /about — information about the project, author and contacts
 \n*If Set currencies doesn't work* — call it again by pressing the corresponding menu button or restart the bot. \
-This issue can happen if the bot has been restarted on the server or or the message cannot be edited because it's too old.
+This issue can happen if the bot has been restarted on the server or the message cannot be edited because it's too old.
 """
 
 

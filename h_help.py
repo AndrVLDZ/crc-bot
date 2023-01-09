@@ -5,8 +5,8 @@ from aiogram.types import Message
 
 router = Router()
 
-msg_help: str = f"""
-\nThe converter is always active, just send a number or a mathematical expression. \
+help_msg: str = f"""
+\nRates are updated every minute and the converter is always active, just send a number or a mathematical expression. \
 The result of the expression will be automatically calculated and converted to the final currency. 
 \nMenu buttons:
 *Rate* — returns the exchange rate of the currency pair
@@ -17,7 +17,7 @@ The result of the expression will be automatically calculated and converted to t
 /help — how to use the bot
 /about — information about the project, author and contacts
 \n*If Set currencies doesn't work* — call it again by pressing the corresponding menu button or restart the bot. \
-This issue can happen if the bot has been restarted on the server or or the message cannot be edited because it's too old.
+This issue can happen if the bot has been restarted on the server or the message cannot be edited because it's too old.
 """
 
 
@@ -25,6 +25,6 @@ This issue can happen if the bot has been restarted on the server or or the mess
 async def about(message: Message):
     if await check_user(message):
         await message.answer(
-            text=msg_help,
+            text=help_msg,
             parse_mode="Markdown",
         )

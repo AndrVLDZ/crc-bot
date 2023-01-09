@@ -142,6 +142,7 @@ async def get_from(user_id: int) -> str:
         except: 
             raise IndexError("User does not exist")
 
+
 async def get_to(user_id: int) -> str:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
