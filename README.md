@@ -5,11 +5,11 @@
 ## About  
 
 Telegram bot with a currency converter with a built-in calculator and monitoring of exchange rates for the QIWI Wallet.  
-Exchange rates are updated every minute.
+Exchange rates are updated every minute via QIWI API.
 
 See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate Calculator")
 
-## What can?
+## Features
 
 * Set currency pair and rounding mode
 * Solve math expressions before converting
@@ -23,14 +23,13 @@ See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate 
 * Aiogram 3.0.0b6
 * asyncio
 * asyncio-periodic 2019.2
-* QWI API
 * requests 2.28.1
 * sqlite3
 * cexprtk 0.4.0
 
 P.S. The list of libraries that must be installed to run the bot is in requirements.txt
 
-## How to run?
+## How to run
 
 To start the bot, you need to specify two tokens:
 
@@ -39,7 +38,7 @@ To start the bot, you need to specify two tokens:
 
 The get_tokens.py script allows you to get tokens from .txt files or environment variables. This script is written to get tokens from .txt files when the bot is running locally or from environment variables when you want to deploy the bot.
 
-### Local run  
+### Run locally  
 
 1. Create qiwi_token.txt and add to file your QIWI API token  
 2. Create tg_token.txt and add to file your telegram bot API token
@@ -74,16 +73,16 @@ web: python bot.py
 
 ## Modules  
 
-1. bot.py — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
-2. get_tokens.py — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)  
-3. db.py — creating a database and working with it  
-4. qiwi.py — work with QIWI API, getting rate from QIWI API answer, conversion and calculation functionality  
-5. menu.py — menu markup generation  
-6. tools.py — user validation  
-7. h_start.py — start command handler  
-8. h_help.py — help command handler  
-9. h_about.py — about command handler and inline link-buttons  
-10. h_round.py — **Round** menu button handler  
-11. h_set_currencies.py — **Set currencies** menu button handler and inline buttons generation
-12. h_rate.py — **Rate** menu button handler  
-13. h_converter.py — **converter** handler
+* bot — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
+* get_tokens.py — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)  
+* db — creating a database and working with it  
+* qiwi — work with QIWI API, getting rate from QIWI API answer, conversion and calculation functionality  
+* menu — menu markup generation  
+* tools — user validation  
+* h_start — start command handler  
+* h_help — help command handler  
+* h_about — about command handler and inline link-buttons  
+* h_round — **Round** menu button handler  
+* h_set_currencies — **Set currencies** menu button handler and inline buttons generation
+* h_rate — **Rate** menu button handler  
+* h_converter — **converter** handler
