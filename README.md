@@ -5,7 +5,7 @@
 ## About  
 
 Telegram bot with a currency converter with a built-in calculator and monitoring of exchange rates for the QIWI Wallet.  
-Exchange rates are updated every minute via QIWI API.
+Exchange rates are updated every minute via a request to QIWI API.
 
 See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate Calculator")
 
@@ -17,21 +17,18 @@ See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate 
 * Send the exchange rate of selected currencies
 * Save user settings (currency pair and rounding mode)
 
-## Technology stack  & libraries
+## Dependencies  
 
 * Python 3.10.8
 * Aiogram 3.0.0b6
-* asyncio
 * asyncio-periodic 2019.2
-* requests 2.28.1
-* sqlite3
 * cexprtk 0.4.0
 
-P.S. The list of libraries that must be installed to run the bot is in requirements.txt
+P.S. The full list of libraries that must be installed to run the bot is in [requirements.txt](requirements.txt)
 
-## How to run
+## Run from sources  
 
-To start the bot, you need to specify two tokens:
+To run the bot, you need to specify two tokens:
 
 * Telegram Bot API Token — [Get token](https://t.me/BotFather "Telegram BotFather")
 * QIWI API Token — [Get token](https://qiwi.com/api "QIWI API")
@@ -44,7 +41,7 @@ The get_tokens.py script allows you to get tokens from .txt files or environment
 2. Create tg_token.txt and add to file your telegram bot API token
 3. Run bot.py
 
-P.S. All tokens and database are hidden in gitignore
+P.S. All tokens and database are hidden in [.gitignore](.gitignore)
 
 ``` gitignore
 # ignore secret config
@@ -53,36 +50,26 @@ qiwi_token.txt
 bot.sqlite
 ```
 
-### Deploy via  [Railway](https://railway.app/ "Deploy to the cloud")
+### Deploy  
 
-List all libraries in requirements.txt  
+The project is deployed through [Railway](https://railway.app/ "Deploy to the cloud") and to use this service, you need to:  
 
-``` requirements.txt
-aiogram==3.0.0b6
-asyncio_periodic==2019.2
-periodic==2.1.1
-requests==2.28.1
-cexprtk==0.4.0
-```
-
-Specify the entry point(bot.py) in the proc file
-
-``` Procfile
-web: python bot.py
-```  
+1. Specify the entry point (bot.py) in the  [Procfile](Procfile)  
+2. List all libraries in [requirements.txt](requirements.txt)  
+3. Specify Python version in [runtime.txt](runtime.txt)
 
 ## Modules  
 
-* bot — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
-* get_tokens.py — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)  
-* db — creating a database and working with it  
-* qiwi — work with QIWI API, getting rate from QIWI API answer, conversion and calculation functionality  
-* menu — menu markup generation  
-* tools — user validation  
-* h_start — start command handler  
-* h_help — help command handler  
-* h_about — about command handler and inline link-buttons  
-* h_round — **Round** menu button handler  
-* h_set_currencies — **Set currencies** menu button handler and inline buttons generation
-* h_rate — **Rate** menu button handler  
-* h_converter — **converter** handler
+* [bot](bot.py) — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
+* [get_tokens](get_tokens.py) — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)  
+* [db](db.py) — creating a database and working with it  
+* [qiwi](qiwi.py) — work with QIWI API, getting rate from QIWI API answer, conversion and calculation functionality  
+* [menu](menu.py) — menu markup generation  
+* [tools](tools.py) — user validation  
+* [h_start](h_start.py) — start command handler  
+* [h_help](h_help.py) — help command handler  
+* [h_about](h_about.py) — about command handler and inline link-buttons  
+* [h_round](h_round.py) — **Round** menu button handler  
+* [h_set_currencies](h_set_currencies.py) — **Set currencies** menu button handler and inline buttons generation
+* [h_rate](h_rate.py) — **Rate** menu button handler  
+* [h_converter](h_converter.py) — **converter** handler
