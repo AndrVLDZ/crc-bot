@@ -1,8 +1,7 @@
-from typing import List
+from typing import List, Union
 from dataclasses import dataclass, field
 import requests
 import db
-from cexprtk import evaluate_expression
 
 
 @dataclass
@@ -31,7 +30,7 @@ async def get_rates(token: str):
     Data.rates = res.json()["result"]
 
 
-async def get_rate(user_id: int, converter: bool = False) -> str:
+async def get_rate(user_id: int, converter: bool = False) -> Union[bool, float]:
     # getting currency codes
     curr_from, curr_to = await db.get_currency_pair(user_id)
     curr_from, curr_to = CODES[curr_from], CODES[curr_to]
@@ -46,7 +45,7 @@ async def get_rate(user_id: int, converter: bool = False) -> str:
     if len(rate) == 0:
         return False
     if converter: 
-        return rate[0]["rate"]
+        return float(rate[0]["rate"])
     
     # getting user settings
     round_state = await db.get_round_state(user_id)
@@ -56,14 +55,10 @@ async def get_rate(user_id: int, converter: bool = False) -> str:
     return rate[0]["rate"]
 
 
-async def converter(user_id: int, value: float, round_res: bool) -> str:
+async def converter(user_id: int, value: float, round_res: bool) -> Union[bool, float]:
     rate = await get_rate(user_id, converter=True)
     if not rate:
-        return "Set different currencies!" 
-    try:
-        res = evaluate_expression(value, {})
-    except ValueError:
-        return "Send a number or correct math expression"
+        return False
     if round_res:
-        return round(res*rate, 4)
-    return float(res*rate)
+        return round(value*rate, 4)
+    return value*rate
