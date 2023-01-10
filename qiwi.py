@@ -62,8 +62,8 @@ async def converter(user_id: int, value: float, round_res: bool) -> str:
         return "Set different currencies!" 
     try:
         res = evaluate_expression(value, {})
-    except:
-        return "Send a number or math expression"
+    except ValueError:
+        return "Send a number or correct math expression"
     if round_res:
         return round(res*rate, 4)
     return float(res*rate)
