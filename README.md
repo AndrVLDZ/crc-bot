@@ -24,7 +24,7 @@ See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate 
 * asyncio-periodic 2019.2
 * cexprtk 0.4.0
 
-P.S. The full list of libraries that must be installed to run the bot is in [requirements.txt](requirements.txt)
+P.S. The full list of used libraries is in [requirements.txt](requirements.txt)
 
 ## Run from sources  
 
@@ -38,8 +38,9 @@ The get_tokens.py script allows you to get tokens from .txt files or environment
 ### Run locally  
 
 1. Create qiwi_token.txt and add to file your QIWI API token  
-2. Create tg_token.txt and add to file your telegram bot API token
-3. Run bot.py
+2. Create tg_token.txt and add to file your telegram bot API token  
+3. Install all libraries from [requirements.txt](requirements.txt)  
+4. Run the main script — bot.py  
 
 P.S. All tokens and database are hidden in [.gitignore](.gitignore)
 
@@ -52,11 +53,13 @@ bot.sqlite
 
 ### Deploy  
 
-The project is deployed through [Railway](https://railway.app/ "Deploy to the cloud") and to use this service, you need to:  
+The project is deployed via [Railway](https://railway.app/ "Deploy to the cloud"). You can use any other cloud service or hosting, but if you want to use Railway, you need to:  
 
-1. Specify the entry point (bot.py) in the  [Procfile](Procfile)  
+1. Specify the entry point (bot.py) in the [Procfile](Procfile)  
 2. List all libraries in [requirements.txt](requirements.txt)  
 3. Specify Python version in [runtime.txt](runtime.txt)
+4. Specify your Telegram Bot API and QIWI API tokens in Railway variables
+5. Set up automatic deployments by specifying the required branch of your project in Railway
 
 ## Modules  
 
