@@ -40,7 +40,7 @@ The get_tokens.py script allows you to get tokens from .txt files or environment
 1. Create qiwi_token.txt and add to file your QIWI API token  
 2. Create tg_token.txt and add to file your telegram bot API token  
 3. Install all libraries from [requirements.txt](requirements.txt)  
-4. Run the main script — bot.py  
+4. Run the main script — [bot.py](bot.py)  
 
 P.S. All tokens and database are hidden in [.gitignore](.gitignore)
 
