@@ -5,7 +5,7 @@ from typing import Union
 from tools import check_user
 from aiogram import Router
 from aiogram.types import Message
-from cexprtk import evaluate_expression as calculate
+from cexprtk import evaluate_expression as evaluate
 
 router = Router()
 
@@ -14,19 +14,26 @@ router = Router()
 async def converter(message: Message):
     if await check_user(message):
         user_id = message.from_user.id
-        # calculating of user input
+        # variable to store user input
+        value: float = .0
+        # trying to evaluate user input
         try:
-            value = float(calculate(message.text.replace(",",".").replace(" ", ""), {}))
+            value = evaluate(
+                message.text.replace(",",".").replace(" ", ""), {}
+                )
         except:
             main_menu = await menu.main_menu(user_id)
             await message.answer(
-                text="Send a number or correct math expression",
+                text="Enter a number or a valid math expression",
                 reply_markup=main_menu,
-            )        
+            )
+            return     
+           
         # getting user settings
-        round = await db.get_round_state(user_id)
+        round_res = await db.get_round_state(user_id)
+        
         # calling and validating the converter function
-        res = await qiwi.converter(user_id, value, round)
+        res = await qiwi.converter(user_id, value, round_res)
         if not res:
             main_menu = await menu.main_menu(user_id)
             await message.answer(
@@ -36,10 +43,11 @@ async def converter(message: Message):
         if res: 
             main_menu = await menu.main_menu(user_id)
             curr_from, curr_to = await db.get_currency_pair(user_id)
-            if curr_from != curr_to: 
-                await message.answer(
-                    f"**`{value}` {curr_to}  ==  `{res}` {curr_from}**",
-                    parse_mode="Markdown",
-                    reply_markup=main_menu,
-                )
+            if round_res: 
+                value = round(value, 4)
+            await message.answer(
+                f"**`{value}` {curr_to}  ==  `{res}` {curr_from}**",
+                parse_mode="Markdown",
+                reply_markup=main_menu,
+            )
 
