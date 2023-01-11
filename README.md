@@ -11,11 +11,11 @@ See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate 
 
 ## Features
 
-* Set currency pair and rounding mode
-* Solve math expressions before converting
-* Convert a sent via message value or result of a sent math expression
-* Send the exchange rate of selected currencies
-* Save user settings (currency pair and rounding mode)
+* Setting the currency pair and rounding mode
+* Solving a user-sent mathematical expressions before converting
+* Converting a value sent via message or the result of a user-sent math expression
+* Sending the exchange rate of the selected currency pair
+* Saving user settings (currency pair and rounding mode)
 
 ## Dependencies  
 
