@@ -54,11 +54,3 @@ async def get_rate(user_id: int, converter: bool = False) -> Union[bool, float]:
     
     return rate[0]["rate"]
 
-
-async def converter(user_id: int, value: float, round_res: bool) -> Union[bool, float]:
-    rate = await get_rate(user_id, converter=True)
-    if not rate:
-        return False
-    if round_res:
-        return round(value*rate, 4)
-    return value*rate
