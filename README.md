@@ -66,7 +66,7 @@ The project is deployed via [Railway](https://railway.app/ "Deploy to the cloud"
 * [bot](bot.py) — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
 * [get_tokens](get_tokens.py) — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)  
 * [db](db.py) — creating a database and working with it  
-* [qiwi](qiwi.py) — work with QIWI API, getting rate from QIWI API answer, conversion and calculation functionality  
+* [qiwi](qiwi.py) — work with QIWI API, getting rate from QIWI API answer  
 * [menu](menu.py) — menu markup generation  
 * [tools](tools.py) — user validation  
 * [h_start](h_start.py) — start command handler  
@@ -75,4 +75,4 @@ The project is deployed via [Railway](https://railway.app/ "Deploy to the cloud"
 * [h_round](h_round.py) — **Round** menu button handler  
 * [h_set_currencies](h_set_currencies.py) — **Set currencies** menu button handler and inline buttons generation
 * [h_rate](h_rate.py) — **Rate** menu button handler  
-* [h_converter](h_converter.py) — **converter** handler
+* [h_converter](h_converter.py) — **converter** handler, conversion with built-in calculation functionality  
