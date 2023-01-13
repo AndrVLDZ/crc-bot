@@ -1,5 +1,5 @@
-import db
-import menu
+from menu import main_menu
+from db import check_user_id, get_currency_pair, add_user
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
@@ -28,23 +28,23 @@ async def cmd_start(message: Message) -> None:
     user_id = message.from_user.id
     user_name = message.from_user.first_name
     
-    if await db.check_user_id(user_id):
-        main_menu = await menu.main_menu(user_id)
-        curr_from, curr_to = await db.get_currency_pair(user_id)
+    if await check_user_id(user_id):
+        menu = await main_menu(user_id)
+        curr_from, curr_to = await get_currency_pair(user_id)
         # start message for old user
         await message.answer(
             f"Welcome back, {user_name}! \
             \nYour last currencies settings: \
             \nBuy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
             parse_mode="Markdown",
-            reply_markup=main_menu,
+            reply_markup=menu,
         )
     else:
-        main_menu = await menu.main_menu(user_id, new_user=True)
-        await db.add_user(user_id)
+        menu = await main_menu(user_id, new_user=True)
+        await add_user(user_id)
         # start message for new user
         await message.answer(
             f"Welcome, {user_name}!\n{new_user_msg}",
             parse_mode="Markdown",
-            reply_markup=main_menu,
+            reply_markup=menu,
         )

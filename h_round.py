@@ -1,6 +1,6 @@
-import db
-import menu
+from menu import main_menu
 from tools import check_user
+from db import set_round_state
 from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.methods.delete_message import DeleteMessage
@@ -12,11 +12,11 @@ router = Router()
 async def round_on(message: Message) -> DeleteMessage:
     if await check_user(message):
         user_id = message.from_user.id
-        await db.set_round_state(user_id, False)
-        main_menu = await menu.main_menu(user_id)
+        await set_round_state(user_id, False)
+        menu = await main_menu(user_id)
         await message.answer(
             "Round off",
-            reply_markup=main_menu
+            reply_markup=menu
             )
     return DeleteMessage(
         chat_id=message.chat.id,
@@ -28,11 +28,11 @@ async def round_on(message: Message) -> DeleteMessage:
 async def round_off(message: Message) -> DeleteMessage:
     if await check_user(message):
         user_id = message.from_user.id
-        await db.set_round_state(user_id, True)
-        main_menu = await menu.main_menu(user_id)
+        await set_round_state(user_id, True)
+        menu = await main_menu(user_id)
         await message.answer(
             "Round on",
-            reply_markup=main_menu
+            reply_markup=menu
             )
     return DeleteMessage(
         chat_id=message.chat.id,
