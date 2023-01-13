@@ -1,4 +1,4 @@
-import db
+from db import get_round_state
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
@@ -8,7 +8,7 @@ async def main_menu(user_id, new_user: bool = False):
     if new_user:
         round = "on"
     else:
-        round = "on" if await db.get_round_state(user_id) else "off"
+        round = "on" if await get_round_state(user_id) else "off"
     
     builder = ReplyKeyboardBuilder()
     

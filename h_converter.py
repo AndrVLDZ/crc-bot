@@ -1,8 +1,8 @@
-import db
-import qiwi
-import menu
+from qiwi import get_rate
+from menu import main_menu
 from math import isnan, isinf
 from tools import check_user
+from db import get_round_state, get_currency_pair
 from typing import Union
 from aiogram import Router
 from aiogram.types import Message
@@ -18,39 +18,41 @@ async def evaluate_value(message: Message) -> float:
             )
         return float(res)
     except:
-        main_menu = await menu.main_menu(message.from_user.id)
+        menu = await main_menu(message.from_user.id)
         await message.answer(
             text="Enter a number or a valid math expression",
-            reply_markup=main_menu,
+            reply_markup=menu,
         )
 
 
 async def validate_evaluated_value(message: Message, value: float) -> bool:
-    user_id = message.from_user.id
-    main_menu = await menu.main_menu(user_id)
     if isnan(value):
+        menu = await main_menu(message.from_user.id)
         await message.answer(
             text="Result is undefined",
-            reply_markup=main_menu,
+            reply_markup=menu,
         )
         return False
     
     if isinf(value):
+        menu = await main_menu(message.from_user.id)
         await message.answer(
             text="Cannot divide by zero",
-            reply_markup=main_menu,
+            reply_markup=menu,
         )
         return False
     
     return True
 
 
-async def convert_value(message: Message, value: float, round_res: bool) -> Union[str, float]:
-    rate = await qiwi.get_rate(message.from_user.id, converter=True)
+async def convert_value(message: Message, value: float) -> Union[str, float]:
+    rate = await get_rate(message.from_user.id, converter=True)
     if not rate:
         return "Set different currencies!"
     
     res = value*rate
+    
+    round_res = await get_round_state(message.from_user.id)
     if round_res:
         rounded_res = round(res, 2)
         if res != 0 and rounded_res == 0:
@@ -68,19 +70,19 @@ async def converting(message: Message):
         if not await validate_evaluated_value(message, value):
             return            
     
-        round_res = await db.get_round_state(user_id)
-        main_menu = await menu.main_menu(user_id) 
-        res = await convert_value(message, value, round_res)
+        menu = await main_menu(user_id) 
+        
+        res = await convert_value(message, value)
         if type(res) == str:
             await message.answer(
                 text=res,
-                reply_markup=main_menu,
+                reply_markup=menu,
             )
             return
         
-        curr_from, curr_to = await db.get_currency_pair(user_id)
+        curr_from, curr_to = await get_currency_pair(user_id)
         await message.answer(
             f"**`{value}` {curr_to}  ==  `{res}` {curr_from}**",
             parse_mode="Markdown",
-            reply_markup=main_menu,
+            reply_markup=menu,
         )

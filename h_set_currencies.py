@@ -1,5 +1,5 @@
-import db
 from tools import check_user
+from db import get_currency_pair, set_currency_pair, set_from, set_to
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.filters.callback_data import CallbackData
@@ -48,7 +48,7 @@ async def generate_info_msg(user_id: int, message: Message, state: FSMContext):
         )
     )
     
-    curr_from, curr_to = await db.get_currency_pair(user_id)
+    curr_from, curr_to = await get_currency_pair(user_id)
     info_msg = await message.answer(
         text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
         parse_mode="Markdown",
@@ -85,17 +85,17 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, stat
     currency = callback_data.currency
     
     if prefix == "From":
-        await db.set_from(user_id, currency)
+        await set_from(user_id, currency)
     if prefix == "To":
-        await db.set_to(user_id, currency)
+        await set_to(user_id, currency)
     if prefix == 'Swap':
-        curr_from, curr_to = await db.get_currency_pair(user_id)
-        await db.set_currency_pair(user_id, curr_to, curr_from)
+        curr_from, curr_to = await get_currency_pair(user_id)
+        await set_currency_pair(user_id, curr_to, curr_from)
         
     await callback.answer()
     
     user_data = await state.get_data()
-    curr_from, curr_to = await db.get_currency_pair(user_id)
+    curr_from, curr_to = await get_currency_pair(user_id)
     edit_message = EditMessageText(
         chat_id=user_data["chat_id"],
         message_id=user_data["message_id"],

@@ -1,17 +1,17 @@
-import db
-import qiwi
 import h_start
-import h_set_currencies
 import h_rate
 import h_round
 import h_about
 import h_help
 import h_converter
-import asyncio
+import h_set_currencies
+from qiwi import get_rates
+from db import create_table
 from get_tokens import get_secrets
-from aiogram import Bot, Dispatcher
-from periodic import Periodic
 import logging
+from asyncio import get_event_loop, run
+from periodic import Periodic
+from aiogram import Bot, Dispatcher
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s",
@@ -35,29 +35,28 @@ dp.include_router(h_converter.router)
 
 
 # exchange rates update
-async def get_rates():
-    await qiwi.get_rates(qiwi_token)
+async def upd_rates():
+    await get_rates(qiwi_token)
     logging.info(f"RATES UPDATED")
 
 
 # periodic tasks for event loop
 async def scheduler():
     # exchange rates update every minute
-    p = Periodic(60, get_rates)
+    p = Periodic(60, upd_rates)
     await p.start()
 
 
 async def main() -> None:
     # create table if not exists
-    await db.create_table()
+    await create_table()
     # getting exchange rates
-    await qiwi.get_rates(qiwi_token)
-    # event loop for periodic tasks
-    loop = asyncio.get_event_loop()
+    await get_rates(qiwi_token)
+    loop = get_event_loop()
     loop.create_task(scheduler())
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot, loop=loop) 
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    run(main())

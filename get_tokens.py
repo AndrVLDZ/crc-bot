@@ -1,5 +1,5 @@
-from os import environ
 import logging
+from os import environ
 
 logging.basicConfig(
     format="%(asctime)s - %(message)s",

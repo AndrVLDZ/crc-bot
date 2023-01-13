@@ -1,7 +1,7 @@
+from db import get_currency_pair, get_round_state
 from typing import List, Union
 from dataclasses import dataclass, field
-import requests
-import db
+from requests import Session
 
 
 @dataclass
@@ -21,7 +21,7 @@ CODES: dict = {
 
 # getting all exchange rates via QIWI API
 async def get_rates(token: str):
-    s = requests.Session()
+    s = Session()
     s.headers = {"content-type": "application/json"}
     s.headers["authorization"] = "Bearer " + token
     s.headers["User-Agent"] = "Android v3.2.0 MKT"
@@ -32,7 +32,7 @@ async def get_rates(token: str):
 
 async def get_rate(user_id: int, converter: bool = False) -> Union[bool, float]:
     # getting currency codes
-    curr_from, curr_to = await db.get_currency_pair(user_id)
+    curr_from, curr_to = await get_currency_pair(user_id)
     curr_from, curr_to = CODES[curr_from], CODES[curr_to]
     
     # requested exchange rate
@@ -48,7 +48,7 @@ async def get_rate(user_id: int, converter: bool = False) -> Union[bool, float]:
         return float(rate[0]["rate"])
     
     # getting user settings
-    round_state = await db.get_round_state(user_id)
+    round_state = await get_round_state(user_id)
     if round_state:
         return round(rate[0]["rate"], 4)
     
