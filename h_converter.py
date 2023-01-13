@@ -45,14 +45,13 @@ async def validate_evaluated_value(message: Message, value: float) -> bool:
     return True
 
 
-async def convert_value(message: Message, value: float) -> Union[str, float]:
+async def convert_value(message: Message, value: float, round_res: bool) -> Union[str, float]:
     rate = await get_rate(message.from_user.id, converter=True)
     if not rate:
         return "Set different currencies!"
     
     res = value*rate
     
-    round_res = await get_round_state(message.from_user.id)
     if round_res:
         rounded_res = round(res, 2)
         if res != 0 and rounded_res == 0:
@@ -71,14 +70,18 @@ async def converting(message: Message):
             return            
     
         menu = await main_menu(user_id) 
+        round_res = await get_round_state(user_id)
         
-        res = await convert_value(message, value)
+        res = await convert_value(message, value, round_res)
         if type(res) == str:
             await message.answer(
                 text=res,
                 reply_markup=menu,
             )
             return
+        
+        if round_res:
+            value = round(value, 2)
         
         curr_from, curr_to = await get_currency_pair(user_id)
         await message.answer(
