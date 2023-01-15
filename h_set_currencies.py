@@ -19,7 +19,7 @@ class CurrencyCB(CallbackData, prefix="currency_callback"):
     currency: str  # e.g. "USD", "RUB", ...
 
 
-def generate_buttons(user_id: int, pref: str) -> InlineKeyboardBuilder:
+def generate_curr_buttons(user_id: int, pref: str) -> InlineKeyboardBuilder:
     builder = InlineKeyboardBuilder()
     for curr in CURRENCIES:
         cb_data = CurrencyCB(
@@ -36,7 +36,7 @@ def generate_buttons(user_id: int, pref: str) -> InlineKeyboardBuilder:
     return builder
 
 
-async def generate_info_msg(user_id: int, message: Message, state: FSMContext):
+async def generate_swap_button(user_id) -> InlineKeyboardBuilder:
     swap_button = InlineKeyboardBuilder().add(
         InlineKeyboardButton(
             text="↔️",
@@ -47,7 +47,11 @@ async def generate_info_msg(user_id: int, message: Message, state: FSMContext):
             ).pack(),
         )
     )
-    
+    return swap_button
+
+
+async def generate_info_msg(user_id: int, message: Message, state: FSMContext):
+    swap_button = await generate_swap_button(user_id)
     curr_from, curr_to = await get_currency_pair(user_id)
     info_msg = await message.answer(
         text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
@@ -81,10 +85,11 @@ async def edit_info_msg(user_id: int, state: FSMContext):
 async def currency_pair_chooser(message: Message, state: FSMContext):
     if await check_user(message):
         user_id = message.from_user.id
-        curr_from = generate_buttons(user_id, "From")
+        
+        curr_from = generate_curr_buttons(user_id, "From")
         await message.answer("I have", reply_markup=curr_from.as_markup())
 
-        curr_to = generate_buttons(user_id, "To")
+        curr_to = generate_curr_buttons(user_id, "To")
         await message.answer("I want to buy", reply_markup=curr_to.as_markup())
         
         await generate_info_msg(user_id, message, state)
