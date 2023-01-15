@@ -4,17 +4,13 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 
 async def main_menu(user_id, new_user: bool = False):
-    round: str = ''
-    if new_user:
-        round = "on"
-    else:
-        round = "on" if await get_round_state(user_id) else "off"
+    round_state = "on" if new_user or await get_round_state(user_id) else "off"
     
     builder = ReplyKeyboardBuilder()
     
     builder.row(
         KeyboardButton(text="Rate"),
-        KeyboardButton(text=f"Round: {round}"),
+        KeyboardButton(text=f"Round: {round_state}"),
         width=2
     ) 
     
