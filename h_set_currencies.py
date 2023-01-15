@@ -64,6 +64,19 @@ async def generate_info_msg(user_id: int, message: Message, state: FSMContext):
     await state.set_data(user_data)
 
 
+async def edit_info_msg(user_id: int, state: FSMContext):
+    user_data = await state.get_data()
+    curr_from, curr_to = await get_currency_pair(user_id)
+    edit_message = EditMessageText(
+        chat_id=user_data["chat_id"],
+        message_id=user_data["message_id"],
+        text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
+        parse_mode="Markdown",
+        reply_markup=user_data["swap_button"].as_markup(),
+    )
+    return edit_message
+
+
 @router.message(F.text == "Set currencies")
 async def currency_pair_chooser(message: Message, state: FSMContext):
     if await check_user(message):
@@ -94,14 +107,5 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB, stat
         
     await callback.answer()
     
-    user_data = await state.get_data()
-    curr_from, curr_to = await get_currency_pair(user_id)
-    edit_message = EditMessageText(
-        chat_id=user_data["chat_id"],
-        message_id=user_data["message_id"],
-        text=f"Buy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
-        parse_mode="Markdown",
-        reply_markup=user_data["swap_button"].as_markup(),
-    )
-    return edit_message
+    return await edit_info_msg(user_id, state)
 
