@@ -1,3 +1,4 @@
+from logs import log
 import h_start
 import h_rate
 import h_round
@@ -8,16 +9,9 @@ import h_set_currencies
 from qiwi import get_rates
 from db import create_table
 from get_tokens import get_secrets
-import logging
 from asyncio import get_event_loop, run
 from periodic import Periodic
 from aiogram import Bot, Dispatcher
-
-logging.basicConfig(
-    format="%(asctime)s - %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-    level=logging.INFO,
-)
 
 bot_token, qiwi_token = get_secrets()
 
@@ -37,7 +31,7 @@ dp.include_router(h_converter.router)
 # exchange rates update
 async def upd_rates():
     await get_rates(qiwi_token)
-    logging.info(f"RATES UPDATED")
+    log.info(f"RATES UPDATED")
 
 
 # periodic tasks for event loop

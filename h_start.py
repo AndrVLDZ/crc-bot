@@ -1,5 +1,6 @@
 from menu import main_menu
-from db import check_user_id, get_currency_pair, add_user
+from tools import get_id, get_first_name
+from db import user_in_db, get_currency_pair, add_user
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
@@ -25,10 +26,10 @@ This issue can happen if the bot has been restarted on the server or the message
 
 @router.message(Command(commands=["start"]))
 async def cmd_start(message: Message) -> None:
-    user_id = message.from_user.id
-    user_name = message.from_user.first_name
+    user_id = await get_id(message)
+    user_name = await get_first_name(message)
     
-    if await check_user_id(user_id):
+    if await user_in_db(user_id):
         menu = await main_menu(user_id)
         curr_from, curr_to = await get_currency_pair(user_id)
         # start message for old user

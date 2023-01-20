@@ -3,9 +3,9 @@ from db import get_currency_pair, set_currency_pair, set_from, set_to
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.filters.callback_data import CallbackData
-from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.methods.edit_message_text import EditMessageText
 from aiogram.types import Message, InlineKeyboardButton, CallbackQuery
+from aiogram.utils.keyboard import InlineKeyboardBuilder, KeyboardBuilder
 
 router = Router()
 
@@ -36,7 +36,7 @@ def generate_curr_buttons(user_id: int, pref: str) -> InlineKeyboardBuilder:
     return builder
 
 
-async def generate_swap_button(user_id) -> InlineKeyboardBuilder:
+async def generate_swap_button(user_id) -> KeyboardBuilder:
     swap_button = InlineKeyboardBuilder().add(
         InlineKeyboardButton(
             text="↔️",
@@ -83,8 +83,8 @@ async def edit_info_msg(user_id: int, state: FSMContext):
 
 @router.message(F.text == "Set currencies")
 async def currency_pair_chooser(message: Message, state: FSMContext):
-    if await check_user(message):
-        user_id = message.from_user.id
+    user_id = await check_user(message)
+    if user_id:
         
         curr_from = generate_curr_buttons(user_id, "From")
         await message.answer("I have", reply_markup=curr_from.as_markup())
