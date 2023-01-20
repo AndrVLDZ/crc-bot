@@ -10,8 +10,8 @@ router = Router()
 
 @router.message(F.text == "Round: on")
 async def round_on(message: Message) -> DeleteMessage:
-    if await check_user(message):
-        user_id = message.from_user.id
+    user_id = await check_user(message)
+    if user_id:
         await set_round_state(user_id, False)
         menu = await main_menu(user_id)
         await message.answer(
@@ -26,8 +26,8 @@ async def round_on(message: Message) -> DeleteMessage:
 
 @router.message(F.text == "Round: off")
 async def round_off(message: Message) -> DeleteMessage:
-    if await check_user(message):
-        user_id = message.from_user.id
+    user_id = await check_user(message)
+    if user_id:
         await set_round_state(user_id, True)
         menu = await main_menu(user_id)
         await message.answer(

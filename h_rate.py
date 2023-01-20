@@ -10,8 +10,8 @@ router = Router()
 
 @router.message(F.text == "Rate")
 async def rate(message: Message) -> DeleteMessage:
-    if await check_user(message):
-        user_id = message.from_user.id
+    user_id = await check_user(message)
+    if user_id:
         rate = await get_rate(user_id)
         if not rate: 
             await message.answer(
