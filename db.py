@@ -17,20 +17,6 @@ async def create_table() -> None:
         )
 
 
-async def print_table() -> None:
-    with sqlite3.connect(db_name) as db:
-        c = db.cursor()
-        c.execute(
-            f"""
-                  SELECT * 
-                  FROM users
-                  """
-        )
-        records = c.fetchall()
-        for row in records:
-            print(row)
-
-
 async def add_user(id: int) -> None:
     # default user configuration
     curr_from: str = "USD"
@@ -49,7 +35,7 @@ async def add_user(id: int) -> None:
         db.commit()
 
 
-async def check_user_id(user_id: int) -> bool:
+async def user_in_db(user_id: int) -> bool:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
         c.execute(
@@ -96,6 +82,7 @@ async def set_to(user_id: int, currency_to: str) -> None:
         except: 
             raise IndexError("User does not exist")
 
+
 async def set_currency_pair(user_id: int, curr_from, curr_to: str) -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
@@ -112,6 +99,7 @@ async def set_currency_pair(user_id: int, curr_from, curr_to: str) -> None:
         except: 
             raise IndexError("User does not exist")
 
+
 async def set_round_state(user_id: int, round: bool) -> None:
     with sqlite3.connect(db_name) as db:
         c = db.cursor()
@@ -126,6 +114,7 @@ async def set_round_state(user_id: int, round: bool) -> None:
             db.commit
         except: 
             raise IndexError("User does not exist")
+
 
 async def get_from(user_id: int) -> str:
     with sqlite3.connect(db_name) as db:
