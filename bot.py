@@ -1,17 +1,20 @@
-from logs import log
-import h_start
+from asyncio import get_event_loop, run
+from platform import python_version
+
+from aiogram import Bot, Dispatcher
+from periodic import Periodic
+
+import h_about
+import h_converter
+import h_help
 import h_rate
 import h_round
-import h_about
-import h_help
-import h_converter
 import h_set_currencies
-from qiwi import get_rates
+import h_start
 from db import create_table
 from get_tokens import get_secrets
-from asyncio import get_event_loop, run
-from periodic import Periodic
-from aiogram import Bot, Dispatcher
+from logs import log
+from qiwi import get_rates
 
 bot_token, qiwi_token = get_secrets()
 
@@ -42,6 +45,7 @@ async def scheduler():
 
 
 async def main() -> None:
+    log.info(f"Python version: {python_version()}")
     # create table if not exists
     await create_table()
     # getting exchange rates
