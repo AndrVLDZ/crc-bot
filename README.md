@@ -1,13 +1,12 @@
-# QIWI CRC Bot
+# Travel_CRC_bot
 
-![info picture](/CRC_Description_git.png)  
+<!-- ![info picture](/CRC_Description_git.png)   -->
 
 ## About  
 
-Telegram bot with a currency converter with a built-in calculator and monitoring of exchange rates for the QIWI Wallet.  
-Exchange rates are updated every minute via a request to QIWI API.
+Financial Telegram bot for travel. Set your currency and the currency of the country and translate prices in stores into understandable and familiar values with a currency converter and a built-in calculator.
 
-See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "QIWI Converter Rate Calculator")
+See running bot: [@Travel_CRC_bot](https://t.me/Travel_CRC_bot "Travel Converter Rate Calculator")
 
 ## Features
 
