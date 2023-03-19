@@ -15,8 +15,9 @@ async def evaluate_value(user_id: int, message: Message) -> Union[float, bool]:
     if isinstance(message.text, str):
         try:
             res = evaluate(
-                message.text.replace(",",".").replace(" ", ""), {}
-                )
+                message.text.replace(",",".").replace(" ", ""),
+                {},
+            )
             return float(res)
         except:
             menu = await main_menu(user_id)
