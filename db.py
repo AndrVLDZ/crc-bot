@@ -30,7 +30,7 @@ async def add_user(id: int) -> None:
             f"""
                   INSERT OR REPLACE INTO users {rows} 
                   VALUES (?, ?, ?, ?)""",
-            (id, curr_from, curr_to, round),
+                  (id, curr_from, curr_to, round,),
         )
         db.commit()
 
@@ -42,8 +42,9 @@ async def user_in_db(user_id: int) -> bool:
             f"""
                   SELECT *
                   FROM users 
-                  WHERE id = {user_id}
-                  """
+                  WHERE id = ?
+                  """,
+                  (user_id,),
         )
         # fetchone() returns a tuple of values from the table if row exists
         # else - returns None
@@ -59,7 +60,8 @@ async def set_from(user_id: int, currency_from: str) -> None:
                   UPDATE users 
                   SET curr_from = ?
                   WHERE id = ?
-                  """, (currency_from, user_id)
+                  """, 
+                  (currency_from, user_id,),
         )
         try:
             db.commit
@@ -75,7 +77,8 @@ async def set_to(user_id: int, currency_to: str) -> None:
                   UPDATE users 
                   SET curr_to = ?
                   WHERE id = ?
-                  """, (currency_to, user_id)
+                  """, 
+                  (currency_to, user_id,),
         )
         try:
             db.commit
@@ -92,7 +95,8 @@ async def set_currency_pair(user_id: int, curr_from, curr_to: str) -> None:
                   SET curr_from = ?,
                       curr_to = ?
                   WHERE id = ?
-                  """, (curr_from, curr_to, user_id)
+                  """,
+                  (curr_from, curr_to, user_id,),
         )
         try:
             db.commit
@@ -108,7 +112,8 @@ async def set_round_state(user_id: int, round: bool) -> None:
                   UPDATE users 
                   SET round = ?
                   WHERE id = ?
-                  """, (round, user_id)
+                  """, 
+                  (round, user_id,),
         )
         try:
             db.commit
@@ -123,8 +128,9 @@ async def get_from(user_id: int) -> str:
             f"""
                   SELECT curr_from
                   FROM users 
-                  WHERE id = {user_id}
-                  """
+                  WHERE id = ?
+                  """,
+                  (user_id,),
         )
         try:
             return c.fetchall()[0][0]
@@ -139,8 +145,9 @@ async def get_to(user_id: int) -> str:
             f"""
                   SELECT curr_to
                   FROM users 
-                  WHERE id = {user_id}
-                  """
+                  WHERE id = ?
+                  """,
+                  (user_id,),
         )
         
         try: 
@@ -156,8 +163,9 @@ async def get_currency_pair(user_id: int) -> tuple[str, str]:
             f"""
                   SELECT curr_from, curr_to
                   FROM users 
-                  WHERE id = {user_id}
-                  """
+                  WHERE id = ?
+                  """,
+                  (user_id,),
         )
 
         try: 
@@ -174,8 +182,9 @@ async def get_round_state(user_id: int) -> bool:
             f"""
                   SELECT round
                   FROM users 
-                  WHERE id = {user_id}
-                  """
+                  WHERE id = ?
+                  """,
+                  (user_id,),
         )
         try: 
             res = bool(c.fetchall()[0][0])
