@@ -6,7 +6,7 @@
 
 Financial Telegram bot for travel. Set your currency and the currency of the country and translate prices in stores into understandable and familiar values with a currency converter and a built-in calculator.
 
-See running bot: [@Travel_CRC_bot](https://t.me/Travel_CRC_bot "Travel Converter Rate Calculator")
+See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "Travel Converter Rate Calculator")
 
 ## Features
 
