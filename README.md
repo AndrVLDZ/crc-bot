@@ -18,9 +18,9 @@ See running bot: [@Travel_CRC_bot](https://t.me/Travel_CRC_bot "Travel Converter
 
 ## Dependencies  
 
-* Python 3.10.8
-* Aiogram 3.0.0b6
-* asyncio-periodic 2019.2
+* Python 3.10.11
+* Aiogram 3.0.0b7
+* aiosqlite 0.19.0
 * cexprtk 0.4.0
 
 P.S. The full list of used libraries is in [requirements.txt](requirements.txt)

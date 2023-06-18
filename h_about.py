@@ -8,7 +8,7 @@ router = Router()
 
 msg_about: str = f""" 
 **QIWI Converter Rate Calculator**
-Version: 1.1
+Version: 1.2
 Author: Vladislav Andronov
 Email: andr.vldz@gmail.com
 Powered by aiogram {__version__}
