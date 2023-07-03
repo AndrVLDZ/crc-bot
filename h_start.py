@@ -36,7 +36,7 @@ async def cmd_start(message: Message) -> None:
         await message.answer(
             f"Welcome back, {user_name}! \
             \nYour last currencies settings: \
-            \nBuy:  **[{curr_to}]**    |    For:  **[{curr_from}]**",
+            \nFor:  **[{curr_from}]**    |    By:  **[{curr_to}]**",
             parse_mode="Markdown",
             reply_markup=menu,
         )
