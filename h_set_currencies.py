@@ -172,6 +172,7 @@ async def edit_info_msg(user_id: int):
 @router.message(Command(commands=["for"]))
 async def cmd_set_from(message: Message, command: Command) -> None:
     if await check_user(message):
+        menu = await main_menu(user_id)
         if command.args:
             user_id = await get_id(message)
             curr_from = str((command.args.split())[0]).upper()
@@ -181,8 +182,8 @@ async def cmd_set_from(message: Message, command: Command) -> None:
                 await message.answer(
                     text=f"Currency **{curr_from}** has already been set",
                     parse_mode="Markdown",
-                    )
-                await message.answer(f"Currency {curr_from} successfully set", reply_markup=menu)
+                    reply_markup=menu,
+                )
                 return
             
             if curr_from in CURRENCIES.keys():
@@ -192,14 +193,18 @@ async def cmd_set_from(message: Message, command: Command) -> None:
                 await message.answer("No such currency")
         else:
             await message.answer("Specify currency")
-        menu = await main_menu(user_id)
-        await message.answer(f"Currency {curr_from} successfully set", reply_markup=menu)
+        await message.answer(
+            text=f"Currency **{curr_from}** successfully set", 
+            parse_mode="Markdown",
+            reply_markup=menu,
+        )
         return await edit_info_msg(user_id)
 
 
 @router.message(Command(commands=["by"]))
 async def cmd_set_to(message: Message, command: Command) -> None:
     if await check_user(message):
+        menu = await main_menu(user_id)
         if command.args:
             user_id = await get_id(message)
             curr_to = str((command.args.split())[0]).upper()
@@ -209,8 +214,8 @@ async def cmd_set_to(message: Message, command: Command) -> None:
                 await message.answer(
                     text=f"Currency **{curr_to}** has already been set",
                     parse_mode="Markdown",
+                    reply_markup=menu,
                     )
-                await message.answer(f"Currency {curr_to} successfully set", reply_markup=menu)
                 return
             
             if curr_to in CURRENCIES.keys():
@@ -220,8 +225,11 @@ async def cmd_set_to(message: Message, command: Command) -> None:
                 await message.answer("No such currency")
         else:
             await message.answer("Specify currency")
-        menu = await main_menu(user_id)
-        await message.answer(f"Currency {curr_to} successfully set", reply_markup=menu)
+        await message.answer(
+            text=f"Currency **{curr_to}** successfully set", 
+            parse_mode="Markdown",
+            reply_markup=menu,
+        )
         return await edit_info_msg(user_id)
 
 
@@ -239,14 +247,14 @@ async def cmd_set_pair(message: Message, command: Command) -> None:
                 await message.answer(
                     text=f"Currency **{curr_from}** has already been set",
                     parse_mode="Markdown",
+                    reply_markup=menu,
                     )
-                await message.answer(f"Currency {curr_from} successfully set", reply_markup=menu)
                 if curr_to == db_to.split()[0]:
                     await message.answer(
                         text=f"Currency **{curr_to}** has already been set",
                         parse_mode="Markdown",
+                        reply_markup=menu,
                         )
-                    await message.answer(f"Currency {curr_to} successfully set", reply_markup=menu)
                 return
             
             if curr_from in CURRENCIES.keys():
@@ -258,8 +266,8 @@ async def cmd_set_pair(message: Message, command: Command) -> None:
                 await message.answer(
                     text=f"Currency **{curr_to}** has already been set",
                     parse_mode="Markdown",
+                    reply_markup=menu,
                     )
-                await message.answer(f"Currency {curr_to} successfully set", reply_markup=menu)
                 return
             
             if curr_to in CURRENCIES.keys():
