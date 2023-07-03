@@ -182,6 +182,7 @@ async def cmd_set_from(message: Message, command: Command) -> None:
                     text=f"Currency **{curr_from}** has already been set",
                     parse_mode="Markdown",
                     )
+                await message.answer(f"Currency {curr_from} successfully set", reply_markup=menu)
                 return
             
             if curr_from in CURRENCIES.keys():
@@ -209,6 +210,7 @@ async def cmd_set_to(message: Message, command: Command) -> None:
                     text=f"Currency **{curr_to}** has already been set",
                     parse_mode="Markdown",
                     )
+                await message.answer(f"Currency {curr_to} successfully set", reply_markup=menu)
                 return
             
             if curr_to in CURRENCIES.keys():
@@ -238,11 +240,13 @@ async def cmd_set_pair(message: Message, command: Command) -> None:
                     text=f"Currency **{curr_from}** has already been set",
                     parse_mode="Markdown",
                     )
+                await message.answer(f"Currency {curr_from} successfully set", reply_markup=menu)
                 if curr_to == db_to.split()[0]:
                     await message.answer(
                         text=f"Currency **{curr_to}** has already been set",
                         parse_mode="Markdown",
                         )
+                    await message.answer(f"Currency {curr_to} successfully set", reply_markup=menu)
                 return
             
             if curr_from in CURRENCIES.keys():
@@ -255,6 +259,7 @@ async def cmd_set_pair(message: Message, command: Command) -> None:
                     text=f"Currency **{curr_to}** has already been set",
                     parse_mode="Markdown",
                     )
+                await message.answer(f"Currency {curr_to} successfully set", reply_markup=menu)
                 return
             
             if curr_to in CURRENCIES.keys():
