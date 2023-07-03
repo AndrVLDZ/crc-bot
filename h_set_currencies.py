@@ -221,13 +221,13 @@ async def cmd_set_to(message: Message, command: Command) -> None:
             if curr_to in CURRENCIES.keys():
                 flag = CURRENCIES[curr_to]
                 await set_to(user_id, f"{curr_to} {flag}")
-            else:
-                await message.answer("No such currency", reply_markup=menu)
                 await message.answer(
                     text=f"Currency **{curr_to}** successfully set", 
                     parse_mode="Markdown",
                     reply_markup=menu,
                 )
+            else:
+                await message.answer("No such currency", reply_markup=menu)
         else:
             await message.answer("Specify currency", reply_markup=menu)
         return await edit_info_msg(user_id)
