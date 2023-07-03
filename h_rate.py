@@ -1,4 +1,4 @@
-from qiwi import get_rate
+from rates import get_rate
 from tools import check_user
 from db import get_from, get_to
 from aiogram import F, Router
