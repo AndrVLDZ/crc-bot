@@ -17,21 +17,16 @@ def get_from_txt(file_name: str) -> str:
 # getting Telegram Bot API and QIWI API tokens
 def get_secrets() -> tuple[str, str]:
   bot_token = environ.get('BOT_TOKEN')
-  qiwi_token = environ.get('QIWI_TOKEN')
   
-  if qiwi_token and bot_token:
+  if bot_token:
     # both environment variables exist, return them as a tuple
     log.info("Tokens were obtained from environment variables")
-    return (bot_token, qiwi_token)
+    return (bot_token)
   
-  if not qiwi_token:
-    log.info("QIWI_TOKEN does not exist in the environment variables")
-
   if not bot_token:
     log.info("BOT_TOKEN does not exist in the environment variables")
   
-  log.info("Trying to read tokens from files...")
+  log.info("Trying to read token from file...")
   bot_token = get_from_txt("bot_token.txt")
-  qiwi_token = get_from_txt("qiwi_token.txt")
-  log.info("Tokens were obtained from .txt files")
-  return (bot_token, qiwi_token)
+  log.info("Bot token was obtained from .txt file")
+  return (bot_token)
