@@ -1,4 +1,4 @@
 aiogram==3.0.0b7
 aiosqlite==0.19.0
-requests==2.28.1
+aiohttp == 3.8.4
 cexprtk==0.4.0
