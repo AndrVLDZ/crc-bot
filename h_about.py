@@ -7,7 +7,7 @@ from aiogram.types import InlineKeyboardButton, Message
 router = Router()
 
 msg_about: str = f""" 
-**QIWI Converter Rate Calculator**
+**CRC Bot: Converter Rate Calculator**
 Version: 1.2
 Author: Vladislav Andronov
 Email: andr.vldz@gmail.com
