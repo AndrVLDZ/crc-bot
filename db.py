@@ -154,6 +154,5 @@ async def load_user_data(user_id: int) -> dict:
                 WHERE id = ?
             """
     user_data_db = await fetch_query(query, (user_id,))
-    # print(user_data_json)
     user_data = json.loads(user_data_db[0])
     return user_data
