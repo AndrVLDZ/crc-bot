@@ -21,6 +21,7 @@ See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "Travel Converter Rat
 * Python 3.10.11
 * Aiogram 3.0.0b7
 * aiosqlite 0.19.0
+* aiohttp == 3.8.4
 * cexprtk 0.4.0
 
 P.S. The full list of used libraries is in [requirements.txt](requirements.txt)
