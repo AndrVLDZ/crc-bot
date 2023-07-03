@@ -1,4 +1,4 @@
-from qiwi import get_rate
+from rates import get_rate
 from menu import main_menu
 from math import isnan, isinf
 from tools import check_user
