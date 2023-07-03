@@ -172,9 +172,9 @@ async def edit_info_msg(user_id: int):
 @router.message(Command(commands=["for"]))
 async def cmd_set_from(message: Message, command: Command) -> None:
     if await check_user(message):
+        user_id = await get_id(message)
         menu = await main_menu(user_id)
         if command.args:
-            user_id = await get_id(message)
             curr_from = str((command.args.split())[0]).upper()
             db_from = await get_from(user_id)
 
@@ -189,24 +189,24 @@ async def cmd_set_from(message: Message, command: Command) -> None:
             if curr_from in CURRENCIES.keys():
                 flag = CURRENCIES[curr_from]
                 await set_from(user_id, f"{curr_from} {flag}")
+                await message.answer(
+                    text=f"Currency **{curr_from}** successfully set", 
+                    parse_mode="Markdown",
+                    reply_markup=menu,
+                )
             else:
-                await message.answer("No such currency")
+                await message.answer("No such currency", reply_markup=menu)
         else:
-            await message.answer("Specify currency")
-        await message.answer(
-            text=f"Currency **{curr_from}** successfully set", 
-            parse_mode="Markdown",
-            reply_markup=menu,
-        )
+            await message.answer("Specify currency", reply_markup=menu)
         return await edit_info_msg(user_id)
 
 
 @router.message(Command(commands=["by"]))
 async def cmd_set_to(message: Message, command: Command) -> None:
     if await check_user(message):
+        user_id = await get_id(message)
         menu = await main_menu(user_id)
         if command.args:
-            user_id = await get_id(message)
             curr_to = str((command.args.split())[0]).upper()
             db_to = await get_to(user_id)
 
@@ -222,14 +222,14 @@ async def cmd_set_to(message: Message, command: Command) -> None:
                 flag = CURRENCIES[curr_to]
                 await set_to(user_id, f"{curr_to} {flag}")
             else:
-                await message.answer("No such currency")
+                await message.answer("No such currency", reply_markup=menu)
+                await message.answer(
+                    text=f"Currency **{curr_to}** successfully set", 
+                    parse_mode="Markdown",
+                    reply_markup=menu,
+                )
         else:
-            await message.answer("Specify currency")
-        await message.answer(
-            text=f"Currency **{curr_to}** successfully set", 
-            parse_mode="Markdown",
-            reply_markup=menu,
-        )
+            await message.answer("Specify currency", reply_markup=menu)
         return await edit_info_msg(user_id)
 
 
@@ -261,7 +261,7 @@ async def cmd_set_pair(message: Message, command: Command) -> None:
                 flag = CURRENCIES[curr_from]
                 await set_from(user_id, f"{curr_from} {flag}")
             else:
-                await message.answer("No such currency")
+                await message.answer("No such currency", reply_markup=menu)
             if curr_to == db_to.split()[0]:
                 await message.answer(
                     text=f"Currency **{curr_to}** has already been set",
@@ -274,11 +274,15 @@ async def cmd_set_pair(message: Message, command: Command) -> None:
                 flag = CURRENCIES[curr_to]
                 await set_to(user_id, f"{curr_to} {flag}")
             else:
-                await message.answer("No such currency")
+                await message.answer("No such currency", reply_markup=menu)
         else:
-            await message.answer("Specify currency pair")
+            await message.answer("Specify currency pair", reply_markup=menu)
         menu = await main_menu(user_id)
-        await message.answer(f"Currency pair {curr_from} >> {curr_to} successfully set", reply_markup=menu)
+        await message.answer(
+            text=f"Currency pair **{curr_from}** >> **{curr_to}** successfully set", 
+            parse_mode="Markdown",
+            reply_markup=menu
+        )
         return await edit_info_msg(user_id)
 
 
