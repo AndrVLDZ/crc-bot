@@ -66,12 +66,13 @@ class PageCB(CallbackData, prefix="page_callback"):
     conv_prefix: str  # e.g. "To" or "From" 
     page: int  # page number
 
+
 def generate_curr_buttons(user_id: int, pref: str, page: int) -> InlineKeyboardBuilder:
     builder = InlineKeyboardBuilder()
 
     # calculate start and end index for slicing CURRENCIES
-    start = page * 10
-    end = start + 10
+    start = page * 12
+    end = start + 12
 
     # creating rows with 4 buttons
     for i in range(start, end, 4):
