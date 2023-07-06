@@ -7,6 +7,7 @@ from aiogram.methods.edit_message_text import EditMessageText
 from aiogram.types import Message, InlineKeyboardButton, CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder, KeyboardBuilder
 from aiogram.filters import Command
+from typing import Callable
 
 router = Router()
 
@@ -125,7 +126,6 @@ def generate_curr_buttons(user_id: int, pref: str, page: int) -> InlineKeyboardB
     return builder
 
 
-
 async def generate_swap_button(user_id) -> KeyboardBuilder:
     swap_button = InlineKeyboardBuilder().add(
         InlineKeyboardButton(
@@ -170,6 +170,22 @@ async def edit_info_msg(user_id: int):
     return edit_message
 
 
+async def validate_user_curr(user_id: str, curr: str, get_func: Callable, set_func: Callable, pair: bool) -> str:
+    db_curr = await get_func(user_id)
+
+    if curr == db_curr.split()[0]:
+        if pair:
+            return
+        return f"Currency **{curr}** has already been set"
+
+    if curr in CURRENCIES.keys():
+        flag = CURRENCIES[curr]
+        await set_func(user_id, f"{curr} {flag}")
+        return f"Currency **{curr}** successfully set"
+    
+    return f"No such currency **{curr}**"
+
+
 @router.message(Command(commands=["for"]))
 async def cmd_set_from(message: Message, command: Command) -> None:
     if await check_user(message):
@@ -177,26 +193,12 @@ async def cmd_set_from(message: Message, command: Command) -> None:
         menu = await main_menu(user_id)
         if command.args:
             curr_from = str((command.args.split())[0]).upper()
-            db_from = await get_from(user_id)
-
-            if curr_from == db_from.split()[0]:
-                await message.answer(
-                    text=f"Currency **{curr_from}** has already been set",
-                    parse_mode="Markdown",
-                    reply_markup=menu,
-                )
-                return
-            
-            if curr_from in CURRENCIES.keys():
-                flag = CURRENCIES[curr_from]
-                await set_from(user_id, f"{curr_from} {flag}")
-                await message.answer(
-                    text=f"Currency **{curr_from}** successfully set", 
-                    parse_mode="Markdown",
-                    reply_markup=menu,
-                )
-            else:
-                await message.answer("No such currency", reply_markup=menu)
+            response_text = await validate_user_curr(user_id, curr_from, get_from, set_from, pair=False)
+            await message.answer(
+                text=response_text,
+                parse_mode="Markdown",
+                reply_markup=menu,
+            )
         else:
             await message.answer("Specify currency", reply_markup=menu)
         return await edit_info_msg(user_id)
@@ -209,26 +211,12 @@ async def cmd_set_to(message: Message, command: Command) -> None:
         menu = await main_menu(user_id)
         if command.args:
             curr_to = str((command.args.split())[0]).upper()
-            db_to = await get_to(user_id)
-
-            if curr_to == db_to.split()[0]:
-                await message.answer(
-                    text=f"Currency **{curr_to}** has already been set",
-                    parse_mode="Markdown",
-                    reply_markup=menu,
-                    )
-                return
-            
-            if curr_to in CURRENCIES.keys():
-                flag = CURRENCIES[curr_to]
-                await set_to(user_id, f"{curr_to} {flag}")
-                await message.answer(
-                    text=f"Currency **{curr_to}** successfully set", 
-                    parse_mode="Markdown",
-                    reply_markup=menu,
-                )
-            else:
-                await message.answer("No such currency", reply_markup=menu)
+            response_text = await validate_user_curr(user_id, curr_to, get_to, set_to, pair=False)
+            await message.answer(
+                text=response_text,
+                parse_mode="Markdown",
+                reply_markup=menu,
+            )
         else:
             await message.answer("Specify currency", reply_markup=menu)
         return await edit_info_msg(user_id)
@@ -243,45 +231,37 @@ async def cmd_set_pair(message: Message, command: Command) -> None:
             args = command.args.split()
             curr_from = str(args[0]).upper()
             curr_to = str(args[1]).upper()
-            db_from, db_to = await get_currency_pair(user_id)
-            db_from = db_from.split()[0]
-            db_to = db_to.split()[0]
 
-            if curr_from == db_from and curr_to == db_to:
+            to_response_text = await validate_user_curr(user_id, curr_to, get_to, set_to, pair=True)
+            await message.answer(
+                text=to_response_text,
+                parse_mode="Markdown",
+                reply_markup=menu,
+            )
+
+            from_response_text = await validate_user_curr(user_id, curr_from, get_from, set_from, pair=True)
+            await message.answer(
+                text=from_response_text,
+                parse_mode="Markdown",
+                reply_markup=menu,
+            )
+
+            if not to_response_text and not from_response_text:
                 await message.answer(
                     text=f"Currency pair **{curr_from}** >> **{curr_to}** successfully set", 
                     parse_mode="Markdown",
                     reply_markup=menu
                 )
-                return
-                    
-            if curr_from in CURRENCIES.keys():
-                flag = CURRENCIES[curr_from]
-                await set_from(user_id, f"{curr_from} {flag}")
-            else:
-                await message.answer(f"No such currency {curr_from}", reply_markup=menu)
-            if curr_to == db_to.split()[0]:
+
+            if to_response_text and not from_response_text:
                 await message.answer(
                     text=f"Currency pair **{curr_from}** >> **{curr_to}** successfully set", 
                     parse_mode="Markdown",
                     reply_markup=menu
                 )
-                return await edit_info_msg(user_id)
-            
-            elif curr_to in CURRENCIES.keys():
-                flag = CURRENCIES[curr_to]
-                await set_to(user_id, f"{curr_to} {flag}")
-                await message.answer(
-                    text=f"Currency pair **{curr_from}** >> **{curr_to}** successfully set", 
-                    parse_mode="Markdown",
-                    reply_markup=menu
-                )
-            else:
-                await message.answer(f"No such currency {curr_to}", reply_markup=menu)
         else:
             await message.answer("Specify currency pair", reply_markup=menu)
         return await edit_info_msg(user_id)
-
 
 
 @router.message(F.text == "Set currencies")
