@@ -76,7 +76,7 @@ async def converter_answer(user_id: int, value: float, res: float, message: Mess
     curr_from, curr_to = await get_currency_pair(user_id)
     menu = await main_menu(user_id) 
     await message.answer(
-        f"**`{value}` {curr_to}  ==  `{res}` {curr_from}**",
+        f"**`{value}` {curr_from}  ==  `{res}` {curr_to}**",
         parse_mode="Markdown",
         reply_markup=menu,
     )

@@ -28,7 +28,7 @@ async def get_rate(user_id: int, converter: bool = False) -> Union[bool, float]:
     if curr_from not in Data.rates or curr_to not in Data.rates:
         return False
 
-    rate = Data.rates[curr_from] / Data.rates[curr_to]
+    rate =  Data.rates[curr_to] / Data.rates[curr_from]
     if rate == 1.0:
         return False
     

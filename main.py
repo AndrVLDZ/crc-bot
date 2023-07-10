@@ -1,7 +1,7 @@
 from asyncio import get_event_loop, run, sleep
 from platform import python_version
 
-from aiogram import Bot, Dispatcher
+from aiogram import Dispatcher
 
 import h_about
 import h_converter
@@ -14,10 +14,8 @@ from db import create_table
 from get_tokens import get_secrets
 from logs import log
 from rates import get_rates
+from bot import bot
 
-bot_token = get_secrets()
-
-bot = Bot(token=bot_token)
 dp = Dispatcher()
 
 # connecting handlers

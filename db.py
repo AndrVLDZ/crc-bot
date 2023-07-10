@@ -1,5 +1,4 @@
 import aiosqlite
-import json
 
 
 DB: str = "db.sqlite"
@@ -135,24 +134,3 @@ async def get_round_state(user_id: int) -> bool:
             """
     result = await fetch_query(query, (user_id,))
     return bool(result[0])
-
-
-async def save_user_data(user_id: int, user_data: dict) -> None:
-    user_data_json = json.dumps(user_data)
-    query = """
-                UPDATE users 
-                SET user_data = ?
-                WHERE id = ?
-            """
-    await execute_query(query, (user_data_json, user_id,))
-
-
-async def load_user_data(user_id: int) -> dict:
-    query = """
-                SELECT user_data
-                FROM users 
-                WHERE id = ?
-            """
-    user_data_db = await fetch_query(query, (user_id,))
-    user_data = json.loads(user_data_db[0])
-    return user_data
