@@ -16,7 +16,7 @@ async def round_on(message: Message):
         await set_round_state(user_id, False)
         menu = await main_menu(user_id)
         await message.answer("Round off", reply_markup=menu)
-    bot.delete_message(message.chat.id, message.message_id)
+    await bot.delete_message(message.chat.id, message.message_id)
 
 
 @router.message(F.text == "Round: off")
@@ -26,4 +26,4 @@ async def round_off(message: Message):
         await set_round_state(user_id, True)
         menu = await main_menu(user_id)
         await message.answer("Round on", reply_markup=menu)
-    bot.delete_message(message.chat.id, message.message_id)
+    await bot.delete_message(message.chat.id, message.message_id)
