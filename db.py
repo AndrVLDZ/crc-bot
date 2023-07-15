@@ -1,6 +1,5 @@
 import aiosqlite
 
-
 DB: str = "db.sqlite"
 
 
@@ -16,7 +15,7 @@ async def fetch_query(query: str, params: tuple = ()) -> tuple:
         async with db.execute(query, params) as cursor:
             result = await cursor.fetchone()
             return result
-        
+
 
 async def create_table() -> None:
     query = """
@@ -52,17 +51,22 @@ async def user_in_db(user_id: int) -> bool:
                 WHERE id = ?
             """
     user = await fetch_query(query, (user_id,))
-    return bool(user)    
+    return bool(user)
 
 
 async def set_from(user_id: int, currency_from: str) -> None:
-    query =f"""
+    query = f"""
                 UPDATE users 
                 SET curr_from = ?
                 WHERE id = ?
             """
-    await execute_query(query, (currency_from, user_id,))
-
+    await execute_query(
+        query,
+        (
+            currency_from,
+            user_id,
+        ),
+    )
 
 
 async def set_to(user_id: int, currency_to: str) -> None:
@@ -71,8 +75,13 @@ async def set_to(user_id: int, currency_to: str) -> None:
                 SET curr_to = ?
                 WHERE id = ?
             """
-    await execute_query(query, (currency_to, user_id,))
-
+    await execute_query(
+        query,
+        (
+            currency_to,
+            user_id,
+        ),
+    )
 
 
 async def set_currency_pair(user_id: int, curr_from: str, curr_to: str) -> None:
@@ -82,8 +91,14 @@ async def set_currency_pair(user_id: int, curr_from: str, curr_to: str) -> None:
                     curr_to = ?
                 WHERE id = ?
             """
-    await execute_query(query, (curr_from, curr_to, user_id,))
-
+    await execute_query(
+        query,
+        (
+            curr_from,
+            curr_to,
+            user_id,
+        ),
+    )
 
 
 async def set_round_state(user_id: int, round: bool) -> None:
@@ -92,8 +107,13 @@ async def set_round_state(user_id: int, round: bool) -> None:
                 SET round = ?
                 WHERE id = ?
             """
-    await execute_query(query, (round, user_id,))
-
+    await execute_query(
+        query,
+        (
+            round,
+            user_id,
+        ),
+    )
 
 
 async def get_from(user_id: int) -> str:

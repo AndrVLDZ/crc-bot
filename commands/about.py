@@ -1,8 +1,9 @@
-from tools import check_user
-from aiogram.filters import Command
 from aiogram import Router, __version__
-from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.filters import Command
 from aiogram.types import InlineKeyboardButton, Message
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+
+from common import check_user
 
 router = Router()
 

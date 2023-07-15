@@ -1,10 +1,11 @@
-from rates import get_rate
-from tools import check_user
-from db import get_from, get_to
-from menu import main_menu
 from aiogram import F, Router
 from aiogram.types import Message
+
 from bot import bot
+from common import check_user
+from db import get_from, get_to
+from menu import main_menu
+from rates import get_rate
 
 router = Router()
 
@@ -14,7 +15,7 @@ async def rate(message: Message):
     user_id = await check_user(message)
     if user_id:
         rate = await get_rate(user_id)
-        if not rate: 
+        if not rate:
             await message.answer(
                 "Set different currencies!",
             )
@@ -29,5 +30,3 @@ async def rate(message: Message):
                     reply_markup=menu,
                 )
     await bot.delete_message(message.chat.id, message.message_id)
-
-            

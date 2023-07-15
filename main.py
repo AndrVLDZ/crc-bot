@@ -3,29 +3,31 @@ from platform import python_version
 
 from aiogram import Dispatcher
 
-import h_about
-import h_converter
-import h_help
-import h_rate
-import h_round
-import h_set_currencies
-import h_start
-from db import create_table
-from get_tokens import get_secrets
+import commands.start as start
+import commands.curr_commands as curr_commands
+import commands.help as help
+import commands.about as about
+import handlers.set_currencies as set_currencies
+import handlers.rate as rate
+import handlers.round as round
+import handlers.converter as converter
+
 from logs import log
-from rates import get_rates
 from bot import bot
+from db import create_table
+from rates import get_rates
 
 dp = Dispatcher()
 
 # connecting handlers
-dp.include_router(h_start.router)
-dp.include_router(h_help.router)
-dp.include_router(h_about.router)
-dp.include_router(h_set_currencies.router)
-dp.include_router(h_rate.router)
-dp.include_router(h_round.router)
-dp.include_router(h_converter.router)
+dp.include_router(start.router)
+dp.include_router(curr_commands.router)
+dp.include_router(help.router)
+dp.include_router(about.router)
+dp.include_router(set_currencies.router)
+dp.include_router(rate.router)
+dp.include_router(round.router)
+dp.include_router(converter.router)
 
 
 # exchange rates update
@@ -53,7 +55,7 @@ async def main() -> None:
     loop = get_event_loop()
     loop.create_task(scheduler())
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, loop=loop) 
+    await dp.start_polling(bot, loop=loop)
 
 
 if __name__ == "__main__":
