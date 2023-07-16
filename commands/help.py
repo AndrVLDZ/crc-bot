@@ -7,18 +7,21 @@ from common import check_user
 router = Router()
 
 help_msg: str = f"""
-\nRates are updated every minute and the converter is always active, just send a number or a mathematical expression. \
+\nRates are updated every day and the converter is always active, just send a number or a mathematical expression. \
 The result of the expression will be automatically calculated and converted to the final currency. 
 \nMenu buttons:
-*Rate* — returns the exchange rate of the currency pair
-*Set currencies* — here you can specify your currency pair
-*Round* — allows you to enable or disable rounding
+*Rate* — exchange rate of the currency pair
+*From/To* — specify your currency pair
+*Round* — enable or disable rounding
+*↔️* — swap currency from and currency to 
 \nCommands: 
 /start — run the bot
+/from — set currency from [/from USD]
+/to — set currency to [/to EUR]
+/pair — specify your currency pair [/pair USD EUR]
+/swap — swap currency from and currency to
 /help — how to use the bot
 /about — information about the project, author and contacts
-\n*If Set currencies doesn't work* — call it again by pressing the corresponding menu button or restart the bot. \
-This issue can happen if the bot has been restarted on the server or the message cannot be edited because it's too old.
 """
 
 
