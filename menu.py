@@ -33,7 +33,7 @@ async def main_menu(user_id: int, new_user: bool = False) -> ReplyKeyboardMarkup
     main_menu = ReplyKeyboardMarkup(
         keyboard=main_menu_buttons,
         resize_keyboard=True,
-        input_field_placeholder="Enter value",
+        input_field_placeholder="Value or math expr",
     )
 
     return main_menu
