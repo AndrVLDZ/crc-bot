@@ -18,13 +18,13 @@ The result of the expression will be automatically calculated and converted to t
 *Round* — enable or disable rounding
 *↔️* — swap currencies
 \nCommands: 
-/start — run the bot
+/start — run bot
+/help — how to use
 `/from USD` — set currency from
 `/to EUR` — set currency to
 `/pair USD EUR` — set currency pair
 /swap — swap currencies
-/help — how to use the bot
-/about — information about the project, author and contacts
+/about — info, author and contacts
 """
 
 
