@@ -1,4 +1,4 @@
-# Travel_CRC_bot
+# CRC BOT
 
 ![info picture](/CRC_git.png)  
 
