@@ -1,6 +1,6 @@
 # Travel_CRC_bot
 
-<!-- ![info picture](/CRC_Description_git.png)   -->
+![info picture](/CRC_git.png)  
 
 ## About  
 
