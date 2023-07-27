@@ -1,4 +1,4 @@
-# CRC BOT
+# Converter Rate Calculator >>> CRC Bot
 
 ![info picture](/CRC_git.png)  
 
