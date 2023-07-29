@@ -3,7 +3,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from common import get_first_name, get_id
-from db import add_user, get_currency_pair, user_in_db
+from db import add_user, user_in_db
 from menu import main_menu
 
 router = Router()
@@ -35,7 +35,6 @@ async def cmd_start(message: Message) -> None:
 
     if await user_in_db(user_id):
         menu = await main_menu(user_id)
-        curr_from, curr_to = await get_currency_pair(user_id)
         # start message for old user
         await message.answer(
             text=f"Welcome back, {user_name}!",
