@@ -1,17 +1,23 @@
 from logs import log
 from os import environ
+from typing import Union
+
+BOT_TKN_FILE = "bot_token.txt"
 
 
 # reading a token from .txt file
-def get_from_txt(file_name: str) -> str:
+def get_from_txt(file_name: str) -> Union[str, bool]:
+    token: str = ""
     try:
-        f = open(file_name, "r")
+        with open(file_name, "r") as f:
+          token = f.read()
     except:
-        raise FileNotFoundError(f"{file_name} not found!")
-    token = f.read()
+        log.info(f"{file_name} not found!")
+        return False
     if token != "":
         return token
-    raise ValueError(f"Token not found in {file_name}!")
+    log.info(f"Token not found in {file_name}!")
+    return False
 
 
 # getting Telegram Bot API and QIWI API tokens
@@ -27,6 +33,8 @@ def get_secrets() -> tuple[str, str]:
     log.info("BOT_TOKEN does not exist in the environment variables")
   
   log.info("Trying to read token from file...")
-  bot_token = get_from_txt("bot_token.txt")
-  log.info("Bot token was obtained from .txt file")
-  return (bot_token)
+  bot_token = get_from_txt(BOT_TKN_FILE)
+  if bot_token:
+    log.info("Bot token was obtained from .txt file")
+    return (bot_token)
+  
