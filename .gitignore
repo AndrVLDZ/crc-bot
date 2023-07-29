@@ -250,3 +250,6 @@ bot_token.txt
 
 # Ignore local database
 db.sqlite
+
+# Ignore python venv
+CRC/
