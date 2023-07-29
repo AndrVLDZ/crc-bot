@@ -4,50 +4,55 @@
 
 ## About  
 
-Financial Telegram bot for travel. Set your currency and the currency of the country and translate prices in stores into understandable and familiar values with a currency converter and a built-in calculator.
+CRC Bot is a currency converter with built-in calculator and monitoring of exchange rates, which are updated every day via exchange-api.
+The converter is always active, just send a number or math expression. The result of the expression will be automatically calculated and converted to the final currency.
 
-See running bot: [@QIWI_CRC_bot](https://t.me/QIWI_CRC_bot "Travel Converter Rate Calculator")
+See running bot: [CRC_bot](https://t.me/CRC2_bot "Converter Rate Calculator")
+
+The bot is originally designed to be used when traveling for quick price orientation in stores and quick small calculations. 
+But later I realized that the bot is suitable not only for this purpose and added commands for working with currency pairs, which speeds up the work from the desktop. 
+
+Perhaps later I will add a subscription to notifications about currency pair rate changes with the ability to set threshold values.
 
 ## Features
 
 * Setting the currency pair and rounding mode
 * Solving a user-sent mathematical expressions before converting
 * Converting a value sent via message or the result of a user-sent math expression
-* Sending the exchange rate of the selected currency pair
-* Saving user settings (currency pair and rounding mode)
+* Sending the exchange rate of the currency pair
+* Saving user settings in database (currency pair and rounding mode)
 
 ## Dependencies  
 
 * Python 3.10.11
 * Aiogram 3.0.0b7
 * aiosqlite 0.19.0
-* aiohttp == 3.8.4
+* aiohttp 3.8.4
 * cexprtk 0.4.0
 
-P.S. The full list of used libraries is in [requirements.txt](requirements.txt)
+The full list of used libraries is in [requirements.txt](requirements.txt)
+
+``` Python
+pip install -r requirements.txt
+```
 
 ## Run from sources  
 
-To run the bot, you need to specify two tokens:
+To run the bot, you need to specify Telegram Bot API Token — [Get token](https://t.me/BotFather "Telegram BotFather")
 
-* Telegram Bot API Token — [Get token](https://t.me/BotFather "Telegram BotFather")
-* QIWI API Token — [Get token](https://qiwi.com/api "QIWI API")
-
-The get_tokens.py script allows you to get tokens from .txt files or environment variables. This script is written to get tokens from .txt files when the bot is running locally or from environment variables when you want to deploy the bot.
+The get_token.py script allows you to get tokens from .txt file or environment variables. This script is written to get tokens from .txt files when the bot is running locally or from environment variables when you want to deploy the bot.
 
 ### Run locally  
 
-1. Create qiwi_token.txt and add to file your QIWI API token  
-2. Create tg_token.txt and add to file your telegram bot API token  
-3. Install all libraries from [requirements.txt](requirements.txt)  
-4. Run the main script — [bot.py](bot.py)  
+1. Create tg_token.txt and add to file your telegram bot API token  
+2. Install all libraries from [requirements.txt](requirements.txt)  
+3. Run the main script — [bot.py](bot.py)  
 
-P.S. All tokens and database are hidden in [.gitignore](.gitignore)
+P.S. Bot token and database are hidden in [.gitignore](.gitignore)
 
 ``` gitignore
 # ignore secret config
 bot_token.txt
-qiwi_token.txt
 bot.sqlite
 ```
 
@@ -55,24 +60,26 @@ bot.sqlite
 
 The project is deployed via [Railway](https://railway.app/ "Deploy to the cloud"). You can use any other cloud service or hosting, but if you want to use Railway, you need to:  
 
-1. Specify the entry point (bot.py) in the [Procfile](Procfile)  
-2. List all libraries in [requirements.txt](requirements.txt)  
-3. Specify Python version in [runtime.txt](runtime.txt)
-4. Specify your Telegram Bot API and QIWI API tokens in Railway variables
-5. Set up automatic deployments by specifying the required branch of your project in Railway
+1. Set up automatic deployments by specifying the required branch of your project in Railway
+2. Specify the entry point (main.py) in Railway
+3. List all libraries in [requirements.txt](requirements.txt)  
+4. Specify Python version in [runtime.txt](runtime.txt)
+5. Specify your Telegram Bot API in Railway variables
 
 ## Modules  
 
-* [bot](bot.py) — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
-* [get_tokens](get_tokens.py) — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)  
-* [db](db.py) — creating a database and working with it  
-* [qiwi](qiwi.py) — work with QIWI API, getting rate from QIWI API answer  
-* [menu](menu.py) — menu markup generation  
-* [tools](tools.py) — user validation  
-* [h_start](h_start.py) — start command handler  
-* [h_help](h_help.py) — help command handler  
-* [h_about](h_about.py) — about command handler and inline link-buttons  
-* [h_round](h_round.py) — **Round** menu button handler  
-* [h_set_currencies](h_set_currencies.py) — **Set currencies** menu button handler and inline buttons generation
-* [h_rate](h_rate.py) — **Rate** menu button handler  
-* [h_converter](h_converter.py) — **converter** handler, conversion with built-in calculation functionality  
+* [main.py](bot.py) — bot instance module  
+* [bot.py](bot.py) — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
+* [get_token.py](get_token.py) — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)  
+* [db.py](db.py) — creating a database and working with it  
+* [rates.py](rates.py) — getting all exchange rates via async request to exchangerate-api 
+* [menu.py](menu.py) — menu markup generation  
+* [common.py](common.py) — methods and variables that are often used in different modules
+* [start.py](commands/start.py) — start command handler  
+* [help.py](commands/help.py) — help command handler  
+* [about.py](commands/about.py) — about command handler and inline link-buttons  
+* [curr_commands.py](commands/curr_commands.py) — currency commands (/from /to /pair /swap)
+* [round.py](handlers/round.py) — **Round** menu button handler  
+* [set_currencies.py](handlers/set_currencies.py) — **From/To** menu buttons handler and generation of inline currency buttons 
+* [rate.py](handlers/rate.py) — **Rate** menu button handler  
+* [converter](handlers/converter.py) — **converter** handler, conversion with built-in calculation function  
