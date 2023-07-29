@@ -25,7 +25,7 @@ class PageCB(CallbackData, prefix="page_callback"):
     page: int  # page number
 
 
-def generate_curr_buttons(
+async def generate_curr_buttons(
     chat_id: int, user_id: int, pref: str, page: int
 ) -> InlineKeyboardBuilder:
     builder = InlineKeyboardBuilder()
@@ -108,10 +108,10 @@ async def currency_pair_chooser(message: Message):
     user_id = await check_user(message)
     chat_id = message.chat.id
     if user_id:
-        curr_from = generate_curr_buttons(chat_id, user_id, "From", 0)
+        curr_from = await generate_curr_buttons(chat_id, user_id, "From", 0)
         await message.answer("From", reply_markup=curr_from.as_markup())
 
-        curr_to = generate_curr_buttons(chat_id, user_id, "To", 0)
+        curr_to = await generate_curr_buttons(chat_id, user_id, "To", 0)
         await message.answer("To", reply_markup=curr_to.as_markup())
 
 
@@ -120,7 +120,7 @@ async def currency_pair_chooser(message: Message):
     user_id = await check_user(message)
     chat_id = message.chat.id
     if user_id:
-        curr_from = generate_curr_buttons(chat_id, user_id, "From", 0)
+        curr_from = await generate_curr_buttons(chat_id, user_id, "From", 0)
         await message.answer("From", reply_markup=curr_from.as_markup())
 
         await bot.delete_message(chat_id, message.message_id)
@@ -131,7 +131,7 @@ async def currency_pair_chooser(message: Message):
     user_id = await check_user(message)
     chat_id = message.chat.id
     if user_id:
-        curr_to = generate_curr_buttons(chat_id, user_id, "To", 0)
+        curr_to = await generate_curr_buttons(chat_id, user_id, "To", 0)
         await message.answer("To", reply_markup=curr_to.as_markup())
 
         await bot.delete_message(chat_id, message.message_id)
@@ -171,7 +171,7 @@ async def pagination_handler(query: CallbackQuery, callback_data: PageCB):
     user_id = callback_data.user_id
 
     # Generate the new buttons
-    curr_buttons = generate_curr_buttons(chat_id, user_id, prefix, page)
+    curr_buttons = await generate_curr_buttons(chat_id, user_id, prefix, page)
 
     # Edit the message to show the new buttons
     await query.message.edit_reply_markup(reply_markup=curr_buttons.as_markup())
