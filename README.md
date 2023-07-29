@@ -1,4 +1,4 @@
-# Converter Rate Calculator >>> CRC Bot
+# CRC Bot
 
 ![info picture](/CRC_git.png)  
 
@@ -7,7 +7,7 @@
 CRC Bot is a currency converter with built-in calculator and monitoring of exchange rates, which are updated every day via exchange-api.
 The converter is always active, just send a number or math expression. The result of the expression will be automatically calculated and converted to the final currency.
 
-See running bot: [CRC_bot](https://t.me/CRC2_bot "Converter Rate Calculator")
+See running bot: [@CRC2_bot](https://t.me/CRC2_bot "Converter Rate Calculator")
 
 The bot is originally designed to be used when traveling for quick price orientation in stores and quick small calculations. 
 But later I realized that the bot is suitable not only for this purpose and added commands for working with currency pairs, which speeds up the work from the desktop. 
