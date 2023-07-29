@@ -24,11 +24,11 @@ Perhaps later I will add a subscription to notifications about currency pair rat
 
 ## Dependencies  
 
-* Python 3.10.11
-* Aiogram 3.0.0b7
+* python 3.11.4
+* aiogram 3.0.0b8
 * aiosqlite 0.19.0
-* aiohttp 3.8.4
-* cexprtk 0.4.0
+* aiohttp 3.8.5
+* cexprtk 0.4.1
 
 The full list of used libraries is in [requirements.txt](requirements.txt)
 
