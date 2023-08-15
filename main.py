@@ -55,7 +55,7 @@ async def main() -> None:
     loop = get_event_loop()
     loop.create_task(scheduler())
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, loop=loop)
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
