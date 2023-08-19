@@ -54,7 +54,7 @@ P.S. Bot token and database are hidden in [.gitignore](.gitignore)
 ``` gitignore
 # ignore secret config
 bot_token.txt
-bot.sqlite
+db.sqlite
 ```
 
 ### Deploy  
