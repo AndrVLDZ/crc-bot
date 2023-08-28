@@ -51,10 +51,9 @@ async def generate_curr_buttons(
             )
         builder.row(*buttons)
 
-    # add navigation buttons if necessary
     nav_buttons = []
     if page > 0:
-        # add 'Back' button
+        # adding a 'Back' button
         back_data = PageCB(
             chat_id=chat_id,
             user_id=user_id,
@@ -69,7 +68,7 @@ async def generate_curr_buttons(
         )
 
     if len(CURRENCIES) > end:
-        # add 'Next' button
+        # add a 'Next' button
         next_data = PageCB(
             chat_id=chat_id,
             user_id=user_id,
@@ -163,18 +162,17 @@ async def save_currency(callback: CallbackQuery, callback_data: CurrencyCB):
 
 
 @router.callback_query(PageCB.filter())
-async def pagination_handler(query: CallbackQuery, callback_data: PageCB):
+async def pagination_handler(callback: CallbackQuery, callback_data: PageCB):
     # getting data from callback_data
     prefix = callback_data.conv_prefix
     page = callback_data.page
     chat_id = callback_data.chat_id
     user_id = callback_data.user_id
 
-    # Generate the new buttons
+    # generation of new buttons
     curr_buttons = await generate_curr_buttons(chat_id, user_id, prefix, page)
 
-    # Edit the message to show the new buttons
-    await query.message.edit_reply_markup(reply_markup=curr_buttons.as_markup())
+    # editing the message to display the new buttons
+    await callback.message.edit_reply_markup(reply_markup=curr_buttons.as_markup())
 
-    # Always answer callback queries, even if you don't update the message
-    await query.answer()
+    await callback.answer()
