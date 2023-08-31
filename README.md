@@ -69,7 +69,7 @@ The project is deployed via [Railway](https://railway.app/ "Deploy to the cloud"
 
 ## Modules  
 
-* [main.py](bot.py) — bot instance module  
+* [main.py](main.py) — bot instance module  
 * [bot.py](bot.py) — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router  
 * [get_token.py](get_token.py) — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)  
 * [db.py](db.py) — creating a database and working with it  
