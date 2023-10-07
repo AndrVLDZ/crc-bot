@@ -3,16 +3,16 @@ import aiosqlite
 DB: str = "db.sqlite"
 
 
-async def execute_query(query: str, params: tuple = ()) -> None:
+async def execute_query(query: str, *args) -> None:
     async with aiosqlite.connect(DB) as db:
         async with db.cursor() as cursor:
-            await cursor.execute(query, params)
+            await cursor.execute(query, args)
             await db.commit()
 
 
-async def fetch_query(query: str, params: tuple = ()) -> tuple:
+async def fetch_query(query: str, *args) -> tuple:
     async with aiosqlite.connect(DB) as db:
-        async with db.execute(query, params) as cursor:
+        async with db.execute(query, args) as cursor:
             result = await cursor.fetchone()
             return result
 
@@ -41,7 +41,7 @@ async def add_user(id: int) -> None:
                 INSERT OR REPLACE INTO users {rows} 
                 VALUES (?, ?, ?, ?, ?)
             """
-    await execute_query(query, (id, curr_from, curr_to, round, user_data))
+    await execute_query(query, id, curr_from, curr_to, round, user_data)
 
 
 async def user_in_db(user_id: int) -> bool:
@@ -50,7 +50,7 @@ async def user_in_db(user_id: int) -> bool:
                 FROM users 
                 WHERE id = ?
             """
-    user = await fetch_query(query, (user_id,))
+    user = await fetch_query(query, user_id)
     return bool(user)
 
 
@@ -60,13 +60,7 @@ async def set_from(user_id: int, currency_from: str) -> None:
                 SET curr_from = ?
                 WHERE id = ?
             """
-    await execute_query(
-        query,
-        (
-            currency_from,
-            user_id,
-        ),
-    )
+    await execute_query(query, currency_from, user_id)
 
 
 async def set_to(user_id: int, currency_to: str) -> None:
@@ -75,13 +69,7 @@ async def set_to(user_id: int, currency_to: str) -> None:
                 SET curr_to = ?
                 WHERE id = ?
             """
-    await execute_query(
-        query,
-        (
-            currency_to,
-            user_id,
-        ),
-    )
+    await execute_query(query, currency_to, user_id)
 
 
 async def set_currency_pair(user_id: int, curr_from: str, curr_to: str) -> None:
@@ -91,14 +79,7 @@ async def set_currency_pair(user_id: int, curr_from: str, curr_to: str) -> None:
                     curr_to = ?
                 WHERE id = ?
             """
-    await execute_query(
-        query,
-        (
-            curr_from,
-            curr_to,
-            user_id,
-        ),
-    )
+    await execute_query(query, curr_from, curr_to, user_id)
 
 
 async def set_round_state(user_id: int, round: bool) -> None:
@@ -107,13 +88,7 @@ async def set_round_state(user_id: int, round: bool) -> None:
                 SET round = ?
                 WHERE id = ?
             """
-    await execute_query(
-        query,
-        (
-            round,
-            user_id,
-        ),
-    )
+    await execute_query(query, round, user_id)
 
 
 async def get_from(user_id: int) -> str:
@@ -122,7 +97,7 @@ async def get_from(user_id: int) -> str:
                 FROM users 
                 WHERE id = ?
             """
-    result = await fetch_query(query, (user_id,))
+    result = await fetch_query(query, user_id)
     return result[0]
 
 
@@ -132,7 +107,7 @@ async def get_to(user_id: int) -> str:
                 FROM users 
                 WHERE id = ?
             """
-    result = await fetch_query(query, (user_id,))
+    result = await fetch_query(query, user_id)
     return result[0]
 
 
@@ -142,7 +117,7 @@ async def get_currency_pair(user_id: int) -> tuple[str, str]:
                 FROM users 
                 WHERE id = ?
             """
-    result = await fetch_query(query, (user_id,))
+    result = await fetch_query(query, user_id)
     return result[0], result[1]
 
 
@@ -152,5 +127,5 @@ async def get_round_state(user_id: int) -> bool:
                 FROM users 
                 WHERE id = ?
             """
-    result = await fetch_query(query, (user_id,))
+    result = await fetch_query(query, user_id)
     return bool(result[0])
