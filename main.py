@@ -47,15 +47,16 @@ async def scheduler():
 
 
 async def main() -> None:
-    log.info(f"Python version: {python_version()}")
-    # create database and table if not exists
-    await create_table()
-    # getting exchange rates
-    await get_rates()
-    loop = get_event_loop()
-    loop.create_task(scheduler())
-    await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+    if bot:
+        log.info(f"Python version: {python_version()}")
+        # create database and table if not exists
+        await create_table()
+        # getting exchange rates
+        await get_rates()
+        loop = get_event_loop()
+        loop.create_task(scheduler())
+        await bot.delete_webhook(drop_pending_updates=True)
+        await dp.start_polling(bot)
 
 
 if __name__ == "__main__":

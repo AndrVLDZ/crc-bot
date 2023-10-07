@@ -33,8 +33,10 @@ def get_secrets() -> tuple[str, str]:
     log.info("BOT_TOKEN does not exist in the environment variables")
   
   log.info("Trying to read token from file...")
+
   bot_token = get_from_txt(BOT_TKN_FILE)
   if bot_token:
     log.info("Bot token was obtained from .txt file")
     return (bot_token)
   
+  return False
