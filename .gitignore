@@ -252,4 +252,4 @@ bot_token.txt
 db.sqlite
 
 # Ignore python venv
-CRC/
+.venv/*
