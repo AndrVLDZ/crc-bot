@@ -1,6 +1,6 @@
 from typing import Callable, Union
 
-from aiogram import F, Router
+from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
