@@ -4,7 +4,8 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from common import CURRENCIES, check_user, get_id
+from common.currencies import CURRENCIES
+from common.checks import check_user, get_id
 from db import get_currency_pair, get_from, get_to, set_currency_pair, set_from, set_to
 from menu import main_menu
 

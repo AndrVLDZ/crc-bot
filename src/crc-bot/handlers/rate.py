@@ -1,11 +1,11 @@
 from aiogram import F, Router
 from aiogram.types import Message
 
-from bot import bot
-from common import check_user
+from common.bot import bot
+from common.checks import check_user
 from db import get_from, get_to
 from menu import main_menu
-from rates import get_rate
+from common.rates import get_rate
 
 router = Router()
 

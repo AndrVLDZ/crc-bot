@@ -3,8 +3,9 @@ from aiogram.filters.callback_data import CallbackData
 from aiogram.types import CallbackQuery, InlineKeyboardButton, Message
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot import bot
-from common import CURRENCIES, check_user, get_id
+from common.bot import bot
+from common.checks import check_user, get_id
+from common.currencies import CURRENCIES
 from db import get_currency_pair, set_currency_pair, set_from, set_to
 from menu import main_menu
 

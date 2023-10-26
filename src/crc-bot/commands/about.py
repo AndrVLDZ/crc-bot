@@ -3,11 +3,11 @@ from aiogram.filters import Command
 from aiogram.types import InlineKeyboardButton, Message
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from common import check_user
+from common.checks import check_user
 
 router = Router()
 
-msg_about: str = f""" 
+msg_about: str = f"""
 **CRC Bot: Converter Rate Calculator**
 Version: 1.2
 Author: Vladislav Andronov
@@ -21,11 +21,11 @@ async def about(message: Message):
     if await check_user(message):
         builder = InlineKeyboardBuilder()
         builder.row(InlineKeyboardButton(
-            text="Telegram", 
+            text="Telegram",
             url="https://t.me/andrvldz")
         )
         builder.row(InlineKeyboardButton(
-            text="GitHub", 
+            text="GitHub",
             url="https://github.com/AndrVLDZ")
         )
         await message.answer(

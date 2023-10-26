@@ -1,8 +1,8 @@
 from aiogram import F, Router
 from aiogram.types import Message
 
-from bot import bot
-from common import check_user
+from common.checks import check_user
+from common.bot import bot
 from db import set_round_state
 from menu import main_menu
 
