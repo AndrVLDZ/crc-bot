@@ -40,13 +40,13 @@ pip install -r requirements.txt
 
 To run the bot, you need to specify Telegram Bot API Token — [Get token](https://t.me/BotFather "Telegram BotFather")
 
-The get_token.py script allows you to get tokens from .txt file or environment variables. This script is written to get tokens from .txt files when the bot is running locally or from environment variables when you want to deploy the bot.
+The [get_token.py](src/crc-bot/common/get_token.py) script allows you to get Telegram Bot API token from .txt file when the bot is running locally or from environment variables when you want to deploy the bot.
 
 ### Run locally
 
-1. Create tg_token.txt and add to file your telegram bot API token
+1. Create tg_token.txt in the src/crc-bot directory and add to file your Telegram Bot API token
 2. Install all libraries from [requirements.txt](requirements.txt)
-3. Run the main script — [bot.py](bot.py)
+3. Run the main script — [main.py](src/crc-bot/main.py) from src/crc-bot directory
 
 P.S. Bot token and database are hidden in [.gitignore](.gitignore)
 
@@ -61,25 +61,37 @@ db.sqlite
 The project is deployed via [Railway](https://railway.app/ "Deploy to the cloud"). You can use any other cloud service or hosting, but if you want to use Railway, you need to:
 
 1. Set up automatic deployments by specifying the required branch of your project in Railway
-2. Specify the entry point (main.py) in Railway
+2. Specify path to the entry point (main.py) in Railway
 3. List all libraries in [requirements.txt](requirements.txt)
 4. Specify Python version in [runtime.txt](runtime.txt)
 5. Specify your Telegram Bot API in Railway variables
 
 ## Modules
 
-* [main.py](main.py) — bot instance module
-* [bot.py](bot.py) — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router
-* [get_token.py](get_token.py) — getting Telegram Bot API and QIWI API tokens from environment variables (for deploy) or .txt files (for local run)
-* [db.py](db.py) — creating a database and working with it
-* [rates.py](rates.py) — getting all exchange rates via async request to exchangerate-api
-* [menu.py](menu.py) — menu markup generation
-* [common.py](common.py) — methods and variables that are often used in different modules
-* [start.py](commands/start.py) — start command handler
-* [help.py](commands/help.py) — help command handler
-* [about.py](commands/about.py) — about command handler and inline link-buttons
-* [curr_commands.py](commands/curr_commands.py) — currency commands (/from /to /pair /swap)
-* [round.py](handlers/round.py) — **Round** menu button handler
-* [set_currencies.py](handlers/set_currencies.py) — **From/To** menu buttons handler and generation of inline currency buttons
-* [rate.py](handlers/rate.py) — **Rate** menu button handler
-* [converter](handlers/converter.py) — **converter** handler, conversion with built-in calculation function
+### src/crc-bot
+
+* [main.py](src/crc-bot/main.py) — bot instance module
+* [menu.py](src/crc-bot/menu.py) — menu markup generation
+* [db.py](src/crc-bot/db.py) — creating a database and working with it
+
+### src/crc-bot/common
+
+* [get_token.py](src/crc-bot/common/get_token.py) — getting Telegram Bot API token from environment variables (for deploy) or .txt files (for local run)
+* [bot.py](src/crc-bot/common/bot.py) — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router
+* [rates.py](src/crc-bot/common/rates.py) — getting all exchange rates via async request to exchangerate-api
+* [checks.py](src/crc-bot/common/checks.py) — methods and variables that are often used in other modules for checking different things
+* [currencies.py](src/crc-bot/common/currencies.py) — all currencies supported by exchangerate-api with emoji flags
+
+### src/crc-bot/handlers
+
+* [round.py](src/crc-bot/handlers/round.py) — **Round** menu button handler
+* [set_currencies.py](src/crc-bot/handlers/set_currencies.py) — **From/To** menu buttons handler and generation of inline currency buttons
+* [rate.py](src/crc-bot/handlers/rate.py) — **Rate** menu button handler
+* [converter](src/crc-bot/handlers/converter.py) — **converter** handler, conversion with built-in calculation function
+
+### src/crc-bot/commands
+
+* [start.py](src/crc-bot/commands/start.py) — start command handler
+* [help.py](src/crc-bot/commands/help.py) — help command handler
+* [about.py](src/crc-bot/commands/about.py) — about command handler and inline link-buttons
+* [curr_commands.py](src/crc-bot/commands/curr_commands.py) — currency commands (/from /to /pair /swap)
