@@ -9,7 +9,7 @@ router = Router()
 
 msg_about: str = f"""
 **CRC Bot: Converter Rate Calculator**
-Version: 1.2
+Version: 1.3
 Author: Vladislav Andronov
 Email: andr.vldz@gmail.com
 Powered by aiogram {__version__}
