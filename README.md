@@ -1,6 +1,6 @@
 # CRC Bot
 
-![info picture](/CRC_git.png)3.1.0
+[![info picture](/CRC_git.png)](https://t.me/CRC2_bot)
 
 ## About
 
