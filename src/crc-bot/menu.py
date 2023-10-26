@@ -2,7 +2,7 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 from db import get_currency_pair, get_round_state
-from rates import get_rate
+from common.rates import get_rate
 
 
 async def main_menu(user_id: int, new_user: bool = False) -> ReplyKeyboardMarkup:

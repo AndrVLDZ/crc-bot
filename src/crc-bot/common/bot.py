@@ -1,6 +1,6 @@
 from typing import Union
 from aiogram import Bot
-from get_token import get_secrets
+from .get_token import get_secrets
 
 
 def get_bot() -> Union[Bot, bool]:

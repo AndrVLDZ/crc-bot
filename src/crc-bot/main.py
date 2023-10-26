@@ -1,21 +1,21 @@
-from asyncio import get_event_loop, run, sleep
 from platform import python_version
-
+from asyncio import get_event_loop, run, sleep
 from aiogram import Dispatcher
 
-import commands.start as start
-import commands.curr_commands as curr_commands
-import commands.help as help
-import commands.about as about
-import handlers.set_currencies as set_currencies
-import handlers.rate as rate
-import handlers.round as round
-import handlers.converter as converter
-
-from logs import log
-from bot import bot
+from common.logs import log
+from common.bot import bot
 from db import create_table
-from rates import get_rates
+from common.rates import get_rates
+
+from commands import start
+from commands import curr_commands
+from commands import help
+from commands import about
+from handlers import set_currencies, set_currencies
+from handlers import rate, rate
+from handlers import round, round
+from handlers import converter, converter
+
 
 dp = Dispatcher()
 

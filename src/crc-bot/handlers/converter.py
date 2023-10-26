@@ -5,10 +5,10 @@ from aiogram import Router
 from aiogram.types import Message
 from cexprtk import evaluate_expression as evaluate
 
-from common import check_user
+from common.checks import check_user
 from db import get_currency_pair, get_round_state
 from menu import main_menu
-from rates import get_rate
+from common.rates import get_rate
 
 router = Router()
 
