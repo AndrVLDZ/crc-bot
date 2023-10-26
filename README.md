@@ -25,7 +25,7 @@ Perhaps later I will add a subscription to notifications about currency pair rat
 ## Dependencies
 
 * python 3.11.4
-* aiogram 3.1.0
+* aiogram 3.1.1
 * aiosqlite 0.19.0
 * aiohttp 3.8.5
 * cexprtk 0.4.1
