@@ -25,8 +25,8 @@ async def about(message: Message):
             url="https://t.me/andrvldz")
         )
         builder.row(InlineKeyboardButton(
-            text="GitHub",
-            url="https://github.com/AndrVLDZ")
+            text="GitHub Repo",
+            url="https://github.com/AndrVLDZ/crc-bot")
         )
         await message.answer(
             msg_about,
