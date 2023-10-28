@@ -44,7 +44,7 @@ The [get_token.py](src/crc-bot/common/get_token.py) script allows you to get Tel
 
 ### Run locally
 
-1. Create tg_token.txt in the src/crc-bot directory and add to file your Telegram Bot API token
+1. Create an env folder with the "tg_token.txt" file in the directory from which you will run the main.py and add to file your Telegram Bot API token
 2. Install all libraries from [requirements.txt](requirements.txt)
 3. Run the main script — [main.py](src/crc-bot/main.py) from src/crc-bot directory
 
