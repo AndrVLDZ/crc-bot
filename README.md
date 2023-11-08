@@ -70,14 +70,14 @@ The project is deployed via [Railway](https://railway.app/ "Deploy to the cloud"
 
 ### src/crc-bot
 
-* [main.py](src/crc-bot/main.py) — bot instance module
+* [main.py](src/crc-bot/main.py) — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router
 * [menu.py](src/crc-bot/menu.py) — menu markup generation
 * [db.py](src/crc-bot/db.py) — creating a database and working with it
 
 ### src/crc-bot/common
 
 * [get_token.py](src/crc-bot/common/get_token.py) — getting Telegram Bot API token from environment variables (for deploy) or .txt files (for local run)
-* [bot.py](src/crc-bot/common/bot.py) — the main script that runs a bot polling, a scheduler for updating exchange rates and includes message handlers from all other modules through the router
+* [bot.py](src/crc-bot/common/bot.py) — bot instance module
 * [rates.py](src/crc-bot/common/rates.py) — getting all exchange rates via async request to exchangerate-api
 * [checks.py](src/crc-bot/common/checks.py) — methods and variables that are often used in other modules for checking different things
 * [currencies.py](src/crc-bot/common/currencies.py) — all currencies supported by exchangerate-api with emoji flags
