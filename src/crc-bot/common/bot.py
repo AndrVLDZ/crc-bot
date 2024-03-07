@@ -8,8 +8,6 @@ def get_bot() -> Union[Bot, bool]:
     if bot_token:
         bot = Bot(token=bot_token)
         return bot
-    else:
-        return False
 
 
 if __name__ == "__main__":
