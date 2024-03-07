@@ -20,7 +20,7 @@ def get_from_txt(file_name: str) -> Union[str, bool]:
     return False
 
 
-# getting Telegram Bot API and QIWI API tokens
+# getting Telegram Bot API token
 def get_secrets() -> tuple[str, str]:
   bot_token = environ.get('BOT_TOKEN')
 
