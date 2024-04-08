@@ -248,8 +248,8 @@ $RECYCLE.BIN/
 # Ignore secret files
 bot_token.txt
 
-# Ignore local database
-db.sqlite
+# Ignore local data
+data
 
 # Ignore python venv
 .venv/*
