@@ -1,6 +1,6 @@
 import aiosqlite
 
-DB: str = "db.sqlite"
+DB: str = "data/db.sqlite"
 
 
 async def execute_query(query: str, *args) -> None:
@@ -19,9 +19,9 @@ async def fetch_query(query: str, *args) -> tuple:
 
 async def create_table() -> None:
     query = """
-                CREATE TABLE IF NOT EXISTS users 
-                (id       INT   PRIMARY KEY, 
-                curr_from TEXT, 
+                CREATE TABLE IF NOT EXISTS users
+                (id       INT   PRIMARY KEY,
+                curr_from TEXT,
                 curr_to   TEXT,
                 round     BOOL,
                 user_data TEXT);
@@ -38,7 +38,7 @@ async def add_user(id: int) -> None:
     # rows to be added to the database
     rows = ("id", "curr_from", "curr_to", "round", "user_data")
     query = f"""
-                INSERT OR REPLACE INTO users {rows} 
+                INSERT OR REPLACE INTO users {rows}
                 VALUES (?, ?, ?, ?, ?)
             """
     await execute_query(query, id, curr_from, curr_to, round, user_data)
@@ -47,7 +47,7 @@ async def add_user(id: int) -> None:
 async def user_in_db(user_id: int) -> bool:
     query = f"""
                 SELECT *
-                FROM users 
+                FROM users
                 WHERE id = ?
             """
     user = await fetch_query(query, user_id)
@@ -56,7 +56,7 @@ async def user_in_db(user_id: int) -> bool:
 
 async def set_from(user_id: int, currency_from: str) -> None:
     query = f"""
-                UPDATE users 
+                UPDATE users
                 SET curr_from = ?
                 WHERE id = ?
             """
@@ -65,7 +65,7 @@ async def set_from(user_id: int, currency_from: str) -> None:
 
 async def set_to(user_id: int, currency_to: str) -> None:
     query = f"""
-                UPDATE users 
+                UPDATE users
                 SET curr_to = ?
                 WHERE id = ?
             """
@@ -74,7 +74,7 @@ async def set_to(user_id: int, currency_to: str) -> None:
 
 async def set_currency_pair(user_id: int, curr_from: str, curr_to: str) -> None:
     query = """
-                UPDATE users 
+                UPDATE users
                 SET curr_from = ?,
                     curr_to = ?
                 WHERE id = ?
@@ -84,7 +84,7 @@ async def set_currency_pair(user_id: int, curr_from: str, curr_to: str) -> None:
 
 async def set_round_state(user_id: int, round: bool) -> None:
     query = """
-                UPDATE users 
+                UPDATE users
                 SET round = ?
                 WHERE id = ?
             """
@@ -94,7 +94,7 @@ async def set_round_state(user_id: int, round: bool) -> None:
 async def get_from(user_id: int) -> str:
     query = """
                 SELECT curr_from
-                FROM users 
+                FROM users
                 WHERE id = ?
             """
     result = await fetch_query(query, user_id)
@@ -104,7 +104,7 @@ async def get_from(user_id: int) -> str:
 async def get_to(user_id: int) -> str:
     query = """
                 SELECT curr_to
-                FROM users 
+                FROM users
                 WHERE id = ?
             """
     result = await fetch_query(query, user_id)
@@ -114,7 +114,7 @@ async def get_to(user_id: int) -> str:
 async def get_currency_pair(user_id: int) -> tuple[str, str]:
     query = """
                 SELECT curr_from, curr_to
-                FROM users 
+                FROM users
                 WHERE id = ?
             """
     result = await fetch_query(query, user_id)
@@ -124,7 +124,7 @@ async def get_currency_pair(user_id: int) -> tuple[str, str]:
 async def get_round_state(user_id: int) -> bool:
     query = """
                 SELECT round
-                FROM users 
+                FROM users
                 WHERE id = ?
             """
     result = await fetch_query(query, user_id)
