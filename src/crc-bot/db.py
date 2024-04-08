@@ -1,6 +1,6 @@
 import aiosqlite
 
-DB: str = "app/data/db.sqlite"
+DB: str = "data/db.sqlite"
 
 
 async def execute_query(query: str, *args) -> None:
