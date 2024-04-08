@@ -20,6 +20,4 @@ RUN apk add --update --no-caсhe --virtual .tmp-build-deps \
 
 COPY . /app
 
-VOLUME /app/data
-
 CMD ["python", "src/crc-bot/main.py"]
