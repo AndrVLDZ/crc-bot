@@ -12,7 +12,7 @@ RUN apk add --update --no-cache curl && \
 
 COPY pyproject.toml poetry.lock* /app/
 
-RUN apk add --update --no-caсhe --virtual .tmp-build-deps \
+RUN apk add --update --no-cache --virtual .tmp-build-deps \
     gcc libc-dev linux-headers postgresql-dev && \
     poetry config virtualenvs.create false && \
     poetry install --no-dev && \
