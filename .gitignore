@@ -251,5 +251,7 @@ bot_token.txt
 # Ignore local data
 data
 
+app
+
 # Ignore python venv
 .venv/*
