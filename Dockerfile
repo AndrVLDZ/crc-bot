@@ -4,7 +4,7 @@ LABEL maintainer="andr.vldz@gmail.com"
 
 WORKDIR /app
 
-ENV BOT_TOCKEN = ${BOT_TOCKEN}
+ENV BOT_TOCKEN=${BOT_TOCKEN}
 
 RUN apk add --update --no-cache curl && \
 	curl -sSL https://install.python-poetry.org | python3 - && \
@@ -15,7 +15,7 @@ COPY pyproject.toml poetry.lock* /app/
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
     gcc libc-dev linux-headers postgresql-dev && \
     poetry config virtualenvs.create false && \
-    poetry install --no-dev && \
+    poetry install --no-root --only main && \
     apk del .tmp-build-deps
 
 COPY . /app
