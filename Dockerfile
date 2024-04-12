@@ -26,7 +26,7 @@ RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poet
 
 COPY pyproject.toml poetry.lock* /app/
 
-RUN poetry install --no-root --only main --no-interaction --no-ansi
+RUN poetry install --no-root --only main
 
 COPY . /app
 
