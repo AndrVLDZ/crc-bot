@@ -24,6 +24,7 @@ Perhaps later I will add a subscription to notifications about currency pair rat
 
 ## Dependencies
 
+* python-dotenv 1.0.1
 * python 3.11.4
 * aiogram 3.1.1
 * aiosqlite 0.19.0

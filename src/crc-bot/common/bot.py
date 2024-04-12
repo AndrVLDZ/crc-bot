@@ -1,10 +1,13 @@
-from typing import Union
 from aiogram import Bot
-from .get_token import get_secrets
+from dotenv import load_dotenv
+import os
+
+env_path =  os.path.join(os.getcwd(), ".env")
+load_dotenv(env_path)
 
 
-def get_bot() -> Union[Bot, bool]:
-    bot_token = get_secrets()
+def get_bot() -> Bot | None:
+    bot_token = os.getenv("BOT_TOKEN")
     if bot_token:
         bot = Bot(token=bot_token)
         return bot
