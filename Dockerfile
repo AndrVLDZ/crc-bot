@@ -13,7 +13,7 @@ ENV BOT_TOKEN=${BOT_TOKEN} \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
     POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_IN_PROJECT=true \
+    POETRY_VIRTUALENVS_IN_PROJECT=false \
     POETRY_NO_INTERACTION=1 \
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv"
@@ -26,8 +26,7 @@ RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poet
 
 COPY pyproject.toml poetry.lock* /app/
 
-RUN poetry config virtualenvs.create false && \
-    poetry install --no-root --only main --no-interaction --no-ansi
+RUN poetry install --no-root --only main --no-interaction --no-ansi
 
 COPY . /app
 
