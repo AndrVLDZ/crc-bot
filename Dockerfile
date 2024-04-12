@@ -15,6 +15,7 @@ ENV BOT_TOKEN=${BOT_TOKEN} \
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt
+RUN pip list
 
 COPY . .
 
