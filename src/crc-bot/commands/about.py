@@ -13,7 +13,7 @@ Version: 1.3
 Author: <a href="https://t.me/andrvldz">Vladislav Andronov</a>
 QA: <a href="https://t.me/Tr1gun">Andrew Tr1gun</a>
 Email: andr.vldz@gmail.com
-Powered by aiogram {__version__}
+Powered by <a href="https://docs.aiogram.dev/en/v3.15.0/">aiogram {__version__}</a>
 """
 
 
